@@ -15,7 +15,9 @@
         </button>
         <!-- Brand -->
         <a class="navbar-brand pt-0" href="">
-            <img src="{{ asset('assets/img/lanna-removebg-preview.png') }}" class="navbar-brand-img" alt="...">
+
+            <img src="{{asset('img/LogoRDI.png')}}" class="navbar-brand-img" alt="...">
+
         </a>
         <!-- User -->
         {{-- <ul class="nav align-items-center d-none d-sm-block">
