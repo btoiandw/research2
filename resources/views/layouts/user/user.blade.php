@@ -57,11 +57,11 @@
             </form>
 
         @endauth
-
-    @include('layouts.side')--}}
+--}}
+    @include('layouts.user.side')
     <div class="main-content">
-        @include('layouts.nav')
-        @include('layouts.header')
+        @include('layouts.user.nav')
+        @include('layouts.user.header')
         @yield('content')
 
     </div>

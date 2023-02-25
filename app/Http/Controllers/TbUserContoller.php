@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TbAdmin;
 use Illuminate\Http\Request;
-
-class TbAdminController extends Controller
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+class TbUserContoller extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,9 @@ class TbAdminController extends Controller
     public function index()
     {
         //
-        return view('admin.index');
+        // $role = DB::table('tb_role_users')->where('user_id',auth()->user()->employee_id)->get();
+        // return $role;
+        return view('users.index');
     }
 
     /**
@@ -42,10 +44,10 @@ class TbAdminController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\TbAdmin  $tbAdmin
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(TbAdmin $tbAdmin)
+    public function show($id)
     {
         //
     }
@@ -53,10 +55,10 @@ class TbAdminController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\TbAdmin  $tbAdmin
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(TbAdmin $tbAdmin)
+    public function edit($id)
     {
         //
     }
@@ -65,10 +67,10 @@ class TbAdminController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\TbAdmin  $tbAdmin
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, TbAdmin $tbAdmin)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -76,10 +78,10 @@ class TbAdminController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\TbAdmin  $tbAdmin
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TbAdmin $tbAdmin)
+    public function destroy($id)
     {
         //
     }

@@ -20,3 +20,11 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::post('/login',[\App\Http\Controllers\Auth\LoginController::class,'login'])->name('login');
+Route::get('/logout', [\App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
+
+
+Route::get('/admin/dashboard',[\App\Http\Controllers\TbAdminController::class,'index'])->name('admin.dashboard');
+Route::get('/users/dashboard',[\App\Http\Controllers\TbUserContoller::class,'index'])->name('users.dashboard');
+Route::get('/director/dashboard',[\App\Http\Controllers\TbDirectorController::class,'index'])->name('director.dashboard');
