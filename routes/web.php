@@ -23,8 +23,9 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::post('/login',[\App\Http\Controllers\Auth\LoginController::class,'login'])->name('login');
 Route::get('/logout', [\App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
+Route::get('/getdata-login',[App\Http\Controllers\HomeController::class, 'index'])->name('getdata-login');
 
-
-Route::get('/admin/dashboard',[\App\Http\Controllers\TbAdminController::class,'index'])->name('admin.dashboard');
-Route::get('/users/dashboard',[\App\Http\Controllers\TbUserContoller::class,'index'])->name('users.dashboard');
-Route::get('/director/dashboard',[\App\Http\Controllers\TbDirectorController::class,'index'])->name('director.dashboard');
+Route::get('/admin/dashboard/{id}',[\App\Http\Controllers\TbAdminController::class,'index'])->name('admin.dashboard');
+Route::get('/users/dashboard/{id}',[\App\Http\Controllers\TbUserContoller::class,'index'])->name('users.dashboard');
+Route::get('/director/dashboard/{id}',[\App\Http\Controllers\TbDirectorController::class,'index'])->name('director.dashboard');
+Route::get('/users-director/{id}',[\App\Http\Controllers\UDController::class,'index'])->name('ud.dashboard');

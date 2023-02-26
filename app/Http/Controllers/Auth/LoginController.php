@@ -9,6 +9,9 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+
+use Illuminate\Support\Facades\Session;
+
 class LoginController extends Controller
 {
     /*
@@ -49,13 +52,13 @@ class LoginController extends Controller
         if ($username == "" || $password == "") {
             return view('auth.login')->with('errorLogin');
         } else {
-            $user = DB::table('users')->where('username', $username)->count();
-            $admin = DB::table('tb_admins')->where('username', $username)->count();
-            $director = DB::table('tb_directors')->where('username', $username)->count();
+            $user = DB::table('users')->where('username', $username)->where('work_status', '1')->count();
+            $admin = DB::table('tb_admins')->where('username', $username)->where('status_workadmin', '1')->count();
+            $director = DB::table('tb_directors')->where('username', $username)->where('work_status', '1')->count();
 
-            $getuser = DB::table('users')->where('username', $username)->first();
-            $getadmin = DB::table('tb_admins')->where('username', $username)->first();
-            $getdirector = DB::table('tb_directors')->where('username', $username)->first();
+            $getuser = DB::table('users')->where('username', $username)->where('work_status', '1')->first();
+            $getadmin = DB::table('tb_admins')->where('username', $username)->where('status_workadmin', '1')->first();
+            $getdirector = DB::table('tb_directors')->where('username', $username)->where('work_status', '1')->first();
             //dd($admin,$user,$director);
             if ($user != 0 && $admin != 0 && $director == 0) {
                 $id = $getadmin->employee_id;
@@ -66,10 +69,20 @@ class LoginController extends Controller
                     $role->role_id = '1';
                     $role->save();
                 }
-                return redirect()->route('admin.dashboard');
+                $data = DB::table('tb_admins')->join('users', 'tb_admins.employee_id', '=', 'users.employee_id')->where('tb_admins.employee_id', $id)->get();
+
+                return response()->json([
+                    'status' => 'success',
+                    'data' => 'null',
+                    'roled' => 'null',
+                    'data' => $data,
+                    'role' => 'admin'
+                ]);
+                //return redirect()->route('admin.dashboard')->with(['data' => $data]);
             } elseif ($user != 0 && $admin == 0 && $director != 0) {
+                //ภายใน
                 $idu = $getuser->employee_id;
-                $c_rolesu = DB::table('tb_role_users')->where('user_id', $idu)->where('role_id', '1')->count();
+                $c_rolesu = DB::table('tb_role_users')->where('user_id', $idu)->where('role_id', '2')->count();
                 if ($c_rolesu == 0) {
                     $roleu = new TbRoleUser();
                     $roleu->user_id = $idu;
@@ -84,8 +97,18 @@ class LoginController extends Controller
                     $role->role_id = '3';
                     $role->save();
                 }
-                return redirect()->route('users.dashboard');
+                $data = DB::table('users')->where('employee_id', $idu)->get();
+                $datad = DB::table('tb_directors')->where('employee_referees_id', $id)->get();
+
+                return response()->json([
+                    'status' => 'success',
+                    'datad' => $datad,
+                    'roled' => 'director',
+                    'data' => $data,
+                    'role' => 'users'
+                ]);
             } elseif ($user == 0 && $admin == 0 && $director != 0) {
+                //ภายนอก
                 $id = $getdirector->employee_referees_id;
                 $c_roles = DB::table('tb_role_users')->where('user_id', $id)->where('role_id', '3')->count();
                 if ($c_roles == 0) {
@@ -94,8 +117,17 @@ class LoginController extends Controller
                     $role->role_id = '3';
                     $role->save();
                 }
-                return redirect()->route('director.dashboard');
+                $data = DB::table('tb_directors')->where('employee_referees_id', $id)->get();
+
+                return response()->json([
+                    'status' => 'success',
+                    'data' => 'null',
+                    'roled' => 'null',
+                    'data' => $data,
+                    'role' => 'director'
+                ]);
             } elseif ($user != 0 && $admin == 0 && $director == 0) {
+                //user
                 $id = $getuser->employee_id;
                 $c_roles = DB::table('tb_role_users')->where('user_id', $id)->where('role_id', '1')->count();
                 if ($c_roles == 0) {
@@ -104,7 +136,14 @@ class LoginController extends Controller
                     $role->role_id = '2';
                     $role->save();
                 }
-                return redirect()->route('users.dashboard');
+                $data = DB::table('users')->where('employee_id', $id)->get();
+                return response()->json([
+                    'status' => 'success',
+                    'data' => 'null',
+                    'roled' => 'null',
+                    'data' => $data,
+                    'role' => 'users'
+                ]);
             } else {
                 return view('auth.login')->with('errorLogin');
             }
@@ -112,8 +151,8 @@ class LoginController extends Controller
     }
     public function logout()
     {
-
+        // Session::flash();
         Auth::logout();
-        return redirect('/');
+        return redirect('login');
     }
 }

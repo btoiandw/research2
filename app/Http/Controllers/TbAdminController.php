@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\TbAdmin;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class TbAdminController extends Controller
 {
@@ -12,10 +14,9 @@ class TbAdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        //
-        return view('admin.index');
+       return view('admin.index');
     }
 
     /**

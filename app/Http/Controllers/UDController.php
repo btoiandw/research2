@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-class TbUserContoller extends Controller
+
+class UDController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +14,7 @@ class TbUserContoller extends Controller
     public function index($id)
     {
         //
-        // $role = DB::table('tb_role_users')->where('user_id',auth()->user()->employee_id)->get();
-        // return $role;
-        return view('users.index');
+        return view('ud.index');
     }
 
     /**

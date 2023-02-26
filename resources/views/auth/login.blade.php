@@ -54,23 +54,85 @@
         </div> --}}
         @endif
 
-        <form id="form-validation" name="form-validation" method="POST" action="{{ route('login') }}">
+        <form id="form-validation" name="form-validation">
             @csrf
+            <input type="hidden" name="id_user" id="id_user" />
             <label class="form-label">Username</label>
             <input
                 style="border: none;border-bottom: 1px solid rgb(196, 196, 196);background: transparent;outline: none;height: 40px;color: #000;font-size: 16px;"
-                placeholder="Enter Username" name="username" type="text">
+                placeholder="Enter Username" name="username" id="username" type="text">
             <label class="form-label">Password</label>
-            <input name="password" type="password" class="form-username"placeholder="Enter Password">
+            <input name="password" id="password" type="password" class="form-username"placeholder="Enter Password">
             <div class="d-grid d-md-flex justify-content-md-center">
-                <button type="submit" value="Sign in" name="login">
+                <button type="button"
+                    style="color: #fff;
+                font-size: 15px;
+                background: #F49D1A;
+                cursor: pointer;
+                border-radius: 5px;
+                border: none;
+                padding: 10px 60px;
+                width: auto;
+                outline: none;
+                margin-top: 5%;
+                text-transform: uppercase;"
+                    value="Sign in" name="login" id="login">
                     {{ __('Login') }}
                 </button>
             </div>
         </form>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous">
+    </script>
+    <script>
+        $('#login').click(function() {
+            var frm = $('#form-validation').serialize();
+            //console.log(frm);
+            $.ajax({
+                type: 'POST',
+                url: "{{ route('login') }}",
+                dataType: 'JSON',
+                data: frm,
+                success: function(res) {
+                    console.log(res);
+                    if (res.status == 'success') {
+                        console.log(res.data);
+                        var data = res.data;
+                        $('#id_user').val()
+                        var role = res.role;
+                        if (role == 'admin' && res.roled == 'null') {
+                            var roles = 1;
+                            var id = data[0].employee_id;
+                            console.log(id);
+                            var url = '/admin/dashboard/' + id;
+                            window.location.href = url;
+                        } else if (role == 'users') {
+                            if (res.roled == 'director') {
+                                var roles = 4;
+                                var id = data[0].employee_id;
+                                console.log(id);
+                                var url = '/users-director/' + id;
+                                window.location.href = url;
+                            } else {
+                                var roles = 2;
+                                var id = data[0].employee_id;
+                                console.log(id);
+                                var url = '/users/dashboard/' + id;
+                                window.location.href = url;
+                            }
+                        } else if (role == 'director' && res.roled == 'null') {
+                            var roles = 3;
+                            var id = data[0].employee_referees_id;
+                            console.log(id);
+                            var url = '/director/dashboard/' + id;
+                            window.location.href = url;
+                        }
+                    }
+                }
+            })
+        })
     </script>
 </body>
 
