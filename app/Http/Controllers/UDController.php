@@ -11,10 +11,10 @@ class UDController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id)
+    public function index($id, $roles)
     {
         //
-        return view('ud.index');
+        return view('ud.index')->with(['id' => $id, 'roles' => $roles]);
     }
 
     /**

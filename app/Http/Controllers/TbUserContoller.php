@@ -12,12 +12,12 @@ class TbUserContoller extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id)
+    public function index($id,$roles)
     {
         //
         // $role = DB::table('tb_role_users')->where('user_id',auth()->user()->employee_id)->get();
         // return $role;
-        return view('users.index');
+        return view('users.index')->with(['id' => $id, 'roles' => $roles]);
     }
 
     /**

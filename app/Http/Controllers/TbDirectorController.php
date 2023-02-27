@@ -12,11 +12,11 @@ class TbDirectorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id)
+    public function index($id,$roles)
     {
         //
 
-        return view('director.index');
+        return view('director.index')->with(['id' => $id, 'roles' => $roles]);
     }
 
     /**

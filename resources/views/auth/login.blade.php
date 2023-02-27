@@ -106,27 +106,27 @@
                             var roles = 1;
                             var id = data[0].employee_id;
                             console.log(id);
-                            var url = '/admin/dashboard/' + id;
+                            var url = '/admin/dashboard/' + id + '/' + roles;
                             window.location.href = url;
                         } else if (role == 'users') {
                             if (res.roled == 'director') {
                                 var roles = 4;
                                 var id = data[0].employee_id;
                                 console.log(id);
-                                var url = '/users-director/' + id;
+                                var url = '/users-director/' + id + '/' + roles;
                                 window.location.href = url;
                             } else {
                                 var roles = 2;
                                 var id = data[0].employee_id;
                                 console.log(id);
-                                var url = '/users/dashboard/' + id;
+                                var url = '/users/dashboard/' + id + '/' + roles;
                                 window.location.href = url;
                             }
                         } else if (role == 'director' && res.roled == 'null') {
                             var roles = 3;
                             var id = data[0].employee_referees_id;
                             console.log(id);
-                            var url = '/director/dashboard/' + id;
+                            var url = '/director/dashboard/' + id + '/' + roles;
                             window.location.href = url;
                         }
                     }
