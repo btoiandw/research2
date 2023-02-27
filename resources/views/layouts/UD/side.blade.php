@@ -1,12 +1,12 @@
 <style>
     .active-nav {
-        border-left: 0.75vh solid #540375;
-        background-color: #EAEAEA;
+        border-left: 1vh solid #ffb703;
+        background-color: #cfcfcf;
         color: rgb(0, 0, 0)
     }
 </style>
-<nav class="navbar navbar-vertical fixed-left navbar-expand-md navbar-light bg-white shadow-box-login min-nav pb-md-5"
-    id="sidenav-main">
+<nav class="navbar navbar-vertical fixed-left navbar-expand-md navbar-light shadow-box-login min-nav pb-md-5"
+    id="sidenav-main" style="background-color: #8E0505;">
     <div class="container-fluid">
         <!-- Toggler -->
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#sidenav-collapse-main"
@@ -15,35 +15,9 @@
         </button>
         <!-- Brand -->
         <a class="navbar-brand pt-0" href="">
-            <img src="{{ asset('img/LogoRDI.png') }}" class="navbar-brand-img" alt="...">
-
+            <img src="{{ asset('img/LogoRDI.png') }}" class="navbar-brand-img" alt="..." width="100px">
         </a>
-        <!-- User -->
-        {{-- <ul class="nav align-items-center d-none d-sm-block">
-            <li class="nav-item dropdown">
-                <a class="  nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
-                    aria-expanded="false">
-                    <div class="media align-items-center">
-                        <span class="avatar avatar-sm rounded-circle  bg-dark">
 
-                            <i class="fa-solid fa-user-tie" style="font-size: 1.5rem"></i>
-
-                        </span>
-                    </div>
-                </a>
-                <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-right">
-                    <div class=" dropdown-header noti-title">
-                        <h6 class="text-overflow m-0">{{ Auth::user()->name }}</h6>
-                    </div>
-
-                    <div class="dropdown-divider"></div>
-                    <a href="{{ route('logout') }}" class="dropdown-item">
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                        <span>{{ __('Logout') }}</span>
-                    </a>
-                </div>
-            </li>
-        </ul> --}}
         <!-- Collapse -->
         <div class="collapse  navbar-collapse" id="sidenav-collapse-main">
             <!-- Collapse header -->
@@ -67,120 +41,71 @@
             </div>
             <!-- Navigation -->
             <div class="text-center pb-3 d-block d-sm-none" style="font-weight: 700"> </div>
-            {{-- @if (Auth::user()->role_user == '2') --}}
-            <ul class="navbar-nav  ">
 
-                <li class="{{ 'users/booking' == request()->path() ? 'nav-item active-nav ' : 'nav-item ' }}">
-                    <a class="{{ 'users/booking' == request()->path() ? 'nav-link text-darker' : 'nav-link ' }}"
-                        style="font-weight: 600;font-size:1rem" href="">
-                        <i class="fa-solid fa-calendar-days"></i> {{ __('ภายใน') }}
-                    </a>
-                </li>
-                <li class="{{ 'users/dashboard' == request()->path() ? 'nav-item active-nav ' : 'nav-item ' }}">
-                    <a class="{{ 'users/dashboard' == request()->path() ? 'nav-link text-darker' : 'nav-link ' }}"
-                        style="font-weight: 600;font-size:1rem" href="">
-                        <i class="fa-regular fa-calendar-plus"></i>{{ __('ภายใน') }}
-                    </a>
-                </li>
 
-            </ul>
-            {{--  @endif
-            @if (Auth::user()->role_user == '3') --}}
-            <ul class="navbar-nav  ">
-
-                <li class="{{ 'driver/dashboard' == request()->path() ? 'nav-item active-nav ' : 'nav-item ' }}">
-                    <a class="{{ 'driver/dashboard' == request()->path() ? 'nav-link text-darker' : 'nav-link ' }}"
-                        style="font-weight: 600;font-size:1rem" href="">
-                        <i class="fa-solid fa-gauge-high "></i> {{ __('Dashboard') }}
-                    </a>
-                </li>
-
-            </ul>
-            {{--  @endif --}}
-            {{-- @if (Auth::user()->role_user == '1') --}}
-            <ul class="navbar-nav  ">
-                <li class="{{ 'admin/dashboard' == request()->path() ? 'nav-item active-nav ' : 'nav-item ' }}">
-                    <a class="{{ 'admin/dashboard' == request()->path() ? 'nav-link text-darker  ' : 'nav-link ' }}"
-                        style="font-weight: 600;font-size:1rem" href="">
-                        <i class="fa-solid fa-gauge-high "></i> {{ __('Dashboard') }}
-                    </a>
-                </li>
+            <ul class="navbar-nav ">
+                @if ($roles == 2 || $roles == 4)
+                    <li class="{{ request()->is('users/dashboard/*/*') ? 'nav-item active-nav ' : 'nav-item ' }}">
+                        <a class="{{ request()->is('users/dashboard/*/*') ? 'nav-link text-darker  ' : 'nav-link ' }}"
+                            style="font-weight: 600;font-size:1rem" href="">
+                            {{ __('Dashboard') }}
+                        </a>
+                    </li>
+                @else
+                    <li class="{{ 'director/dashboard' == request()->path() ? 'nav-item active-nav ' : 'nav-item ' }}">
+                        <a class="{{ 'director/dashboard' == request()->path() ? 'nav-link text-darker  ' : 'nav-link ' }}"
+                            style="font-weight: 600;font-size:1rem" href="">
+                            {{ __('Dashboard') }}
+                        </a>
+                    </li>
+                @endif
                 <li
                     class="{{ 'admin/request' == request()->path() || 'admin/request-all' == request()->path() || 'admin/history' == request()->path() ? 'nav-item active-nav ' : 'nav-item ' }}">
                     <a class="{{ 'admin/request' == request()->path() || 'admin/history' == request()->path() ? 'nav-link text-darker' : 'nav-link ' }}"
                         style="font-weight: 600;font-size:1rem" href="">
-                        <i class="fa-solid fa-calendar-days"></i> {{ __('ข้อมูลการจอง') }} </a>
+                        {{ __('โครงร่างงานวิจัย') }}
+                    </a>
                     <ul class="sub-menu py-2 ">
-                        <li class="nav-item">
-                            <a class="{{ 'admin/request' == request()->path() ? 'nav-link-sub text-primary' : 'nav-link-sub  ' }}"
-                                style="font-weight: 600;font-size:0.9rem" href="">
-                                <i class="fa-sharp fa-solid fa-circle-dot" style="font-size: 50%"></i>
-                                {{ __('รายการจองรถของฉัน') }}
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="{{ 'admin/request-all' == request()->path() ? 'nav-link-sub text-primary' : 'nav-link-sub  ' }}"
-                                style="font-weight: 600;font-size:0.9rem" href="">
-                                <i class="fa-sharp fa-solid fa-circle-dot" style="font-size: 40%"></i>
-                                {{ __('รายการจองรถทั้งหมด') }} <div style="font-size: 12px" class="text-danger">[
-                                    <label for="" id="request"></label> ]
-                                </div>
+                        @if ($roles == 2 || $roles == 4)
+                            <li class="nav-item">
+                                <a class="{{ 'users/request' == request()->path() ? 'nav-link-sub text-darker' : 'nav-link-sub ' }}"
+                                    style="font-weight: 600;font-size:0.9rem" href="">
+                                    <i class="fa-solid fa-minus"style="font-size: 50%"></i>
+                                    {{ __('โครงร่างงานวิจัย') }}
+                                </a>
+                            </li>
+                        @else
+                            <li class="nav-item">
+                                <a class="{{ 'admin/request-all' == request()->path() ? 'nav-link-sub text-darker' : 'nav-link-sub ' }}"
+                                    style="font-weight: 600;font-size:0.9rem" href="">
+                                    <i class="fa-solid fa-minus"style="font-size: 50%"></i>
+                                    {{ __('โครงร่างที่เสนอพิจารณา') }}
+
+                                </a>
+                            </li>
+                        @endif
 
 
-                            </a>
-                        </li>
 
-                        <li class="nav-item">
-                            <a class="{{ 'admin/history' == request()->path() ? 'nav-link-sub text-primary ' : 'nav-link-sub ' }}"
-                                style="font-weight: 600;font-size:0.9rem" href="">
-                                <i class="fa-sharp fa-solid fa-circle-dot" style="font-size: 50%"></i>
-                                {{ __('ประวัติรายการทั้งหมด') }}
-                            </a>
-                        </li>
+
                     </ul>
                 </li>
 
-
-                <li
-                    class="{{ 'admin/setting' == request()->path() || 'admin/manage-car' == request()->path() || 'admin/manage-driver' == request()->path() || 'admin/manage-user' == request()->path() ? 'nav-item active-nav ' : 'nav-item ' }}">
-                    <a class="{{ 'admin/manage-car' == request()->path() || 'admin/manage-driver' == request()->path() || 'admin/manage-user' == request()->path() ? 'nav-link text-darker' : 'nav-link ' }}"
-                        style="font-weight: 600;font-size:0.9rem" href="">
-                        <i class="fa-regular fa-calendar"></i> {{ __('จัดการข้อมูลพื้นฐาน') }} </a>
-                    <ul class="sub-menu py-2 ">
-                        <li class="nav-item">
-                            <a class="{{ 'admin/setting' == request()->path() ? 'nav-link-sub text-primary ' : 'nav-link-sub text-default  ' }}"
-                                style="font-weight: 600;font-size:0.85rem" href="">
-                                <i class="fa-sharp fa-solid fa-circle-dot" style="font-size: 50%"></i>
-                                {{ __('ตั้งค่าพื้นฐานของระบบ') }}
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="{{ 'admin/manage-car' == request()->path() ? 'nav-link-sub text-primary ' : 'nav-link-sub text-default  ' }}"
-                                style="font-weight: 600;font-size:0.85rem" href="">
-                                <i class="fa-sharp fa-solid fa-circle-dot" style="font-size: 50%"></i>
-                                {{ __('จัดการข้อมูลรถภายใน') }}
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="{{ 'admin/manage-driver' == request()->path() ? 'nav-link-sub text-primary ' : 'nav-link-sub text-default ' }}"
-                                style="font-weight: 600;font-size:0.85rem" href="">
-                                <i class="fa-sharp fa-solid fa-circle-dot" style="font-size: 50%"></i>
-                                {{ __('จัดการข้อมูลพนักงานขับ') }}
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="{{ 'admin/manage-user' == request()->path() ? 'nav-link-sub text-primary ' : 'nav-link-sub text-default ' }}"
-                                style="font-weight: 600;font-size:0.85rem" href="">
-                                <i class="fa-sharp fa-solid fa-circle-dot" style="font-size: 50%"></i>
-                                {{ __('จัดการข้อมูลผู้ใช้') }}
-                            </a>
-                        </li>
-                    </ul>
+                <li class="nav-item">
+                    <a class="nav-link" style="font-weight: 600;font-size:1rem" href="">
+                        {{ __('งานวิจัย') }}
+                    </a>
                 </li>
-                {{-- @endif --}}
+                <li class="nav-item">
+                    <a class="nav-link" style="font-weight: 600;font-size:1rem" href="">
+                        {{ __('งานตีพิมพ์เผยแพร่') }}
+                    </a>
+                </li>
             </ul>
         </div>
-        <a href="{{ route('logout') }}" class="btn btn-sm btn-danger logout   "><i
-                class="fa-solid fa-person-walking-arrow-right"></i> ออกจากระบบ</a>
+        <a href="{{ route('logout') }}" class="btn btn-sm btn-danger logout">
+            <i class="fa-solid fa-right-from-bracket"></i> ออกจากระบบ
+        </a>
+
     </div>
 </nav>

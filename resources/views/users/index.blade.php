@@ -1,4 +1,6 @@
-@extends('layouts.user.user')
+@extends('layouts.UD.ud')
 @section('content')
-    user
+    <div class=" container-fluid mt-5">
+        user
+    </div>
 @endsection

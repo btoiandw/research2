@@ -1,4 +1,4 @@
-@extends('layouts.director.director')
+@extends('layouts.UD.ud')
 @section('content')
     director
 @endsection
