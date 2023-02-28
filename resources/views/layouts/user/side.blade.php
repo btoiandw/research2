@@ -44,84 +44,37 @@
 
 
             <ul class="navbar-nav ">
-                <li
-                    class="{{ 'admin/dashboard' == request()->path() ? 'nav-item active-nav ' : 'nav-item ' }}">
-                    <a class="{{ 'admin/dashboard' == request()->path() ? 'nav-link text-darker  ' : 'nav-link ' }}"
-                        style="font-weight: 600;font-size:1rem" href="">
+                <li class="{{ request()->is('/users/dashboard/*/*') ? 'nav-item active-nav ' : 'nav-item ' }}">
+                    <a class="{{ request()->is('/users/dashboard/*/*') ? 'nav-link text-darker  ' : 'nav-link ' }}"
+                        style="font-weight: 600;font-size:1rem" href="{{ route('users.dashboard') }}">
                         {{ __('Dashboard') }}
                     </a>
                 </li>
+
                 <li
-                    class="{{ 'admin/manage/users' == request()->path() ? 'nav-item active-nav ' : 'nav-item ' }}">
-                    <a class="{{ 'admin/manage/users' == request()->path() ? 'nav-link text-darker  ' : 'nav-link ' }}"
-                        style="font-weight: 600;font-size:1rem" href="">
-                        {{ __('Admin') }}
-                    </a>
-                </li>
-                <li
-                    class="{{ 'admin/request' == request()->path() || 'admin/request-all' == request()->path() || 'admin/history' == request()->path() ? 'nav-item active-nav ' : 'nav-item ' }}">
-                    <a class="{{ 'admin/request' == request()->path() || 'admin/history' == request()->path() ? 'nav-link text-darker' : 'nav-link ' }}"
-                        style="font-weight: 600;font-size:1rem" href="">
+                    class="{{ request()->is('/research') || 'admin/request-all' == request()->path() || 'admin/history' == request()->path() ? 'nav-item active-nav ' : 'nav-item ' }}">
+                    <a class="{{ request()->is('/research') ? 'nav-link text-darker' : 'nav-link ' }}"
+                        style="font-weight: 600;font-size:1rem" href="{{ route('research-pages') }}">
                         {{ __('โครงร่างงานวิจัย') }} </a>
                     <ul class="sub-menu py-2 ">
                         <li class="nav-item">
-                            <a class="{{ 'admin/request' == request()->path() ? 'nav-link-sub text-darker' : 'nav-link-sub ' }}"
-                                style="font-weight: 600;font-size:0.9rem" href="">
+                            <a class="{{ request()->is('/research') ? 'nav-link-sub text-darker' : 'nav-link-sub ' }}"
+                                style="font-weight: 600;font-size:0.9rem" href="{{ route('research-pages') }}">
                                 <i class="fa-solid fa-minus"style="font-size: 50%"></i>
                                 {{ __('โครงร่างงานวิจัย') }}
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="{{ 'admin/request-all' == request()->path() ? 'nav-link-sub text-darker' : 'nav-link-sub ' }}"
-                                style="font-weight: 600;font-size:0.9rem" href="">
-                                <i class="fa-solid fa-minus"style="font-size: 50%"></i>
-                                {{ __('โครงร่างที่เสนอพิจารณา') }}
 
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="{{ 'admin/history' == request()->path() ? 'nav-link-sub text-darker' : 'nav-link-sub ' }}"
-                                style="font-weight: 600;font-size:0.9rem" href="">
-                                <i class="fa-solid fa-minus"style="font-size: 50%"></i>
-                                {{ __('จัดการแหล่งทุน') }}
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="{{ 'admin/history' == request()->path() ? 'nav-link-sub text-darker' : 'nav-link-sub ' }}"
-                                style="font-weight: 600;font-size:0.9rem" href="">
-                                <i class="fa-solid fa-minus"style="font-size: 50%"></i>
-                                {{ __('จัดการรายการส่งมอบ') }}
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="{{ 'admin/history' == request()->path() ? 'nav-link-sub text-darker' : 'nav-link-sub ' }}"
-                                style="font-weight: 600;font-size:0.9rem" href="">
-                                <i class="fa-solid fa-minus"style="font-size: 50%"></i>
-                                {{ __('รายงานสรุปทุนวิจัย') }}
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="{{ 'admin/history' == request()->path() ? 'nav-link-sub text-darker' : 'nav-link-sub ' }}"
-                                style="font-weight: 600;font-size:0.9rem" href="">
-                                <i class="fa-solid fa-minus"style="font-size: 50%"></i>
-                                {{ __('รายงานสรุปงานวิจัย') }}
-                            </a>
-                        </li>
                     </ul>
                 </li>
 
-                <li
-                    class="{{ 'admin/manage/users' == request()->path() ? 'nav-item active-nav ' : 'nav-item ' }}">
+                <li class="{{ 'admin/manage/users' == request()->path() ? 'nav-item active-nav ' : 'nav-item ' }}">
                     <a class="{{ 'admin/manage/users' == request()->path() ? 'nav-link text-darker  ' : 'nav-link ' }}"
                         style="font-weight: 600;font-size:1rem" href="">
                         {{ __('งานวิจัย') }}
                     </a>
                 </li>
-                <li
-                    class="{{ 'admin/manage/users' == request()->path() ? 'nav-item active-nav ' : 'nav-item ' }}">
+                <li class="{{ 'admin/manage/users' == request()->path() ? 'nav-item active-nav ' : 'nav-item ' }}">
                     <a class="{{ 'admin/manage/users' == request()->path() ? 'nav-link text-darker  ' : 'nav-link ' }}"
                         style="font-weight: 600;font-size:1rem" href="">
                         {{ __('งานตีพิมพ์เผยแพร่') }}

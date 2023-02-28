@@ -27,7 +27,7 @@
                 <div class=" pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">
                     <div class="media align-items-center ">
-                        <h4 class="text-overflow m-0 text-light px-2"></h4>
+                        <h4 class="text-overflow m-0 text-light px-2">{{$data[0]->full_name_eng}}</h4>
                         <span class="avatar avatar-sm rounded-circle " style="background-color:#F5A65B;">
                             {{-- <img alt="Image placeholder" src="{{ asset('assets/img/lanna-removebg-preview.png') }}"> --}}
 
@@ -35,7 +35,7 @@
 
                         </span>
                         <div class="media-body ml-2 d-none d-lg-block">
-                            <span class="mb-0 text-sm  font-weight-bold">{{-- {{ auth()->user()->name }} --}}</span>
+                            <span class="mb-0 text-sm  font-weight-bold"></span>
                         </div>
                     </div>
                 </div>
