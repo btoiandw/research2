@@ -32,3 +32,4 @@ Route::get('/users-director/{id}/{roles}', [\App\Http\Controllers\UDController::
 
 
 Route::get('research/{id}/{roles}', [\App\Http\Controllers\TbResearchController::class, 'index'])->name('research-pages');
+Route::post('/research/store',[\App\Http\Controllers\TbResearchController::class,'store'])->name('research.store');

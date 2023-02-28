@@ -48,9 +48,10 @@
 
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form>
+                <form id="add_research" method="POST">
                     {{ csrf_field() }}
                     <div class="modal-body">
+                        <input type="hidden" name="id_users" id="id_users" value="{{ $id }}" />
                         <div class="d-flex justify-content-end align-content-end">
                             <label style="font-size: 10px">
                                 @php
@@ -108,11 +109,14 @@
                                         <tr id="row[]">
                                             <td>
                                                 <input type="text" name="researcher[]" id="researcher"
-                                                    class="form-control" required>
+                                                    value="{{ $data[0]->full_name_th }}" class="form-control" required>
                                             </td>
                                             <td>
                                                 <select class="form-select" id="faculty" name="faculty[]">
-                                                    <option value="">--เลือกสังกัด/คณะ--</option>
+                                                    <option value="">
+                                                        เลือกสังกัด/คณะ
+                                                        {{-- {{ $data[0]->organizational }}&nbsp;&nbsp;{{ $data[0]->major }} --}}
+                                                    </option>
                                                     @foreach ($list_fac as $row)
                                                         @if ($row->major == '0')
                                                             <option value="{{ $row->id }} ">
@@ -270,7 +274,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" id="save_research" name="save" onclick="save_research()">ยืนยัน</button>
+                        <button type="button" class="btn btn-primary" id="save_research" name="save">ยืนยัน</button>
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">ยกเลิก</button>
 
                     </div>
@@ -368,8 +372,19 @@
             $('#addResearch').modal('toggle');
         }
 
-        function save_research(){
+        $('#save_research').click(function() {
             
-        }
+            var frm = $('#add_research').serialize();
+            console.log(frm);
+            $.ajax({
+                method: 'POST',
+                url: "{{ route('research.store') }}",
+                dataType: 'JSON',
+                data:frm,
+                success:function(res){
+                    console.log(res);
+                }
+            })
+        })
     </script>
 @endpush

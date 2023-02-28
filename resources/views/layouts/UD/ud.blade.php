@@ -15,7 +15,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>RDI-KPRU</title>
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{asset('img/LogoRDI.png')}}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('img/LogoRDI.png') }}">
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -58,6 +58,7 @@
 
         @endauth
 --}}
+    @include('sweetalert::alert')
     @include('layouts.UD.side')
     <div class="main-content">
         @include('layouts.user.nav')
