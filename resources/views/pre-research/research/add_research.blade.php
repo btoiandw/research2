@@ -1,8 +1,22 @@
 @extends('layouts.UD.ud')
 @section('content')
+    @if ($errors->any())
+        <!-- ตรวจสอบว่ามี Error ของ validation ขึ้นมาหรือเปล่า -->
+
+        <div class="alert alert-danger" id="ERROR_COPY" style="display:none;">
+            <ul style="list-style: none;">
+                @foreach ($errors->all() as $error)
+                    <!-- ทำการ วน Loop เพื่อแสดง Error ของ validation ขึ้นมาทั้งหมด -->
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        <!-- ref - https://laravel.com/docs/7.x/validation#DisplayingTheValidationErrors  -->
+    @endif
+
     <div class=" container-fluid mt-3">
         <div class=" d-flex justify-content-end align-content-end">
-            <button class=" btn btn-primary" onclick="addResearchModal()">
+            <button class=" btn btn-primary" id="btnAddResearch" onclick="AddModal()">
                 เพิ่มโครงร่าง
             </button>
         </div>
@@ -48,10 +62,9 @@
 
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="add_research" method="POST">
-                    {{ csrf_field() }}
+                <form id="add_research" method="POST" enctype="multipart/form-data" action="{{route('research.store')}}">
+                    @csrf
                     <div class="modal-body">
-                        <input type="hidden" name="id_users" id="id_users" value="{{ $id }}" />
                         <div class="d-flex justify-content-end align-content-end">
                             <label style="font-size: 10px">
                                 @php
@@ -61,6 +74,7 @@
 
                         </div>
                         <div class="row mb-3">
+                            <input type="hidden" name="id_users" id="id_users" value="{{ $id }}" />
                             <label for="year_research" class="col-sm-2 col-form-label" align="right">ปีงบประมาณ</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="year_research" value="{{ date('Y') + 544 }}"
@@ -87,8 +101,6 @@
 
                         </div>
                         <div class="mb-3">
-
-
                             <label
                                 for="message-text"style="text-align:left;font-weight:600;font-size:18px;background:#fff;border:none"
                                 class="pt-3 py-0 card-header">รายชื่อนักวิจัย</label>
@@ -274,7 +286,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" id="save_research" name="save">ยืนยัน</button>
+                        <button type="submit" class="btn btn-primary" id="save_research" name="save">ยืนยัน</button>
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">ยกเลิก</button>
 
                     </div>
@@ -285,14 +297,23 @@
     </div>
 @endsection
 @push('js')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"
-        integrity="sha512-CryKbMe7sjSCDPl18jtJI5DR5jtkUWxPXWaLCst6QjH8wxDexfRJic2WRmRXmstr2Y8SxDDWuBO6CQC6IE4KTA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.datatables.net/rowreorder/1.3.1/js/dataTables.rowReorder.min.js"></script>
+    <script>
+        var has_error = {{ $errors->count() > 0 ? 'true' : 'false' }};
+        if (has_error) {
+            Swal.fire({
+                title: 'Error',
+                icon: 'error',
+                type: 'error',
+                html: jQuery("#ERROR_COPY").html(),
+                showCloseButton: true,
+            });
+        }
+    </script>
     <script>
         $(document).ready(function() {
             $('#research_table').DataTable({
@@ -365,26 +386,33 @@
             };
             date_input.datepicker(options);
         });
-    </script>
 
-    <script>
-        function addResearchModal() {
+        function AddModal() {
             $('#addResearch').modal('toggle');
         }
+    </script>
+
+    <script type="text/javascript">
+        /*  $('#btnAddResearch').click(function() {
+                            $('#addResearch').modal('toggle');
+                        });
 
         $('#save_research').click(function() {
-            
+
             var frm = $('#add_research').serialize();
             console.log(frm);
             $.ajax({
                 method: 'POST',
                 url: "{{ route('research.store') }}",
                 dataType: 'JSON',
-                data:frm,
-                success:function(res){
+                data: frm,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(res) {
                     console.log(res);
                 }
             })
-        })
+        })*/
     </script>
 @endpush
