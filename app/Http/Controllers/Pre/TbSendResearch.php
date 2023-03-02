@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Pre;
 
-use App\Models\TbSendResearch;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class TbSendResearchController extends Controller
+class TbSendResearch extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class TbSendResearchController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\TbSendResearch  $tbSendResearch
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(TbSendResearch $tbSendResearch)
+    public function show($id)
     {
         //
     }
@@ -52,10 +52,10 @@ class TbSendResearchController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\TbSendResearch  $tbSendResearch
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(TbSendResearch $tbSendResearch)
+    public function edit($id)
     {
         //
     }
@@ -64,10 +64,10 @@ class TbSendResearchController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\TbSendResearch  $tbSendResearch
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, TbSendResearch $tbSendResearch)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -75,10 +75,10 @@ class TbSendResearchController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\TbSendResearch  $tbSendResearch
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TbSendResearch $tbSendResearch)
+    public function destroy($id)
     {
         //
     }

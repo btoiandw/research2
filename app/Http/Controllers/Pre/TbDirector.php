@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Pre;
 
-use App\Models\TbDirector;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-class TbDirectorController extends Controller
+
+class TbDirector extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +16,7 @@ class TbDirectorController extends Controller
     {
         //
 
-        return view('director.index')->with(['id' => $id, 'roles' => $roles]);
+        return view('pre-research.director.index')->with(['id' => $id, 'roles' => $roles]);
     }
 
     /**
@@ -43,10 +43,10 @@ class TbDirectorController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\TbDirector  $tbDirector
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(TbDirector $tbDirector)
+    public function show($id)
     {
         //
     }
@@ -54,10 +54,10 @@ class TbDirectorController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\TbDirector  $tbDirector
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(TbDirector $tbDirector)
+    public function edit($id)
     {
         //
     }
@@ -66,10 +66,10 @@ class TbDirectorController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\TbDirector  $tbDirector
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, TbDirector $tbDirector)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -77,10 +77,10 @@ class TbDirectorController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\TbDirector  $tbDirector
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TbDirector $tbDirector)
+    public function destroy($id)
     {
         //
     }

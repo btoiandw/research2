@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Pre;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-
-class TbUserContoller extends Controller
+class TbUser extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,7 +16,7 @@ class TbUserContoller extends Controller
     {
         //
         $data = DB::table('users')->join('tb_faculties', 'users.organization_id', '=', 'tb_faculties.id')->where('users.employee_id', $id)->get();
-        return view('users.index')->with(['id' => $id, 'roles' => $roles, 'data' => $data]);
+        return view('pre-research.users.index')->with(['id' => $id, 'roles' => $roles, 'data' => $data]);
     }
 
     /**

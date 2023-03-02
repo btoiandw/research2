@@ -1,15 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Pre;
 
-// use App\Models\TbResearch;
-// use App\Models\TbSendResearch;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
-use Illuminate\Support\Facades\Validator;
-
-class TbResearchController extends Controller
+class TbResearch extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -25,7 +22,7 @@ class TbResearchController extends Controller
             ->join('tb_faculties', 'users.organization_id', '=', 'tb_faculties.id')
             ->where('users.employee_id', $id)
             ->get();
-        return view('research.add_research')->with([
+        return view('pre-research.research.add_research')->with([
             'id' => $id,
             'roles' => $roles,
             'data' => $data,
@@ -229,10 +226,10 @@ class TbResearchController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\TbResearch  $tbResearch
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(TbResearch $tbResearch)
+    public function show($id)
     {
         //
     }
@@ -240,10 +237,10 @@ class TbResearchController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\TbResearch  $tbResearch
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(TbResearch $tbResearch)
+    public function edit($id)
     {
         //
     }
@@ -252,10 +249,10 @@ class TbResearchController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\TbResearch  $tbResearch
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, TbResearch $tbResearch)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -263,10 +260,10 @@ class TbResearchController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\TbResearch  $tbResearch
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TbResearch $tbResearch)
+    public function destroy($id)
     {
         //
     }
