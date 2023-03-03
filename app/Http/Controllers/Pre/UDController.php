@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Pre;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-class TbUser extends Controller
+
+class UDController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +15,7 @@ class TbUser extends Controller
     public function index($id, $roles)
     {
         //
-        $data = DB::table('users')->join('tb_faculties', 'users.organization_id', '=', 'tb_faculties.id')->where('users.employee_id', $id)->get();
-        return view('pre-research.users.index')->with(['id' => $id, 'roles' => $roles, 'data' => $data]);
+        return view('ud.index')->with(['id' => $id, 'roles' => $roles]);
     }
 
     /**

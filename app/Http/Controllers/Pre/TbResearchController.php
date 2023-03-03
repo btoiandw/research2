@@ -6,7 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
-class TbResearch extends Controller
+use App\Models\TbResearch;
+use App\Models\TbSendResearch;
+use Illuminate\Support\Carbon;
+
+class TbResearchController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -107,6 +111,8 @@ class TbResearch extends Controller
                 'edate.after:start_date' => ' วันสิ้นสุดต้องหลังวันเริ่มต้น'
             ]
         );
+
+        $nowDate = Carbon::now()->format('Y-m-d H:i:m');
         $type = $request->type;
         //$cType = count($type);
         $allType = array();
@@ -182,22 +188,23 @@ class TbResearch extends Controller
                     if ($filew->move($path, $fileName_w)) { //move=>เซฟในโฟลเดอร์ ''=>''แรกชื่อโฟลเดอร์ $name=>ชื่อไฟล์  ->จะอยู่ในโฟลเดอร์ public
                         if ($filep->move($path, $fileName_p)) {
                             //dd($request->all(), $result, $id_re, $area, $allType, $us, $sumpc, $fileName_w, $fileName_p);
-                           /* for ($i = 0; $i < sizeof($rc); $i++) {
+                            for ($i = 0; $i < sizeof($rc); $i++) {
                                 $send = new TbSendResearch();
                                 $send->research_id = $id_re;
-                                $send->id = $result[$i];
+                                $send->id = $result[$i]->employee_id;
                                 $send->pc = $request->pc[$i];
                                 $send->save();
-                                 DB::insert(
+                                /* DB::insert(
                                     'insert into tb_send_research (research_id,id,pc) values (?, ?,?)',
                                     $id_re,
                                     $result[$i],
                                     $request->pc[$i]
-                                );
+                                ); */
                             }
 
                             $research = new TbResearch();
                             $research->research_id = $id_re;
+                            $research->date_upload_file = $nowDate;
                             $research->research_th = $request->research_nameTH;
                             $research->research_en = $request->research_nameEN;
                             $research->research_source_id = $request->source_id;
@@ -209,12 +216,14 @@ class TbResearch extends Controller
                             $research->budage_research = $request->budage;
                             $research->word_file = $fileName_w;
                             $research->pdf_file = $fileName_p;
-                            $research->research_status = $reYear;
-                            $research->year_research = $status;
+                            $research->research_status = $status;
+                            $research->year_research = $reYear;
                             $research->save();
                             if ($research->save() && $send->save()) {
                                 return redirect()->back()->with('success');
-                            }*/
+                            }
+
+                            //dd($research,$send);
                         }
                     }
                 }

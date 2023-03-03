@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Pre;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class TbSendResearch extends Controller
+class TbSendResearchController extends Controller
 {
     /**
      * Display a listing of the resource.

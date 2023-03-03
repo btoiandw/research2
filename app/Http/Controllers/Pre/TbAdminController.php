@@ -5,18 +5,16 @@ namespace App\Http\Controllers\Pre;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class TbDirector extends Controller
+class TbAdminController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id,$roles)
+    public function index($id, $roles)
     {
-        //
-
-        return view('pre-research.director.index')->with(['id' => $id, 'roles' => $roles]);
+        return view('pre-research.admin.index')->with(['id' => $id, 'roles' => $roles]);
     }
 
     /**

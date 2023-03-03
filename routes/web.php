@@ -25,11 +25,11 @@ Route::post('/login', [\App\Http\Controllers\Auth\LoginController::class, 'login
 Route::get('/logout', [\App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 Route::get('/getdata-login', [App\Http\Controllers\HomeController::class, 'index'])->name('getdata-login');
 
-Route::get('/admin/dashboard/{id}/{roles}', [\App\Http\Controllers\Pre\TbAdmin::class, 'index'])->name('admin.dashboard');
-Route::get('/users/dashboard/{id}/{roles}', [\App\Http\Controllers\Pre\TbUser::class, 'index'])->name('users.dashboard');
-Route::get('/director/dashboard/{id}/{roles}', [\App\Http\Controllers\Pre\TbDirector::class, 'index'])->name('director.dashboard');
-Route::get('/users-director/{id}/{roles}', [\App\Http\Controllers\Pre\UD::class, 'index'])->name('ud.dashboard');
+Route::get('/admin/dashboard/{id}/{roles}', [\App\Http\Controllers\Pre\TbAdminController::class, 'index'])->name('admin.dashboard');
+Route::get('/users/dashboard/{id}/{roles}', [\App\Http\Controllers\Pre\TbUserController::class, 'index'])->name('users.dashboard');
+Route::get('/director/dashboard/{id}/{roles}', [\App\Http\Controllers\Pre\TbDirectorController::class, 'index'])->name('director.dashboard');
+Route::get('/users-director/{id}/{roles}', [\App\Http\Controllers\Pre\UDController::class, 'index'])->name('ud.dashboard');
 
 
-Route::get('research/{id}/{roles}', [\App\Http\Controllers\Pre\TbResearch::class, 'index'])->name('research-pages');
-Route::post('/research/store',[\App\Http\Controllers\Pre\TbResearch::class,'store'])->name('research.store');
+Route::get('research/{id}/{roles}', [\App\Http\Controllers\Pre\TbResearchController::class, 'index'])->name('research-pages');
+Route::post('/research/store',[\App\Http\Controllers\Pre\TbResearchController::class,'store'])->name('research.store');
