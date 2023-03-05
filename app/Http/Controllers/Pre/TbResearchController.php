@@ -26,6 +26,10 @@ class TbResearchController extends Controller
             ->join('tb_faculties', 'users.organization_id', '=', 'tb_faculties.id')
             ->where('users.employee_id', $id)
             ->get();
+        $data_research = DB::table('tb_research')
+            ->join('tb_send_research', 'tb_research.research_id', '=', 'tb_send_research.research_id')
+            ->where('tb_send_research.id', '=', $id)
+            ->get();
         return view('pre-research.research.add_research')->with([
             'id' => $id,
             'roles' => $roles,
@@ -33,6 +37,7 @@ class TbResearchController extends Controller
             'list_source' => $list_source,
             'list_fac' => $list_fac,
             'list_user' => $list_user,
+            'data_research' => $data_research
         ]);
     }
 
@@ -241,6 +246,14 @@ class TbResearchController extends Controller
     public function show($id)
     {
         //
+        $data_re = DB::table('tb_research')
+            ->join('tb_send_research', 'tb_research.research_id', '=', 'tb_send_research.research_id')
+            ->join('tb_research_sources', 'tb_research.research_source_id', '=', 'tb_research_sources.research_sources_id')
+            ->join('users', 'tb_send_research.id', '=', 'users.employee_id')
+            ->join('tb_faculties', 'users.organization_id', '=', 'tb_faculties.id')
+            ->where('tb_research.research_id', '=', $id)
+            ->get();
+        return response()->json(['data_re' => $data_re]);
     }
 
     /**

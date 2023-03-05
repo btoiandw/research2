@@ -20,6 +20,7 @@
                 เพิ่มโครงร่าง
             </button>
         </div>
+
         <div class="row mb-3 mt-3">
             <div class="col-xl-12">
                 <div class="bg-white rounded shadow-xl m-dash p-2">
@@ -37,14 +38,37 @@
                             </thead>
 
                             <tbody>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
+                                @php
+                                    $i = 1;
+                                @endphp
+                                @foreach ($data_research as $item)
+                                    <tr>
+                                        <td>{{ $i++ }}</td>
+                                        <td>{{ $item->research_th }}</td>
+                                        <td>{{ $item->research_en }}</td>
+                                        <td>
+                                            <button class="btn btn-info btn-sm" type="button"
+                                                onclick="viewDetail({{ $item->research_id }})">
+                                                รายละเอียด
+                                            </button>
+                                        </td>
+                                        <td>
+                                            @if ($item->research_status == 0)
+                                                <button class="btn btn-yellow disabled btn-sm">
+                                                    รอตรวจสอบ
+                                                </button>
+                                            @else
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                                                <button class="btn btn-yellow me-md-2 btn-sm" type="button">แก้ไข</button>
+                                                <button class="btn btn-danger btn-sm" type="button">ยกเลิก</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+
                             </tbody>
                         </table>
                     </div>
@@ -52,7 +76,7 @@
             </div>
         </div>
     </div>
-
+    {{-- modal insert --}}
     <div class="modal fade" id="addResearch" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="addResearchLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -62,7 +86,7 @@
 
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="add_research" method="POST" enctype="multipart/form-data" action="{{route('research.store')}}">
+                <form id="add_research" method="POST" enctype="multipart/form-data" action="{{ route('research.store') }}">
                     @csrf
                     <div class="modal-body">
                         <div class="d-flex justify-content-end align-content-end">
@@ -295,6 +319,187 @@
             </div>
         </div>
     </div>
+
+    {{-- modal view detail --}}
+    <div class="modal fade" id="viewdetail" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="viewdetailLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="viewdetailLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <label for="year" class="col-sm-2 col-form-label" align="right">ปีงบประมาณ</label>
+                        <div class="col-sm-10">
+                            <input type="text" class=" form-control-plaintext" id="year"
+                                name="year">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="nameTH" class="col-sm-2 col-form-label "
+                            align="right">{{-- &emsp;&emsp; --}}ชื่อโครงร่างงานวิจัยภาษาไทย</label>
+                        <div class=" col-sm-10">
+                            <label class="form-control-plaintext" id="nameTH" name="nameTH"></label>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="nameEN" class="col-sm-2 col-form-label"
+                            align="right">{{-- &emsp;&emsp; --}}ชื่อโครงร่างงานวิจัยภาษาอังกฤษ</label>
+                        <div class=" col-sm-10">
+                            <label class="form-control-plaintext" id="nameEN" name="nameEN"></label>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label
+                            for="message-text"style="text-align:left;font-weight:600;font-size:18px;background:#fff;border:none"
+                            class="pt-3 py-0 card-header">รายชื่อนักวิจัย</label>
+                        <div class="card-body pt-0">
+                            <table class="table table-responsive" id="tableTap" name="tableTap">
+                                <thead align="center">
+                                    <tr>
+                                        <th width="600px" style="font-size: 14px">ชื่อ-นามสกุล</th>
+                                        <th width="600px" style="font-size: 14px">สังกัด/คณะ</th>
+                                        <th width="300px" style="font-size: 14px">บทบาทในการวิจัย</th>
+                                        <th width="300px" style="font-size: 14px">ร้อยละบทบาทในการวิจัย</th>
+                                        <th width="">
+
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody align="center" id="roleResearch">
+                                    <tr id="row[]">
+                                        <td>
+                                            <input type="text" name="researcher[]" id="researcher"
+                                                value="{{ $data[0]->full_name_th }}" class="form-control" required>
+                                        </td>
+                                        <td>
+                                            <select class="form-select" id="faculty" name="faculty[]">
+                                                <option value="">
+                                                    เลือกสังกัด/คณะ
+                                                    {{-- {{ $data[0]->organizational }}&nbsp;&nbsp;{{ $data[0]->major }} --}}
+                                                </option>
+                                                @foreach ($list_fac as $row)
+                                                    @if ($row->major == '0')
+                                                        <option value="{{ $row->id }} ">
+                                                            {{ $row->organizational }}</option>
+                                                    @else
+                                                        <option value="{{ $row->id }}">
+                                                            {{ $row->organizational }}&nbsp;&nbsp;{{ $row->major }}
+                                                        </option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="form-select " name="role-research[]" id="role-research">
+                                                <option value="หัวหน้าโครงการวิจัย" selected readonly>
+                                                    หัวหน้าโครงการวิจัย</option>
+                                                <option value="ผู้ร่วมวิจัย">ผู้ร่วมวิจัย</option>
+                                            </select>
+
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control" name="pc[]" id="pc"
+                                                required placeholder="0.00"{{--   onchange="Vpc()"onKeyUp="Vpc();" --}} />
+                                            <input type="hidden" name="sum[]" id="sum">
+                                        </td>
+                                        <td>
+                                            <button type="button" name="addBtn" class="btn btn-info"
+                                                id="addBtn">+</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="message-text" class="col-sm-2 col-form-label"
+                            align="right">แหล่งทุนวิจัย</label>
+                        <div class="col-sm-10">
+                            <label class="form-control-plaintext" id="source" name="source_id">
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-form-label col-sm-2 pt-0" align="right">ประเภทงานวิจัย</div>
+                        <div class="col-sm-10">
+                            <label name="type" id="type" class="form-control-plaintext"></label>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="inputEmail3" class="col-sm-2 col-form-label" align="right">คำสำคัญ</label>
+                        <div class="col-sm-10">
+                            <label name="keyword" id="keyword" placeholder="คำสำคัญในการวิจัย" class="form-control-plaintext"></label>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="inputEmail3" class="col-sm-2 col-form-label"
+                            align="right">พื้นที่ในการวิจัย</label>
+                        <div class="row col-sm-10">
+                            <label id="area" class="form-control-plaintext"></label>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="inputEmail3" class="col-sm-2 col-form-label"
+                            align="right">วันที่เริ่มต้นการวิจัย</label>
+                        <div class="row col-sm-10">
+                            <div class="col-sm">
+                                <label class="form-control-plaintext" id="start" name="sdate"></label>
+
+                            </div>
+                            <label for="inputEmail3" class="col-sm-2 col-form-label "
+                                align="right">วันที่สิ้นสุดการวิจัย</label>
+                            <div class="col-sm">
+                                <div class="col-sm">
+                                    <label class="form-control-plaintext" id="end" name="edate"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="inputEmail3" class="col-sm-2 col-form-label"
+                            align="right">งบประมาณการวิจัย</label>
+                        <div class="col-sm-10">
+                            <label name="budage" id="budage" type="number"
+                                class="form-control-plaintext"></label>
+
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label " align="right">ไฟล์ Word</label>
+                        <div class=" col-sm-10">
+                            <input type="file" name="word" id="word" class=" form-control" required>
+                            <span class="text-danger">*ไฟล์ .doc และ .docx เท่านั้น</span>
+
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label" align="right">ไฟล์ PDF</label>
+                        <div class=" col-sm-10">
+                            <input type="file" name="pdf" id="pdf" class=" form-control" required>
+                            <span class="text-danger">*ไฟล์ .pdf เท่านั้น</span>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @push('js')
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -390,29 +595,25 @@
         function AddModal() {
             $('#addResearch').modal('toggle');
         }
-    </script>
 
-    <script type="text/javascript">
-        /*  $('#btnAddResearch').click(function() {
-                            $('#addResearch').modal('toggle');
-                        });
-
-        $('#save_research').click(function() {
-
-            var frm = $('#add_research').serialize();
-            console.log(frm);
+        function viewDetail(id) {
+            console.log(id);
             $.ajax({
-                method: 'POST',
-                url: "{{ route('research.store') }}",
+                type: 'GET',
+                url: '/view/research/' + id,
                 dataType: 'JSON',
-                data: frm,
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
                 success: function(res) {
-                    console.log(res);
+                    console.log(res.data_re);
+                    var data = res.data_re;
+                    $('#viewdetail').modal('toggle');
+                   // $('#id_research').html(data[0].research_id);
+                   $('#year').val(data[0].year_research);
+                   $('#nameTH').html(data[0].research_th);
+                   $('#nameEN').html(data[0].research_en);
+                   
                 }
             })
-        })*/
+
+        }
     </script>
 @endpush
