@@ -39,3 +39,6 @@ Route::get('autocomplete', [\App\Http\Controllers\Pre\TbResearchController::clas
 
 Route::get('/admin/request/{id}',[\App\Http\Controllers\Pre\TbAdminController::class,'rePages'])->name('admin.request');
 Route::get('/admin/manage/users/{id}',[\App\Http\Controllers\Pre\TbAdminController::class,'manaUser'])->name('admin.manage-user');
+Route::get('/admin/send-director/{id}',[\App\Http\Controllers\Pre\TbAdminController::class,'ResearchDirector'])->name('admin.send-research-director');
+Route::get('/admin/manage-source/{id}',[\App\Http\Controllers\Pre\TbAdminController::class,'manageSource'])->name('admin.manage-source');
+

@@ -432,21 +432,12 @@
                         </div>
                     </div>
 
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label " align="right">ไฟล์ Word</label>
-                        <div class=" col-sm-10">
-                            <input type="file" name="word" id="word" class=" form-control" required>
-                            <span class="text-danger">*ไฟล์ .doc และ .docx เท่านั้น</span>
-
-                        </div>
-                    </div>
-
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label" align="right">ไฟล์ PDF</label>
-                        <div class=" col-sm-10">
-                            <input type="file" name="pdf" id="pdf" class=" form-control" required>
-                            <span class="text-danger">*ไฟล์ .pdf เท่านั้น</span>
-
+                    <div class="row">
+                        <div class="d-grid gap-2 d-md-flex mx-auto">
+                            <a class="btn btn-warning" id="view_word" href="{{-- route('userview-word', $data_de[0]->research_id) --}}"
+                                target="_blank">WORD FILE</a>
+                            <a class="btn btn-warning" id="view_pdf" href="{{-- route('userview-pdf', $data_de[0]->research_id) --}}"
+                                target="_blank">PDF FILE</a>
                         </div>
                     </div>
                 </div>
@@ -464,7 +455,7 @@
     <script src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.datatables.net/rowreorder/1.3.1/js/dataTables.rowReorder.min.js"></script>
-   
+
     <script>
         var has_error = {{ $errors->count() > 0 ? 'true' : 'false' }};
         if (has_error) {
@@ -590,6 +581,10 @@
                     $('#start').html(data[0].date_research_start);
                     $('#end').html(data[0].date_research_end);
                     $('#bud').html(data[0].budage_research);
+
+                    /* $('#view_word').click(function(){
+
+                    }) */
                 }
             })
 
