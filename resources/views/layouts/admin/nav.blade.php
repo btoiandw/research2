@@ -27,7 +27,8 @@
                 <div class=" pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">
                     <div class="media align-items-center ">
-                        <h4 class="text-overflow m-0 text-light px-2"></h4>
+                        {{--$data--}}
+                        <h4 class="text-overflow m-0 text-light px-2">{{$data->full_name_th}}</h4>
                         <span class="avatar avatar-sm rounded-circle " style="background-color:#F5A65B;">
                             {{-- <img alt="Image placeholder" src="{{ asset('assets/img/lanna-removebg-preview.png') }}"> --}}
 

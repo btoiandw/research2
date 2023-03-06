@@ -45,28 +45,28 @@
 
             <ul class="navbar-nav ">
                 <li
-                    class="{{ 'admin/dashboard' == request()->path() ? 'nav-item active-nav ' : 'nav-item ' }}">
-                    <a class="{{ 'admin/dashboard' == request()->path() ? 'nav-link text-darker  ' : 'nav-link ' }}"
-                        style="font-weight: 600;font-size:1rem" href="">
+                    class="{{ request()->is('admin/dashboard/*') ? 'nav-item active-nav' : 'nav-item ' }}">
+                    <a class="{{ request()->is('admin/dashboard/*') ? 'nav-link text-darker  ' : 'nav-link ' }}"
+                        style="font-weight: 600;font-size:1rem" href="{{route('admin.dashboard', ['id' => $id])}}">
                         {{ __('Dashboard') }}
                     </a>
                 </li>
                 <li
-                    class="{{ 'admin/manage/users' == request()->path() ? 'nav-item active-nav ' : 'nav-item ' }}">
-                    <a class="{{ 'admin/manage/users' == request()->path() ? 'nav-link text-darker  ' : 'nav-link ' }}"
-                        style="font-weight: 600;font-size:1rem" href="">
+                    class="{{ request()->is('admin/manage/users/*') ? 'nav-item active-nav ' : 'nav-item ' }}">
+                    <a class="{{ request()->is('admin/manage/users/*') ? 'nav-link text-darker  ' : 'nav-link ' }}"
+                        style="font-weight: 600;font-size:1rem" href="{{route('admin.manage-user',['id'=>$id])}}">
                         {{ __('Admin') }}
                     </a>
                 </li>
                 <li
-                    class="{{ 'admin/request' == request()->path() || 'admin/request-all' == request()->path() || 'admin/history' == request()->path() ? 'nav-item active-nav ' : 'nav-item ' }}">
-                    <a class="{{ 'admin/request' == request()->path() || 'admin/history' == request()->path() ? 'nav-link text-darker' : 'nav-link ' }}"
-                        style="font-weight: 600;font-size:1rem" href="">
+                    class="{{ request()->is('admin/request/*') || 'admin/request-all' == request()->path() || 'admin/history' == request()->path() ? 'nav-item active-nav ' : 'nav-item ' }}">
+                    <a class="{{ request()->is('admin/request/*') || 'admin/history' == request()->path() ? 'nav-link text-darker' : 'nav-link ' }}"
+                        style="font-weight: 600;font-size:1rem" href="{{route('admin.request',['id'=>$id])}}">
                         {{ __('โครงร่างงานวิจัย') }} </a>
                     <ul class="sub-menu py-2 ">
                         <li class="nav-item">
-                            <a class="{{ 'admin/request' == request()->path() ? 'nav-link-sub text-darker' : 'nav-link-sub ' }}"
-                                style="font-weight: 600;font-size:0.9rem" href="">
+                            <a class="{{ request()->is('admin/request/*') ? 'nav-link-sub text-darker' : 'nav-link-sub ' }}"
+                                style="font-weight: 600;font-size:0.9rem" href="{{route('admin.request',['id'=>$id])}}">
                                 <i class="fa-solid fa-minus"style="font-size: 50%"></i>
                                 {{ __('โครงร่างงานวิจัย') }}
                             </a>

@@ -1,4 +1,7 @@
 @extends('layouts.UD.ud')
+<script type="text/javascript">
+    var siteUrl = "{{ url('/') }}";
+</script>
 @section('content')
     @if ($errors->any())
         <!-- ตรวจสอบว่ามี Error ของ validation ขึ้นมาหรือเปล่า -->
@@ -333,8 +336,7 @@
                     <div class="row mb-3">
                         <label for="year" class="col-sm-2 col-form-label" align="right">ปีงบประมาณ</label>
                         <div class="col-sm-10">
-                            <input type="text" class=" form-control-plaintext" id="year"
-                                name="year">
+                            <input type="text" class=" form-control-plaintext" id="year" name="year">
                         </div>
                     </div>
 
@@ -357,60 +359,17 @@
                             for="message-text"style="text-align:left;font-weight:600;font-size:18px;background:#fff;border:none"
                             class="pt-3 py-0 card-header">รายชื่อนักวิจัย</label>
                         <div class="card-body pt-0">
-                            <table class="table table-responsive" id="tableTap" name="tableTap">
+                            <table class="table table-responsive" id="detail_researcher" name="detail_researcher">
                                 <thead align="center">
                                     <tr>
+                                        <th width="600px" style="font-size: 14px">ลำดับ</th>
                                         <th width="600px" style="font-size: 14px">ชื่อ-นามสกุล</th>
                                         <th width="600px" style="font-size: 14px">สังกัด/คณะ</th>
-                                        <th width="300px" style="font-size: 14px">บทบาทในการวิจัย</th>
                                         <th width="300px" style="font-size: 14px">ร้อยละบทบาทในการวิจัย</th>
-                                        <th width="">
-
-                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody align="center" id="roleResearch">
-                                    <tr id="row[]">
-                                        <td>
-                                            <input type="text" name="researcher[]" id="researcher"
-                                                value="{{ $data[0]->full_name_th }}" class="form-control" required>
-                                        </td>
-                                        <td>
-                                            <select class="form-select" id="faculty" name="faculty[]">
-                                                <option value="">
-                                                    เลือกสังกัด/คณะ
-                                                    {{-- {{ $data[0]->organizational }}&nbsp;&nbsp;{{ $data[0]->major }} --}}
-                                                </option>
-                                                @foreach ($list_fac as $row)
-                                                    @if ($row->major == '0')
-                                                        <option value="{{ $row->id }} ">
-                                                            {{ $row->organizational }}</option>
-                                                    @else
-                                                        <option value="{{ $row->id }}">
-                                                            {{ $row->organizational }}&nbsp;&nbsp;{{ $row->major }}
-                                                        </option>
-                                                    @endif
-                                                @endforeach
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <select class="form-select " name="role-research[]" id="role-research">
-                                                <option value="หัวหน้าโครงการวิจัย" selected readonly>
-                                                    หัวหน้าโครงการวิจัย</option>
-                                                <option value="ผู้ร่วมวิจัย">ผู้ร่วมวิจัย</option>
-                                            </select>
 
-                                        </td>
-                                        <td>
-                                            <input type="number" class="form-control" name="pc[]" id="pc"
-                                                required placeholder="0.00"{{--   onchange="Vpc()"onKeyUp="Vpc();" --}} />
-                                            <input type="hidden" name="sum[]" id="sum">
-                                        </td>
-                                        <td>
-                                            <button type="button" name="addBtn" class="btn btn-info"
-                                                id="addBtn">+</button>
-                                        </td>
-                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -419,8 +378,7 @@
                     </div>
 
                     <div class="row mb-3">
-                        <label for="message-text" class="col-sm-2 col-form-label"
-                            align="right">แหล่งทุนวิจัย</label>
+                        <label for="message-text" class="col-sm-2 col-form-label" align="right">แหล่งทุนวิจัย</label>
                         <div class="col-sm-10">
                             <label class="form-control-plaintext" id="source" name="source_id">
                             </label>
@@ -429,20 +387,20 @@
                     <div class="row mb-3">
                         <div class="col-form-label col-sm-2 pt-0" align="right">ประเภทงานวิจัย</div>
                         <div class="col-sm-10">
-                            <label name="type" id="type" class="form-control-plaintext"></label>
+                            <label name="type" id="type_re" class="form-control-plaintext"></label>
                         </div>
                     </div>
 
                     <div class="row mb-3">
                         <label for="inputEmail3" class="col-sm-2 col-form-label" align="right">คำสำคัญ</label>
                         <div class="col-sm-10">
-                            <label name="keyword" id="keyword" placeholder="คำสำคัญในการวิจัย" class="form-control-plaintext"></label>
+                            <label name="keyword" id="key" placeholder="คำสำคัญในการวิจัย"
+                                class="form-control-plaintext"></label>
                         </div>
                     </div>
 
                     <div class="row mb-3">
-                        <label for="inputEmail3" class="col-sm-2 col-form-label"
-                            align="right">พื้นที่ในการวิจัย</label>
+                        <label for="inputEmail3" class="col-sm-2 col-form-label" align="right">พื้นที่ในการวิจัย</label>
                         <div class="row col-sm-10">
                             <label id="area" class="form-control-plaintext"></label>
                         </div>
@@ -467,11 +425,9 @@
                     </div>
 
                     <div class="row mb-3">
-                        <label for="inputEmail3" class="col-sm-2 col-form-label"
-                            align="right">งบประมาณการวิจัย</label>
+                        <label for="inputEmail3" class="col-sm-2 col-form-label" align="right">งบประมาณการวิจัย</label>
                         <div class="col-sm-10">
-                            <label name="budage" id="budage" type="number"
-                                class="form-control-plaintext"></label>
+                            <label name="budage" id="bud" type="number" class="form-control-plaintext"></label>
 
                         </div>
                     </div>
@@ -503,10 +459,12 @@
 @endsection
 @push('js')
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.datatables.net/rowreorder/1.3.1/js/dataTables.rowReorder.min.js"></script>
+   
     <script>
         var has_error = {{ $errors->count() > 0 ? 'true' : 'false' }};
         if (has_error) {
@@ -519,6 +477,7 @@
             });
         }
     </script>
+
     <script>
         $(document).ready(function() {
             $('#research_table').DataTable({
@@ -603,17 +562,70 @@
                 url: '/view/research/' + id,
                 dataType: 'JSON',
                 success: function(res) {
+
                     console.log(res.data_re);
                     var data = res.data_re;
+                    createRows(res);
                     $('#viewdetail').modal('toggle');
-                   // $('#id_research').html(data[0].research_id);
-                   $('#year').val(data[0].year_research);
-                   $('#nameTH').html(data[0].research_th);
-                   $('#nameEN').html(data[0].research_en);
-                   
+                    // $('#id_research').html(data[0].research_id);
+
+                    /* for (let i = 0; i < data.length; i++) {
+                        const fullname = data[i].full_name_th;
+                        const pname = data[i].pname;
+                        const major = data[i].major;
+                        const organizational = data[i].organizational;
+                        const pc = data[i].pc;
+
+
+                    } */
+                    //$('#researcher_re').html(html);
+                    //console.log(html);
+                    $('#year').val(data[0].year_research);
+                    $('#nameTH').html(data[0].research_th);
+                    $('#nameEN').html(data[0].research_en);
+                    $('#source').html(data[0].research_source_name);
+                    $('#type_re').html(data[0].type_research_id);
+                    $('#key').html(data[0].keyword);
+                    $('#area').html(data[0].research_area);
+                    $('#start').html(data[0].date_research_start);
+                    $('#end').html(data[0].date_research_end);
+                    $('#bud').html(data[0].budage_research);
                 }
             })
 
+        }
+
+        function createRows(res) {
+            var len = 0;
+            $('#detail_researcher tbody').empty(); // Empty <tbody>
+            if (res['data_re'] != null) {
+                len = res['data_re'].length;
+
+            }
+            console.log(len);
+            if (len > 0) {
+                for (var i = 0; i < len; i++) {
+                    //var id = response['data_re'][i].full_name_th;
+                    var nameth = res['data_re'][i].full_name_th;
+                    var major = res['data_re'][i].major;
+                    var pc = res['data_re'][i].pc;
+
+                    var tr_str = "<tr>" +
+                        "<td align='center'>" + (i + 1) + "</td>" +
+                        "<td align='center'>" + nameth + "</td>" +
+                        "<td align='center'>" + major + "</td>" +
+                        "<td align='center'>" + pc + "</td>" +
+                        "</tr>";
+
+                    $("#detail_researcher tbody").append(tr_str);
+                }
+            } else {
+                var tr_str = "<tr>" +
+                    "<td align='center' colspan='4'>No record found.</td>" +
+                    "</tr>";
+
+                $("#detail_researcher tbody").append(tr_str);
+            }
         }
     </script>
 @endpush

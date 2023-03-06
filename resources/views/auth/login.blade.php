@@ -106,7 +106,7 @@
                             var roles = 1;
                             var id = data[0].employee_id;
                             console.log(id);
-                            var url = '/admin/dashboard/' + id + '/' + roles;
+                            var url = '/admin/dashboard/' + id;
                             window.location.href = url;
                         } else if (role == 'users') {
                             if (res.roled == 'director') {

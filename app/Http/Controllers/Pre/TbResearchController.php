@@ -121,12 +121,12 @@ class TbResearchController extends Controller
         $type = $request->type;
         //$cType = count($type);
         $allType = array();
-        if (count($request->type) > 1) {
+        if (count($type) > 1) {
             $allType = $type[0] . "_" . $type[1];
         } else {
-            $allType = $type;
+            $allType = $type[0];
         }
-        //dd($type, count($type), $allType);
+        //dd($type[0], count($type), $allType);
         $address = $request->address;
         $city = $request->city;
         $zipcode = $request->zipcode;
@@ -192,13 +192,14 @@ class TbResearchController extends Controller
                     //$filew->move('uploads/research/'.$reYear.'/'.$id_re, $fileName_w);
                     if ($filew->move($path, $fileName_w)) { //move=>เซฟในโฟลเดอร์ ''=>''แรกชื่อโฟลเดอร์ $name=>ชื่อไฟล์  ->จะอยู่ในโฟลเดอร์ public
                         if ($filep->move($path, $fileName_p)) {
-                            //dd($request->all(), $result, $id_re, $area, $allType, $us, $sumpc, $fileName_w, $fileName_p);
+                            $pc_re = $request->pc;
+                            dd($request->all(), $result, $pc_re, $id_re, $area, $allType, $us, $sumpc, $fileName_w, $fileName_p);
                             for ($i = 0; $i < sizeof($rc); $i++) {
                                 $send = new TbSendResearch();
                                 $send->research_id = $id_re;
                                 $send->id = $result[$i]->employee_id;
                                 $send->pc = $request->pc[$i];
-                                $send->save();
+                                //$send->save();
                                 /* DB::insert(
                                     'insert into tb_send_research (research_id,id,pc) values (?, ?,?)',
                                     $id_re,
@@ -206,6 +207,7 @@ class TbResearchController extends Controller
                                     $request->pc[$i]
                                 ); */
                             }
+                            dd($send);
 
                             $research = new TbResearch();
                             $research->research_id = $id_re;
@@ -224,11 +226,10 @@ class TbResearchController extends Controller
                             $research->research_status = $status;
                             $research->year_research = $reYear;
                             $research->save();
+                            //dd( $research,/*$send*/ );
                             if ($research->save() && $send->save()) {
                                 return redirect()->back()->with('success');
                             }
-
-                            //dd($research,$send);
                         }
                     }
                 }
@@ -288,5 +289,13 @@ class TbResearchController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function autocomplete(Request $request)
+    {
+        $data = DB::table('users')->select("full_name_th")
+                ->where("full_name_th","LIKE","%{$request->str}%")
+                ->pluck('full_name_th');
+        return response()->json($data);
     }
 }

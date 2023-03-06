@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Pre;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TbAdminController extends Controller
 {
@@ -12,9 +13,11 @@ class TbAdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id, $roles)
+    public function index($id)
     {
-        return view('pre-research.admin.index')->with(['id' => $id, 'roles' => $roles]);
+        $data = DB::table('users')->where('employee_id',$id)->get();
+        //dd($data[0]);
+        return view('pre-research.admin.index')->with(['data'=>$data[0],'id' => $id]);
     }
 
     /**
@@ -81,5 +84,19 @@ class TbAdminController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function rePages($id)
+    {
+        $data_re = DB::table('tb_research')->get();
+        $data= DB::table('users')->where('employee_id',$id)->get();
+        return view('pre-research.admin.research_request')->with(['data_re' => $data_re,'id'=>$id,'data'=>$data[0]]);
+    }
+    public function manaUser($id){
+        $data= DB::table('users')->where('employee_id',$id)->get();
+        $data_u = DB::table('tb_admins')->join('users','tb_admins.employee_id','=','users.employee_id')->where('tb_admins.status_workadmin','=','1')->get();
+        $data_d =DB::table('tb_directors')->where('work_status','=','1')->get();
+        //dd($data_u,$data_d);
+        return view('pre-research.admin.manage_user')->with(['id'=>$id,'data'=>$data[0],'data_u'=>$data_u,'data_d'=>$data_d]);
     }
 }
