@@ -1,24 +1,47 @@
 @extends('layouts.admin.admin')
 @section('content')
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
+        <button class="btn btn-primary me-md-2" type="button">เพิ่มแหล่งทุน</button>
+    </div>
     <div class="row mb-3 mt-3">
         <div class="col-xl-12">
             <div class="bg-white rounded shadow-xl m-dash p-2">
                 <div class="table-responsive pt-3">
                     <table class="table fw-bold w-100" id="admin_table">
                         <thead class="table-dark table-hover table align-middle">
-                            <tr align="center">
+                            <tr class=" align-middle">
                                 <th class="fw-bolder" style="font-size: 15px">ลำดับ</th>
                                 <th class="fw-bolder" style="font-size: 15px">ชื่อแหล่งทุนงานวิจัย</th>
                                 <th class=" fw-bolder" style="font-size: 15px">ประเภทแหล่งทุน</th>
                                 <th class=" fw-bolder" style="font-size: 15px">รายละเอียด</th>
                                 <th class=" fw-bolder" style="font-size: 15px">ตัวอย่างโครงร่างงานวิจัย</th>
                                 <th class=" fw-bolder" style="font-size: 15px">จัดการ</th>
-
                             </tr>
                         </thead>
 
                         <tbody>
-                            
+                            @php
+                                $i = 1;
+                            @endphp
+                            @foreach ($data_s as $item)
+                                <tr>
+                                    <td align="center">{{ $i++ }}</td>
+                                    <td>{{ $item->research_source_name }}</td>
+                                    <td align="center">{{ $item->type_research_source }}</td>
+                                    <td align="center">
+                                        <button class="btn btn-sm btn-info">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </button>
+                                    </td>
+                                    <td align="center">{{$item->ex_research}}</td>
+                                    <td align="center">
+                                        <div class="d-grid gap-2 d-md-flex">
+                                            <button class="btn btn-yellow me-md-2 btn-sm" type="button">แก้ไข</button>
+                                            <button class="btn btn-danger btn-sm">ยกเลิก</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>

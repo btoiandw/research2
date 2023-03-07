@@ -106,11 +106,5 @@ class TbAdminController extends Controller
         //dd($data_u,$data_d);
         return view('pre-research.admin.research_send_d')->with(['id'=>$id,'data'=>$data[0]]);
     }
-    public function manageSource($id){
-        $data= DB::table('users')->where('employee_id',$id)->get();
-        //$data_u = DB::table('tb_admins')->join('users','tb_admins.employee_id','=','users.employee_id')->where('tb_admins.status_workadmin','=','1')->get();
-        //$data_d =DB::table('tb_directors')->where('work_status','=','1')->get();
-        //dd($data_u,$data_d);
-        return view('pre-research.admin.manage_source')->with(['id'=>$id,'data'=>$data[0]]);
-    }
+    
 }
