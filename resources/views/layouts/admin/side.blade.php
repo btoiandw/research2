@@ -114,11 +114,27 @@
                 </li>
 
                 <li
-                    class="{{ 'admin/manage/users' == request()->path() ? 'nav-item active-nav ' : 'nav-item ' }}">
-                    <a class="{{ 'admin/manage/users' == request()->path() ? 'nav-link text-darker  ' : 'nav-link ' }}"
+                    class="{{ 'admin/request' == request()->path() || 'admin/request-all' == request()->path() || 'admin/history' == request()->path() ? 'nav-item active-nav ' : 'nav-item ' }}">
+                    <a class="{{ 'admin/request' == request()->path() || 'admin/history' == request()->path() ? 'nav-link text-darker' : 'nav-link ' }}"
                         style="font-weight: 600;font-size:1rem" href="">
-                        {{ __('งานวิจัย') }}
-                    </a>
+                        {{ __('งานวิจัย') }} </a>
+                    <ul class="sub-menu py-2 ">
+                        <li class="nav-item">
+                            <a class="{{ 'admin/request' == request()->path() ? 'nav-link-sub text-darker' : 'nav-link-sub ' }}"
+                                style="font-weight: 600;font-size:0.9rem" href="">
+                                <i class="fa-solid fa-minus"style="font-size: 50%"></i>
+                                {{ __('สถานะงานวิจัย') }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="{{ 'admin/request-all' == request()->path() ? 'nav-link-sub text-darker' : 'nav-link-sub ' }}"
+                                style="font-weight: 600;font-size:0.9rem" href="">
+                                <i class="fa-solid fa-minus"style="font-size: 50%"></i>
+                                {{ __('รายการเบิกจ่าย') }}
+
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <li
                     class="{{ 'admin/manage/users' == request()->path() ? 'nav-item active-nav ' : 'nav-item ' }}">
