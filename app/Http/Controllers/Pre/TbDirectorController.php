@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Pre;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TbDirectorController extends Controller
 {
@@ -12,7 +13,7 @@ class TbDirectorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id,$roles)
+    public function index($id, $roles)
     {
         //
 

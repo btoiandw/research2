@@ -21,28 +21,31 @@
                             @php
                                 $i = 1;
                             @endphp
-                            <tr>
-                                <td align="center"></td>
-                                <td></td>
-                                <td align="center">
-                                    <button class="btn btn-sm btn-info">
-                                        <i class="fa-solid fa-eye"></i>
-                                    </button>
-                                </td>
-                                <td align="center">
-                                    <button class="btn btn-sm btn-info">
-                                        <i class="fa-solid fa-eye"></i>
-                                    </button>
-                                </td>
-                                <td align="center">
-                                    <button class="btn btn-sm btn-info">
-                                        <i class="fa-solid fa-eye"></i>
-                                    </button>
-                                </td>
-                                <td align="center">
-                                    <button class="btn btn-sm btn-default">สรุปขอ้เสนอแนะ</button>
-                                </td>
-                            </tr>
+                            @foreach ($data_re as $item)
+                                <tr>
+                                    <td align="center">{{ $i++ }}</td>
+                                    <td>{{ $item->research_th }}</td>
+                                    <td align="center">
+                                        <button class="btn btn-sm btn-info">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </button>
+                                    </td>
+                                    <td align="center">
+                                        <button class="btn btn-sm btn-info">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </button>
+                                    </td>
+                                    <td align="center">
+                                        <button class="btn btn-sm btn-info">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </button>
+                                    </td>
+                                    <td align="center">
+                                        <button class="btn btn-sm btn-default">สรุปข้อเสนอแนะ</button>
+                                    </td>
+                                </tr>
+                            @endforeach
+
                         </tbody>
                     </table>
                 </div>

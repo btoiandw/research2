@@ -193,13 +193,13 @@ class TbResearchController extends Controller
                     if ($filew->move($path, $fileName_w)) { //move=>เซฟในโฟลเดอร์ ''=>''แรกชื่อโฟลเดอร์ $name=>ชื่อไฟล์  ->จะอยู่ในโฟลเดอร์ public
                         if ($filep->move($path, $fileName_p)) {
                             $pc_re = $request->pc;
-                            dd($request->all(), $result, $pc_re, $id_re, $area, $allType, $us, $sumpc, $fileName_w, $fileName_p);
+                            //dd($request->all(), $result, $pc_re, $id_re, $area, $allType, $us, $sumpc, $fileName_w, $fileName_p);
                             for ($i = 0; $i < sizeof($rc); $i++) {
                                 $send = new TbSendResearch();
                                 $send->research_id = $id_re;
                                 $send->id = $result[$i]->employee_id;
                                 $send->pc = $request->pc[$i];
-                                //$send->save();
+                                $send->save();
                                 /* DB::insert(
                                     'insert into tb_send_research (research_id,id,pc) values (?, ?,?)',
                                     $id_re,
@@ -207,7 +207,7 @@ class TbResearchController extends Controller
                                     $request->pc[$i]
                                 ); */
                             }
-                            dd($send);
+                            //dd($send);
 
                             $research = new TbResearch();
                             $research->research_id = $id_re;
@@ -291,11 +291,16 @@ class TbResearchController extends Controller
         //
     }
 
-    public function autocomplete(Request $request)
+    public function addDirector($id)
     {
-        $data = DB::table('users')->select("full_name_th")
-                ->where("full_name_th","LIKE","%{$request->str}%")
-                ->pluck('full_name_th');
-        return response()->json($data);
+        //modal add director
+        $data_re = DB::table('tb_research')
+            ->join('tb_research_sources', 'tb_research.research_source_id', '=', 'tb_research_sources.research_sources_id')
+            ->join('tb_send_research', 'tb_research.research_id', '=', 'tb_send_research.research_id')
+            ->join('users', 'tb_send_research.id', '=', 'users.employee_id')
+            ->where('tb_research.research_id', '=', $id)
+            ->get();
+
+        return response()->json(['data_re' => $data_re]);
     }
 }

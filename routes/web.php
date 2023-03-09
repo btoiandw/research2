@@ -42,3 +42,5 @@ Route::get('/admin/manage/users/{id}',[\App\Http\Controllers\Pre\TbAdminControll
 Route::get('/admin/send-director/{id}',[\App\Http\Controllers\Pre\TbAdminController::class,'ResearchDirector'])->name('admin.send-research-director');
 Route::get('/admin/manage-source/{id}',[\App\Http\Controllers\Pre\TbSourceController::class,'manageSource'])->name('admin.manage-source');
 
+Route::get('/admin/research/director/{id}',[\App\Http\Controllers\Pre\TbResearchController::class,'addDirector']);
+Route::post('/admin/add-director',[\App\Http\Controllers\TbFeedbackController::class,'store'])->name('admin.add-director');
