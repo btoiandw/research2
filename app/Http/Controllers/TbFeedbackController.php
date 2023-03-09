@@ -48,9 +48,9 @@ class TbFeedbackController extends Controller
             $f_feed->save();
         }
         DB::table('tb_research')
-            ->where('research_id','=',$request->id_r)
+            ->where('research_id', '=', $request->id_r)
             ->update(['research_status' => '1']);
-       /*  $research = TbResearch::find($request->id_r);
+        /*  $research = TbResearch::find($request->id_r);
         $research->research_status = '1';
         $research->save(); */
         return redirect()->back();
@@ -99,5 +99,15 @@ class TbFeedbackController extends Controller
     public function destroy(TbFeedback $tbFeedback)
     {
         //
+    }
+
+    public function viewFeed($id)
+    {
+        $data_fe = DB::table('tb_feedback')
+            ->join('tb_directors','tb_feedback.employee_referees_id','tb_directors.employee_referees_id')
+            ->join('tb_research','tb_feedback.research_id','=','tb_feedback.research_id')
+            ->where('tb_feedback.research_id', $id)
+            ->get();
+        return response()->json(['data_fe' => $data_fe]);
     }
 }

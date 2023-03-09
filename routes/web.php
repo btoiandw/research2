@@ -44,3 +44,5 @@ Route::get('/admin/manage-source/{id}',[\App\Http\Controllers\Pre\TbSourceContro
 
 Route::get('/admin/research/director/{id}',[\App\Http\Controllers\Pre\TbResearchController::class,'addDirector']);
 Route::post('/admin/add-director',[\App\Http\Controllers\TbFeedbackController::class,'store'])->name('admin.add-director');
+
+Route::get('/admin/view-feed/director/{id}',[\App\Http\Controllers\TbFeedbackController::class,'viewFeed'])->name('admin.view-feed-director');

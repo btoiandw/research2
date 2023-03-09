@@ -26,7 +26,7 @@
                                     <td align="center">{{ $i++ }}</td>
                                     <td>{{ $item->research_th }}</td>
                                     <td align="center">
-                                        <button class="btn btn-sm btn-info">
+                                        <button class="btn btn-sm btn-info" onclick="view1({{ $item->research_id }})">
                                             <i class="fa-solid fa-eye"></i>
                                         </button>
                                     </td>
@@ -48,6 +48,54 @@
 
                         </tbody>
                     </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="view" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="viewLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="viewLabel">รายละเอียดข้อเสนอแนะ</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <strong class="col-md-3">ชื่อโครงร่างงานวิจัยภาษาไทย</strong>
+                        <div class="col-md-9">
+                            <label for="" id="name_th"></label>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <strong class="col-md-3">ชื่อโครงร่างงานวิจัยอังกฤษ</strong>
+                        <div class="col-md-9">
+                            <label for="" id="name_en"></label>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <strong class="col-md-3">ชื่อกรรมการ</strong>
+                        <div class="col-md-9">
+                            <label for="" id="name_director"></label>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <strong class="col-md-3">ผลการประเมิน</strong>
+                        <div class="col-md-9">
+                            <label for="" id="result"></label>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <strong class="col-md-3">ข้อเสนอแนะ</strong>
+                        <div class="col-md-9">
+                            <label for="" id="Assessment_result"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -82,5 +130,40 @@
 
             });
         })
+
+        function view1(id) {
+            console.log(id);
+            $.ajax({
+                type: 'GET',
+                url: '/admin/view-feed/director/' + id,
+                dataType: 'JSON',
+                success: function(res) {
+                    //console.log(res.data_fe);
+                    var data = res.data_fe[0];
+                    console.log(data);
+                    var result = '';
+                    var comment = '';
+                    if (data.feedback == null) {
+                        result = '-';
+                    } else {
+                        result = data.feedback;
+                    }
+                    if (data.Assessment_result == null && data.suggestionFile == null) {
+                        comment = '-';
+                    } else if (data.Assessment_result != null && data.suggestionFile == null) {
+                        comment = data.Assessment_result;
+                    } else {
+                        comment = data.suggestionFile;
+                    }
+                    $('#view').modal('toggle');
+                    $('#name_th').html(data.research_th);
+                    $('#name_en').html(data.research_en);
+                    $('#name_director').html(data.full_name_th);
+                    $('#result').html(result);
+                    $('#Assessment_result').html(comment);
+                }
+            })
+
+        }
     </script>
 @endpush

@@ -130,4 +130,6 @@ class TbAdminController extends Controller
        // dd($data_re);
         return view('pre-research.admin.research_send_d')->with(['id' => $id, 'data' => $data[0], 'data_re' => $data_re]);
     }
+
+    
 }
