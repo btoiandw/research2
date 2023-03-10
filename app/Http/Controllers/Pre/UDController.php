@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Pre;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UDController extends Controller
 {
@@ -15,7 +16,8 @@ class UDController extends Controller
     public function index($id, $roles)
     {
         //
-        return view('ud.index')->with(['id' => $id, 'roles' => $roles]);
+        $data = DB::table('tb_directors')->where('employee_id', $id)->get();
+        return view('pre-research.UD.index')->with(['id' => $id, 'roles' => $roles, 'data' => $data]);
     }
 
     /**

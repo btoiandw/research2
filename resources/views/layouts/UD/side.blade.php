@@ -45,51 +45,61 @@
 
             <ul class="navbar-nav ">
                 @if ($roles == 2 || $roles == 4)
-                    <li class="{{ request()->is('users/dashboard/*/*') ? 'nav-item active-nav ' : 'nav-item ' }}">
-                        <a class="{{ request()->is('users/dashboard/*/*') ? 'nav-link text-darker  ' : 'nav-link ' }}"
+                    <li
+                        class="{{ request()->is('users/dashboard/*/*') || request()->is('users-director/*/*') ? 'nav-item active-nav ' : 'nav-item ' }}">
+                        <a class="{{ request()->is('users/dashboard/*/*') || request()->is('users-director/*/*') ? 'nav-link text-darker  ' : 'nav-link ' }}"
                             style="font-weight: 600;font-size:1rem"
                             href="{{ route('users.dashboard', ['id' => $id, 'roles' => $roles]) }}">
                             {{ __('Dashboard') }}
                         </a>
                     </li>
                 @else
-                    <li class="{{ 'director/dashboard' == request()->path() ? 'nav-item active-nav ' : 'nav-item ' }}">
-                        <a class="{{ 'director/dashboard' == request()->path() ? 'nav-link text-darker  ' : 'nav-link ' }}"
-                            style="font-weight: 600;font-size:1rem" href="">
+                    <li class="{{ request()->is('director/dashboard/*/*') ? 'nav-item active-nav ' : 'nav-item ' }}">
+                        <a class="{{ request()->is('director/dashboard/*/*') ? 'nav-link text-darker  ' : 'nav-link ' }}"
+                            style="font-weight: 600;font-size:1rem"
+                            href="{{ route('director.dashboard', ['id' => $id, 'roles' => $roles]) }}">
                             {{ __('Dashboard') }}
                         </a>
                     </li>
                 @endif
                 <li
-                    class="{{  request()->is('research/*/*') || 'admin/request-all' == request()->path() || 'admin/history' == request()->path() ? 'nav-item active-nav ' : 'nav-item ' }}">
-                    <a class="{{  request()->is('research/*/*') || 'admin/history' == request()->path() ? 'nav-link text-darker' : 'nav-link ' }}"
+                    class="{{ request()->is('research/*/*') || request()->is('director/feedback/*/*') || 'admin/history' == request()->path() ? 'nav-item active-nav ' : 'nav-item ' }}">
+                    <a class="{{ request()->is('research/*/*') || request()->is('director/feedback/*/*') ? 'nav-link text-darker' : 'nav-link ' }}"
                         style="font-weight: 600;font-size:1rem" href="">
                         {{ __('โครงร่างงานวิจัย') }}
                     </a>
                     <ul class="sub-menu py-2 ">
                         @if ($roles == 2 || $roles == 4)
                             <li class="nav-item">
-                                <a class="{{ request()->is('research/*/*') ? 'nav-link-sub text-primary fw-bolder' : 'nav-link-sub ' }}"
+                                <a class="{{ request()->is('research/*/*') ? 'nav-link-sub text-darker fw-bolder' : 'nav-link-sub ' }}"
                                     style="font-weight: 600;font-size:0.9rem"
                                     href="{{ route('research-pages', ['id' => $id, 'roles' => $roles]) }}">
                                     <i class="fa-solid fa-minus"style="font-size: 50%"></i>
                                     {{ __('โครงร่างงานวิจัย') }}
                                 </a>
                             </li>
+                            @if ($roles == 4)
+                                <li class="nav-item">
+                                    <a class="{{ request()->is('director/feedback/*/*') ? 'nav-link-sub text-darker' : 'nav-link-sub ' }}"
+                                        style="font-weight: 600;font-size:0.9rem"
+                                        href="{{ route('director.feedPages', ['id' => $id, 'roles' => $roles]) }}">
+                                        <i class="fa-solid fa-minus"style="font-size: 50%"></i>
+                                        {{ __('โครงร่างที่เสนอพิจารณา') }}
+
+                                    </a>
+                                </li>
+                            @endif
                         @else
                             <li class="nav-item">
-                                <a class="{{ 'admin/request-all' == request()->path() ? 'nav-link-sub text-darker' : 'nav-link-sub ' }}"
-                                    style="font-weight: 600;font-size:0.9rem" href="">
+                                <a class="{{ request()->is('director/feedback/*/*') ? 'nav-link-sub text-darker' : 'nav-link-sub ' }}"
+                                    style="font-weight: 600;font-size:0.9rem"
+                                    href="{{ route('director.feedPages', ['id' => $id, 'roles' => $roles]) }}">
                                     <i class="fa-solid fa-minus"style="font-size: 50%"></i>
                                     {{ __('โครงร่างที่เสนอพิจารณา') }}
 
                                 </a>
                             </li>
                         @endif
-
-
-
-
                     </ul>
                 </li>
 

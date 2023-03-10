@@ -46,3 +46,5 @@ Route::get('/admin/research/director/{id}',[\App\Http\Controllers\Pre\TbResearch
 Route::post('/admin/add-director',[\App\Http\Controllers\TbFeedbackController::class,'store'])->name('admin.add-director');
 
 Route::get('/admin/view-feed/director/{id}',[\App\Http\Controllers\TbFeedbackController::class,'viewFeed'])->name('admin.view-feed-director');
+
+Route::get('director/feedback/{id}/{roles}',[\App\Http\Controllers\Pre\TbDirectorController::class,'feedPages'])->name('director.feedPages');
