@@ -30,7 +30,7 @@
                 </div>
                 <div class="row">
                     <div class="col-3">PHONE : </div>
-                    <div class="col-9">{{$data[0]->pname}} {{$data[0]->tel}}</div>
+                    <div class="col-9">{{$data[0]->tel}}</div>
                 </div>
             </div>
         </div>

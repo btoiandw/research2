@@ -65,8 +65,10 @@
                                         </td>
                                         <td>
                                             <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-                                                <button class="btn btn-yellow me-md-2 btn-sm" type="button">แก้ไข</button>
-                                                <button class="btn btn-danger btn-sm" type="button">ยกเลิก</button>
+                                                <button class="btn btn-yellow me-md-2 btn-sm" type="button"
+                                                    onclick="edit({{ $item->research_id }})">แก้ไข</button>
+                                                <button class="btn btn-danger btn-sm" type="button"
+                                                    onclick="cancel_resesrch({{ $item->research_id }})">ยกเลิก</button>
                                             </div>
                                         </td>
                                     </tr>
@@ -334,30 +336,30 @@
                 </div>
                 <div class="modal-body">
                     <div class="row mb-3">
-                        <label for="year" class="col-sm-2 col-form-label" align="right">ปีงบประมาณ</label>
+                        <strong for="year" class="col-sm-2 col-form-label" align="right">ปีงบประมาณ</strong>
                         <div class="col-sm-10">
                             <input type="text" class=" form-control-plaintext" id="year" name="year">
                         </div>
                     </div>
 
                     <div class="row mb-3">
-                        <label for="nameTH" class="col-sm-2 col-form-label "
-                            align="right">{{-- &emsp;&emsp; --}}ชื่อโครงร่างงานวิจัยภาษาไทย</label>
+                        <strong for="nameTH" class="col-sm-2 col-form-label "
+                            align="right">{{-- &emsp;&emsp; --}}ชื่อโครงร่างงานวิจัยภาษาไทย</strong>
                         <div class=" col-sm-10">
                             <label class="form-control-plaintext" id="nameTH" name="nameTH"></label>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="nameEN" class="col-sm-2 col-form-label"
-                            align="right">{{-- &emsp;&emsp; --}}ชื่อโครงร่างงานวิจัยภาษาอังกฤษ</label>
-                        <div class=" col-sm-10">
+                        <strong for="nameEN" class="col-sm-3 col-form-label"
+                            align="right">{{-- &emsp;&emsp; --}}ชื่อโครงร่างงานวิจัยภาษาอังกฤษ</strong>
+                        <div class=" col-sm-9">
                             <label class="form-control-plaintext" id="nameEN" name="nameEN"></label>
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label
+                        <strong
                             for="message-text"style="text-align:left;font-weight:600;font-size:18px;background:#fff;border:none"
-                            class="pt-3 py-0 card-header">รายชื่อนักวิจัย</label>
+                            class="pt-3 py-0 card-header">รายชื่อนักวิจัย</strong>
                         <div class="card-body pt-0">
                             <table class="table table-responsive" id="detail_researcher" name="detail_researcher">
                                 <thead align="center">
@@ -378,44 +380,44 @@
                     </div>
 
                     <div class="row mb-3">
-                        <label for="message-text" class="col-sm-2 col-form-label" align="right">แหล่งทุนวิจัย</label>
-                        <div class="col-sm-10">
+                        <strong for="message-text" class="col-sm-3 col-form-label" align="right">แหล่งทุนวิจัย</strong>
+                        <div class="col-sm-9">
                             <label class="form-control-plaintext" id="source" name="source_id">
                             </label>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <div class="col-form-label col-sm-2 pt-0" align="right">ประเภทงานวิจัย</div>
-                        <div class="col-sm-10">
+                        <strong class="col-form-label col-sm-3 pt-0" align="right">ประเภทงานวิจัย</strong>
+                        <div class="col-sm-9">
                             <label name="type" id="type_re" class="form-control-plaintext"></label>
                         </div>
                     </div>
 
                     <div class="row mb-3">
-                        <label for="inputEmail3" class="col-sm-2 col-form-label" align="right">คำสำคัญ</label>
-                        <div class="col-sm-10">
+                        <strong for="inputEmail3" class="col-sm-3 col-form-label" align="right">คำสำคัญ</strong>
+                        <div class="col-sm-9">
                             <label name="keyword" id="key" placeholder="คำสำคัญในการวิจัย"
                                 class="form-control-plaintext"></label>
                         </div>
                     </div>
 
                     <div class="row mb-3">
-                        <label for="inputEmail3" class="col-sm-2 col-form-label" align="right">พื้นที่ในการวิจัย</label>
-                        <div class="row col-sm-10">
+                        <strong for="inputEmail3" class="col-sm-3 col-form-label"
+                            align="right">พื้นที่ในการวิจัย</strong>
+                        <div class="row col-sm-9">
                             <label id="area" class="form-control-plaintext"></label>
                         </div>
                     </div>
 
                     <div class="row mb-3">
-                        <label for="inputEmail3" class="col-sm-2 col-form-label"
-                            align="right">วันที่เริ่มต้นการวิจัย</label>
-                        <div class="row col-sm-10">
+                        <strong for="inputEmail3" class="col-sm-3 col-form-label"
+                            align="right">วันที่เริ่มต้นการวิจัย</strong>
+                        <div class="row col-sm-9">
                             <div class="col-sm">
                                 <label class="form-control-plaintext" id="start" name="sdate"></label>
-
                             </div>
-                            <label for="inputEmail3" class="col-sm-2 col-form-label "
-                                align="right">วันที่สิ้นสุดการวิจัย</label>
+                            <strong for="inputEmail3" class="col-sm-4 col-form-label "
+                                align="right">วันที่สิ้นสุดการวิจัย</strong>
                             <div class="col-sm">
                                 <div class="col-sm">
                                     <label class="form-control-plaintext" id="end" name="edate"></label>
@@ -425,20 +427,22 @@
                     </div>
 
                     <div class="row mb-3">
-                        <label for="inputEmail3" class="col-sm-2 col-form-label" align="right">งบประมาณการวิจัย</label>
-                        <div class="col-sm-10">
+                        <strong for="inputEmail3" class="col-sm-3 col-form-label"
+                            align="right">งบประมาณการวิจัย</strong>
+                        <div class="col-sm-9">
                             <label name="budage" id="bud" type="number" class="form-control-plaintext"></label>
 
                         </div>
                     </div>
-
-                    <div class="row">
-                        <div class="d-grid gap-2 d-md-flex mx-auto">
-                            <a class="btn btn-warning" id="view_word" href="{{-- route('userview-word', $data_de[0]->research_id) --}}"
-                                target="_blank">WORD FILE</a>
-                            <a class="btn btn-warning" id="view_pdf" href="{{-- route('userview-pdf', $data_de[0]->research_id) --}}"
-                                target="_blank">PDF FILE</a>
-                        </div>
+                    <div class="d-grid gap-2 d-md-flex mx-5">
+                        <a href="{{ route('view.word', ['id' => $item->research_id]) }}" class="btn btn-warning"
+                            id="view_word" target="_blank">
+                            WORD FILE
+                        </a>
+                        <a href="{{ route('view.pdf', ['id' => $item->research_id]) }}" class="btn btn-warning"
+                            id="view_pdf" target="_blank">
+                            PDF FILE
+                        </a>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -447,6 +451,253 @@
             </div>
         </div>
     </div>
+
+    {{-- modal edit --}}
+    <div class="modal fade" id="editResearch" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="editResearchLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fs-5" id="editResearchLabel">แก้ไขโครงร่างงานวิจัย</h5>
+
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="add_research" method="POST" enctype="multipart/form-data"
+                    action="{{ route('research.store') }}">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="d-flex justify-content-end align-content-end">
+                            <label style="font-size: 10px">
+                                @php
+                                    echo thaidate('วันlที่ j F พ.ศ.Y เวลา H:i:s');
+                                @endphp
+                            </label>
+
+                        </div>
+                        <div class="row mb-3">
+                            <input type="hidden" name="id_users" id="id_users" value="{{ $id }}" />
+                            <label for="" id="id"></label>
+                            <label for="year_research" class="col-sm-2 col-form-label" align="right">ปีงบประมาณ</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="year_research"
+                                    value="{{ date('Y') + 544 }}" name="year_research">
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="research_nameTH" class="col-sm-2 col-form-label "
+                                align="right">{{-- &emsp;&emsp; --}}ชื่อโครงร่างงานวิจัยภาษาไทย</label>
+                            <div class=" col-sm-10">
+                                <textarea class="form-control" id="research_nameTH" name="research_nameTH" required></textarea>
+
+                            </div>
+
+                        </div>
+                        <div class="row mb-3">
+                            <label for="research_nameEN" class="col-sm-2 col-form-label"
+                                align="right">{{-- &emsp;&emsp; --}}ชื่อโครงร่างงานวิจัยภาษาอังกฤษ</label>
+                            <div class=" col-sm-10">
+                                <textarea class="form-control" id="research_nameEN" name="research_nameEN" required></textarea>
+
+                            </div>
+
+                        </div>
+                        <div class="mb-3">
+                            <label
+                                for="message-text"style="text-align:left;font-weight:600;font-size:18px;background:#fff;border:none"
+                                class="pt-3 py-0 card-header">รายชื่อนักวิจัย</label>
+                            <div class="card-body pt-0">
+                                <table class="table table-responsive" id="tableTap" name="tableTap">
+                                    <thead align="center">
+                                        <tr>
+                                            <th width="600px" style="font-size: 14px">ชื่อ-นามสกุล</th>
+                                            <th width="600px" style="font-size: 14px">สังกัด/คณะ</th>
+                                            <th width="300px" style="font-size: 14px">บทบาทในการวิจัย</th>
+                                            <th width="300px" style="font-size: 14px">ร้อยละบทบาทในการวิจัย</th>
+                                            <th width="">
+
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody align="center" id="roleResearch">
+                                        <tr id="row[]">
+                                            <td>
+                                                <input type="text" name="researcher[]" id="researcher"
+                                                    value="{{ $data[0]->full_name_th }}" class="form-control" required>
+                                            </td>
+                                            <td>
+                                                <select class="form-select" id="faculty" name="faculty[]">
+                                                    <option value="">
+                                                        เลือกสังกัด/คณะ
+                                                        {{-- {{ $data[0]->organizational }}&nbsp;&nbsp;{{ $data[0]->major }} --}}
+                                                    </option>
+                                                    @foreach ($list_fac as $row)
+                                                        @if ($row->major == '0')
+                                                            <option value="{{ $row->id }} ">
+                                                                {{ $row->organizational }}</option>
+                                                        @else
+                                                            <option value="{{ $row->id }}">
+                                                                {{ $row->organizational }}&nbsp;&nbsp;{{ $row->major }}
+                                                            </option>
+                                                        @endif
+                                                    @endforeach
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <select class="form-select " name="role-research[]" id="role-research">
+                                                    <option value="หัวหน้าโครงการวิจัย" selected readonly>
+                                                        หัวหน้าโครงการวิจัย</option>
+                                                    <option value="ผู้ร่วมวิจัย">ผู้ร่วมวิจัย</option>
+                                                </select>
+
+                                            </td>
+                                            <td>
+                                                <input type="number" class="form-control" name="pc[]" id="pc"
+                                                    required placeholder="0.00"{{--   onchange="Vpc()"onKeyUp="Vpc();" --}} />
+                                                <input type="hidden" name="sum[]" id="sum">
+                                            </td>
+                                            <td>
+                                                <button type="button" name="addBtn" class="btn btn-info"
+                                                    id="addBtn">+</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="message-text" class="col-sm-2 col-form-label"
+                                align="right">แหล่งทุนวิจัย</label>
+                            <div class="col-sm-10">
+                                <select class="form-select" id="source_id" name="source_id">
+                                    <option value="">--เลือกแหล่งทุน--</option>
+                                    @foreach ($list_source as $row)
+                                        <option value="{{ $row->research_sources_id }}">
+                                            {{ $row->research_source_name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+
+                            </div>
+
+                        </div>
+                        <fieldset class="row mb-3">
+                            <legend class="col-form-label col-sm-2 pt-0" align="right">ประเภทงานวิจัย</legend>
+                            <div class="col-sm-10">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="type[]" id="type"
+                                        value="ชุมชนท้องถิ่น">
+                                    <label class="form-check-label" for="type">
+                                        ชุมชนท้องถิ่น
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="type[]" id="type"
+                                        value="ศิลปวัฒนธรรม">
+                                    <label class="form-check-label" for="gridRadios2">
+                                        ศิลปวัฒนธรรม
+                                    </label>
+                                </div>
+
+                            </div>
+
+                        </fieldset>
+
+                        <div class="row mb-3">
+                            <label for="inputEmail3" class="col-sm-2 col-form-label" align="right">คำสำคัญ</label>
+                            <div class="col-sm-10">
+                                <textarea name="keyword" id="keyword" placeholder="คำสำคัญในการวิจัย" class="form-control" required></textarea>
+                                <span class="text-danger">โปรดใช้เครื่องหมาย , ในการคั่นคำ</span>
+
+                            </div>
+
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="inputEmail3" class="col-sm-2 col-form-label"
+                                align="right">พื้นที่ในการวิจัย</label>
+                            <div class="row col-sm-10">
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" placeholder="ที่อยู่" name="address"
+                                        required aria-label="ที่อยู่">
+
+                                </div>
+                                <div class="col-sm">
+                                    <input type="text" class="form-control" placeholder="จังหวัด" name="city"
+                                        aria-label="จังหวัด" required>
+
+                                </div>
+                                <div class="col-sm">
+                                    <input type="text" class="form-control" placeholder="รหัสไปรษณีย์" name="zipcode"
+                                        aria-label="รหัสไปรษณีย์" required>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="inputEmail3" class="col-sm-2 col-form-label"
+                                align="right">วันที่เริ่มต้นการวิจัย</label>
+                            <div class="row col-sm-10">
+                                <div class="col-sm">
+                                    <input class="form-control" id="sdate" name="sdate" placeholder="MM/DD/YYY"
+                                        type="date" required />
+
+                                </div>
+                                <label for="inputEmail3" class="col-sm-2 col-form-label "
+                                    align="right">วันที่สิ้นสุดการวิจัย</label>
+                                <div class="col-sm">
+                                    <div class="col-sm">
+                                        <input class="form-control" id="edate" name="edate"
+                                            placeholder="MM/DD/YYY" type="date" required />
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="inputEmail3" class="col-sm-2 col-form-label"
+                                align="right">งบประมาณการวิจัย</label>
+                            <div class="col-sm-10">
+                                <input name="budage" id="budage" type="number" placeholder="0.00"
+                                    class="form-control" required>
+
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label " align="right">ไฟล์ Word</label>
+                            <div class=" col-sm-10">
+                                <input type="file" name="word" id="word" class=" form-control" required>
+                                <span class="text-danger">*ไฟล์ .doc และ .docx เท่านั้น</span>
+
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" align="right">ไฟล์ PDF</label>
+                            <div class=" col-sm-10">
+                                <input type="file" name="pdf" id="pdf" class=" form-control" required>
+                                <span class="text-danger">*ไฟล์ .pdf เท่านั้น</span>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" id="save_research" name="save">ยืนยัน</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">ยกเลิก</button>
+
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
 @endsection
 @push('js')
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -553,38 +804,31 @@
                 url: '/view/research/' + id,
                 dataType: 'JSON',
                 success: function(res) {
-
+                    moment.locale('th');
                     console.log(res.data_re);
                     var data = res.data_re;
                     createRows(res);
                     $('#viewdetail').modal('toggle');
-                    // $('#id_research').html(data[0].research_id);
-
-                    /* for (let i = 0; i < data.length; i++) {
-                        const fullname = data[i].full_name_th;
-                        const pname = data[i].pname;
-                        const major = data[i].major;
-                        const organizational = data[i].organizational;
-                        const pc = data[i].pc;
-
-
-                    } */
-                    //$('#researcher_re').html(html);
                     //console.log(html);
+                    var type_re = data[0].type_research_id;
+                    var type = type_re.split('_');
+                    //console.log(type);
+                    var area_re = data[0].research_area;
+                    var area = area_re.split('_');
+                    var start = moment(data[0].date_research_start).add(543, 'year').format('Do MMMM YYYY');
+                    var end = moment(data[0].date_research_end).add(543, 'year').format('Do MMMM YYYY');
+                    // console.log(start);
+                    //console.log(area);
                     $('#year').val(data[0].year_research);
                     $('#nameTH').html(data[0].research_th);
                     $('#nameEN').html(data[0].research_en);
                     $('#source').html(data[0].research_source_name);
-                    $('#type_re').html(data[0].type_research_id);
+                    $('#type_re').html(type[0] + ', ' + type[1]);
                     $('#key').html(data[0].keyword);
-                    $('#area').html(data[0].research_area);
-                    $('#start').html(data[0].date_research_start);
-                    $('#end').html(data[0].date_research_end);
-                    $('#bud').html(data[0].budage_research);
-
-                    /* $('#view_word').click(function(){
-
-                    }) */
+                    $('#area').html(area[0] + ' ' + area[1] + ' ' + area[2]);
+                    $('#start').html(start);
+                    $('#end').html(end);
+                    $('#bud').html(data[0].budage_research + '.00 บาท');
                 }
             })
 
@@ -621,6 +865,42 @@
 
                 $("#detail_researcher tbody").append(tr_str);
             }
+        }
+
+        function cancel_resesrch(id) {
+            $.ajax({
+                method: 'GET',
+                dataType: 'JSON',
+                url: '/view/research/' + id,
+                success: function(res) {
+                    var data = res.data_re;
+                    Swal.fire({
+                        title: 'คุณต้องการยกเลิกโครงร่างงานวิจัย?',
+                        text: 'ชื่อโครงร่างงานวิจัย : ' + data[0].research_th,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'ยืนยัน',
+                        cancelButtonText: 'ยกเลิก'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+
+                            Swal.fire(
+                                'Deleted!',
+                                'Your file has been deleted.',
+                                'success'
+                            )
+                        }
+                    })
+                }
+            })
+
+        }
+
+        function edit(id) {
+            $('#editResearch').modal('toggle');
+            $('#id').html(id);
         }
     </script>
 @endpush

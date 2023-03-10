@@ -303,4 +303,33 @@ class TbResearchController extends Controller
 
         return response()->json(['data_re' => $data_re]);
     }
+
+    public function viewFile($id)
+    {
+        $p = DB::table('tb_research')->select('*')->where('research_id', '=', $id)->get();
+
+        $path = 'uploads/research/' . $p[0]->year_research . '/' . $p[0]->research_id;
+        //$u = Auth::user()->id;
+
+        $file_name = $p[0]->word_file;
+        //dd($d);
+        $file = $path . '/' . $file_name;
+         //dd($p,$path,$file_name,$file,$p[0]->word_file);
+        return response()->file($file);
+
+    }
+    public function viewFilePDF($id)
+    {
+        $p = DB::table('tb_research')->select('*')->where('research_id', '=', $id)->get();
+
+        $path = 'uploads/research/' . $p[0]->year_research . '/' . $p[0]->research_id;
+        //$u = Auth::user()->id;
+
+        $file_name = $p[0]->pdf_file;
+        //dd($d);
+        $file = $path . '/' . $file_name;
+         //dd($p,$path,$file_name,$file,$p[0]->word_file);
+        return response()->file($file);
+
+    }
 }
