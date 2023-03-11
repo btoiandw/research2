@@ -52,3 +52,6 @@ Route::get('/view-word/{id}', [\App\Http\Controllers\Pre\TbResearchController::c
 Route::get('/view-pdf/{id}', [\App\Http\Controllers\Pre\TbResearchController::class, 'viewFilePDF'])->name('view.pdf');
 
 Route::post('research/update', [\App\Http\Controllers\Pre\TbResearchController::class, 'update'])->name('user.update_research');
+
+
+Route::get('admin/deliver-list/{id}',[\App\Http\Controllers\Pre\TbAdminController::class,'deliverPages'])->name('admin.deliver-pages');

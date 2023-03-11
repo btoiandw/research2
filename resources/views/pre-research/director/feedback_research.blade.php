@@ -246,10 +246,14 @@
                         </div>
                     </div>
                     <div class="d-grid gap-2 d-md-flex mx-5">
-                        <a class="btn btn-warning" id="view_word" href="{{-- route('userview-word', $data_de[0]->research_id) --}}" target="_blank">WORD
-                            FILE</a>
-                        <a class="btn btn-warning" id="view_pdf" href="{{-- route('userview-pdf', $data_de[0]->research_id) --}}" target="_blank">PDF
-                            FILE</a>
+                        <a href="{{ route('view.word', ['id' => $item->research_id]) }}" class="btn btn-warning"
+                            id="view_word" target="_blank">
+                            WORD FILE
+                        </a>
+                        <a href="{{ route('view.pdf', ['id' => $item->research_id]) }}" class="btn btn-warning"
+                            id="view_pdf" target="_blank">
+                            PDF FILE
+                        </a>
                     </div>
                 </div>
                 <div class="modal-footer">

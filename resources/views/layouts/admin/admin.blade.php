@@ -60,7 +60,7 @@
     <div class="main-content">
         @include('layouts.admin.nav')
         @include('layouts.admin.header')
-        <div class=" container-fluid mt-5">
+        <div class=" container-fluid mt-3">
             @yield('content')
         </div>
 
