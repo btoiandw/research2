@@ -9,6 +9,8 @@ use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\TbResearch;
 use App\Models\TbSendResearch;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class TbResearchController extends Controller
 {
@@ -275,9 +277,56 @@ class TbResearchController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         //
+        $research = DB::table('tb_research')
+            ->where('research_id', $request->id)
+            ->first();
+        //dd($research) ;
+        $area = $request->ad . '_' . $request->ct . '_' . $request->zp;
+
+        //$research[0]->save();
+        $path = 'uploads/research/' . $research->year_research . '/' . $request->id;
+        $file_word = $path . '/' . $research->word_file;
+        $file_pdf = $path . '/' . $research->pdf_file;
+        if ($file_p = $request->file('f_pdf')) {
+            File::delete(public_path($file_pdf));
+            $namep = $file_p->getClientOriginalName();
+            $eNamep = explode('.', $namep);
+            $infop = end($eNamep);
+            $fileName_p = $research->research_id . "_0." . $infop;
+
+            $file_p->move($path, $fileName_p);
+        }
+
+        if ($file_w = $request->file('f_word')) {
+            File::delete(public_path($file_word));
+            $namew = $file_w->getClientOriginalName();
+            $eNamew = explode('.', $namew);
+            $infow = end($eNamew);
+            $fileName_w = $research->research_id . "_0." . $infow;
+
+            $file_w->move($path, $fileName_w);
+        }
+        //dd($file_p->move($path, $fileName_p), $file_w->move($path, $fileName_w));
+
+        $re = DB::table('tb_research')->where('research_id', $request->id)->update([
+            'research_th' => $request->TH,
+            'research_en' => $request->EN,
+            'keyword' => $request->keyword,
+            'research_area' => $area,
+            'date_research_start' => $request->sdate,
+            'date_research_end' => $request->edate,
+            'research_th' => $request->budage,
+            'pdf_file' => $fileName_p,
+            'word_file' => $fileName_w,
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:m'),
+        ]);
+        // $research->save();
+        if ($re) {
+            return redirect()->back()->with('success_edit');
+        }
     }
 
     /**
@@ -314,9 +363,8 @@ class TbResearchController extends Controller
         $file_name = $p[0]->word_file;
         //dd($d);
         $file = $path . '/' . $file_name;
-         //dd($p,$path,$file_name,$file,$p[0]->word_file);
+        //dd($p,$path,$file_name,$file,$p[0]->word_file);
         return response()->file($file);
-
     }
     public function viewFilePDF($id)
     {
@@ -328,8 +376,7 @@ class TbResearchController extends Controller
         $file_name = $p[0]->pdf_file;
         //dd($d);
         $file = $path . '/' . $file_name;
-         //dd($p,$path,$file_name,$file,$p[0]->word_file);
+        //dd($p,$path,$file_name,$file,$p[0]->word_file);
         return response()->file($file);
-
     }
 }

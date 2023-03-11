@@ -32,22 +32,23 @@ Route::get('/users-director/{id}/{roles}', [\App\Http\Controllers\Pre\UDControll
 
 
 Route::get('research/{id}/{roles}', [\App\Http\Controllers\Pre\TbResearchController::class, 'index'])->name('research-pages');
-Route::post('/research/store',[\App\Http\Controllers\Pre\TbResearchController::class,'store'])->name('research.store');
-Route::get('/view/research/{id}',[\App\Http\Controllers\Pre\TbResearchController::class,'show']);
+Route::post('/research/store', [\App\Http\Controllers\Pre\TbResearchController::class, 'store'])->name('research.store');
+Route::get('/view/research/{id}', [\App\Http\Controllers\Pre\TbResearchController::class, 'show']);
 Route::get('autocomplete', [\App\Http\Controllers\Pre\TbResearchController::class, 'autocomplete'])->name('autocomplete');
 
 
-Route::get('/admin/request/{id}',[\App\Http\Controllers\Pre\TbAdminController::class,'rePages'])->name('admin.request');
-Route::get('/admin/manage/users/{id}',[\App\Http\Controllers\Pre\TbAdminController::class,'manaUser'])->name('admin.manage-user');
-Route::get('/admin/send-director/{id}',[\App\Http\Controllers\Pre\TbAdminController::class,'ResearchDirector'])->name('admin.send-research-director');
-Route::get('/admin/manage-source/{id}',[\App\Http\Controllers\Pre\TbSourceController::class,'manageSource'])->name('admin.manage-source');
+Route::get('/admin/request/{id}', [\App\Http\Controllers\Pre\TbAdminController::class, 'rePages'])->name('admin.request');
+Route::get('/admin/manage/users/{id}', [\App\Http\Controllers\Pre\TbAdminController::class, 'manaUser'])->name('admin.manage-user');
+Route::get('/admin/send-director/{id}', [\App\Http\Controllers\Pre\TbAdminController::class, 'ResearchDirector'])->name('admin.send-research-director');
+Route::get('/admin/manage-source/{id}', [\App\Http\Controllers\Pre\TbSourceController::class, 'manageSource'])->name('admin.manage-source');
 
-Route::get('/admin/research/director/{id}',[\App\Http\Controllers\Pre\TbResearchController::class,'addDirector']);
-Route::post('/admin/add-director',[\App\Http\Controllers\TbFeedbackController::class,'store'])->name('admin.add-director');
+Route::get('/admin/research/director/{id}', [\App\Http\Controllers\Pre\TbResearchController::class, 'addDirector']);
+Route::post('/admin/add-director', [\App\Http\Controllers\TbFeedbackController::class, 'store'])->name('admin.add-director');
 
-Route::get('/admin/view-feed/director/{id}',[\App\Http\Controllers\TbFeedbackController::class,'viewFeed'])->name('admin.view-feed-director');
+Route::get('/admin/view-feed/director/{id}', [\App\Http\Controllers\TbFeedbackController::class, 'viewFeed'])->name('admin.view-feed-director');
 
-Route::get('director/feedback/{id}/{roles}',[\App\Http\Controllers\Pre\TbDirectorController::class,'feedPages'])->name('director.feedPages');
-Route::get('/view-word/{id}',[\App\Http\Controllers\Pre\TbResearchController::class,'viewFile'])->name('view.word');
-Route::get('/view-pdf/{id}',[\App\Http\Controllers\Pre\TbResearchController::class,'viewFilePDF'])->name('view.pdf');
+Route::get('director/feedback/{id}/{roles}', [\App\Http\Controllers\Pre\TbDirectorController::class, 'feedPages'])->name('director.feedPages');
+Route::get('/view-word/{id}', [\App\Http\Controllers\Pre\TbResearchController::class, 'viewFile'])->name('view.word');
+Route::get('/view-pdf/{id}', [\App\Http\Controllers\Pre\TbResearchController::class, 'viewFilePDF'])->name('view.pdf');
 
+Route::post('research/update', [\App\Http\Controllers\Pre\TbResearchController::class, 'update'])->name('user.update_research');
