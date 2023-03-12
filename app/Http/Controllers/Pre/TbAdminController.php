@@ -136,5 +136,15 @@ class TbAdminController extends Controller
         //dd($data[0]);
         return view('pre-research.admin.deliver_list')->with(['data' => $data[0], 'id' => $id]);
     }
+    public function cbgPages($id){
+        $data = DB::table('users')->where('employee_id', $id)->get();
+        //dd($data[0]);
+        return view('pre-research.admin.Report.report_cbg')->with(['data' => $data[0], 'id' => $id]);
+    }
+    public function cresearchPages($id){
+        $data = DB::table('users')->where('employee_id', $id)->get();
+        //dd($data[0]);
+        return view('pre-research.admin.Report.report_cresearch')->with(['data' => $data[0], 'id' => $id]);
+    }
 
 }
