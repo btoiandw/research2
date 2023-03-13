@@ -57,3 +57,9 @@ Route::post('research/update', [\App\Http\Controllers\Pre\TbResearchController::
 Route::get('admin/deliver-list/{id}',[\App\Http\Controllers\Pre\TbAdminController::class,'deliverPages'])->name('admin.deliver-pages');
 Route::get('admin/report/cbg/{id}',[\App\Http\Controllers\Pre\TbAdminController::class,'cbgPages'])->name('admin.dbg-pages');
 Route::get('admin/report/cresearch/{id}',[\App\Http\Controllers\Pre\TbAdminController::class,'cresearchPages'])->name('admin.cresearch-pages');
+
+
+Route::get('/admin/cancel/{id}',[\App\Http\Controllers\Pre\TbAdminController::class,'show']);
+Route::get('/admin/cancel/admin/{id}',[\App\Http\Controllers\Pre\TbAdminController::class,'edit']);
+Route::post('/admin/search',[\App\Http\Controllers\Pre\TbAdminController::class,'searchAdmin']);
+Route::post('/admin/store',[\App\Http\Controllers\Pre\TbAdminController::class,'store']);

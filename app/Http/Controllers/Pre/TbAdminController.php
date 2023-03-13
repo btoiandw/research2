@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Pre;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Carbon;
 
 class TbAdminController extends Controller
 {
@@ -15,7 +16,7 @@ class TbAdminController extends Controller
      */
     public function index($id)
     {
-        $data = DB::table('users')->where('employee_id', $id)->get();
+        $data = DB::table('users')->join('tb_faculties', 'users.organization_id', '=', 'tb_faculties.id')->where('employee_id', $id)->get();
         //dd($data[0]);
         return view('pre-research.admin.index')->with(['data' => $data[0], 'id' => $id]);
     }
@@ -39,6 +40,27 @@ class TbAdminController extends Controller
     public function store(Request $request)
     {
         //
+        $nowDate = Carbon::now()->format('Y-m-d H:i:m');
+        $ad = DB::table('tb_admins')->count();
+        if ($ad > 0) {
+            $admin_id = $ad + 1;
+        } else {
+            $admin_id = 1;
+        }
+        $data_ad = DB::table('users')->where('username', $request->id_card)->get();
+        $data = DB::table('tb_admins')->where('username', $request->id_card)->count();
+        if ($data == 0) {
+            $admin = DB::insert(
+                'insert into tb_admins (employee_admin_id, employee_id,username,password,status_workadmin)
+            values (?, ?, ?, ?, ?)',
+                [$admin_id, $data_ad[0]->employee_id, $data_ad[0]->username, $data_ad[0]->password, '1']
+            );
+        } else {
+            $admin = DB::update('update tb_admins set status_workadmin = 1 where employee_id = ?', [$data_ad[0]->username]);
+        }
+
+        return response()->json(['status' => true]);
+        //dd($ad, $data, $admin_id, $data_ad, $admin);
     }
 
     /**
@@ -50,6 +72,10 @@ class TbAdminController extends Controller
     public function show($id)
     {
         //
+        //dd($id);
+        $data = DB::table('users')->where('employee_id', $id)->get();
+        //dd($data);
+        return response()->json(['data' => $data]);
     }
 
     /**
@@ -61,6 +87,11 @@ class TbAdminController extends Controller
     public function edit($id)
     {
         //
+        //$data = DB::table('tb_admins')->update(['status_workadmin' => '0'])->where('employee_id', $id)->get();
+        $data = DB::update('update tb_admins set status_workadmin = 0 where employee_id = ?', [$id]);
+        //dd($data);
+
+        return response()->json(['status' => true]);
     }
 
     /**
@@ -127,24 +158,32 @@ class TbAdminController extends Controller
             ->select('tb_feedback.status', 'tb_research.*')
             ->get()
             /* ->toArray() */;
-       // dd($data_re);
+        // dd($data_re);
         return view('pre-research.admin.research_send_d')->with(['id' => $id, 'data' => $data[0], 'data_re' => $data_re]);
     }
 
-    public function deliverPages($id){
+    public function deliverPages($id)
+    {
         $data = DB::table('users')->where('employee_id', $id)->get();
         //dd($data[0]);
         return view('pre-research.admin.deliver_list')->with(['data' => $data[0], 'id' => $id]);
     }
-    public function cbgPages($id){
+    public function cbgPages($id)
+    {
         $data = DB::table('users')->where('employee_id', $id)->get();
         //dd($data[0]);
         return view('pre-research.admin.Report.report_cbg')->with(['data' => $data[0], 'id' => $id]);
     }
-    public function cresearchPages($id){
+    public function cresearchPages($id)
+    {
         $data = DB::table('users')->where('employee_id', $id)->get();
         //dd($data[0]);
         return view('pre-research.admin.Report.report_cresearch')->with(['data' => $data[0], 'id' => $id]);
     }
 
+    public function searchAdmin(Request $request)
+    {
+        $data = DB::table('users')->where('username', $request->id_card)->get();
+        return response()->json(['data' => $data]);
+    }
 }
