@@ -86,13 +86,6 @@ class AllUserSeeder extends Seeder
         $admin = [
             [
                 'employee_admin_id' => 1,
-                'employee_id' => 1,
-                'username' => '1234567890123',
-                'password' => '1234567890123',
-                'status_workadmin' => '1'
-            ],
-            [
-                'employee_admin_id' => 2,
                 'employee_id' => 3,
                 'username' => '1098765432234',
                 'password' => '1098765432234',

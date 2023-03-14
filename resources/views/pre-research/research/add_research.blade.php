@@ -54,8 +54,12 @@
                                 @foreach ($data_research as $item)
                                     <tr>
                                         <td>{{ $i++ }}</td>
-                                        <td>{{ $item->research_th }}</td>
-                                        <td>{{ $item->research_en }}</td>
+                                        <td>
+                                            {!! Str::limit("$item->research_th", 50, ' ...') !!}
+                                        </td>
+                                        <td>
+                                            {!! Str::limit("$item->research_en", 50, ' ...') !!}
+                                        </td>
                                         <td>
                                             <button class="btn btn-info btn-sm" type="button"
                                                 onclick="viewDetail({{ $item->research_id }})">
@@ -442,14 +446,12 @@
                         </div>
                     </div>
                     <div class="d-grid gap-2 d-md-flex mx-5">
-                        <a href="{{ route('view.word', ['id' => $item->research_id]) }}" class="btn btn-warning"
-                            id="view_word" target="_blank">
+                        <button class="btn btn-warning" id="view_word">
                             WORD FILE
-                        </a>
-                        <a href="{{ route('view.pdf', ['id' => $item->research_id]) }}" class="btn btn-warning"
-                            id="view_pdf" target="_blank">
+                        </button>
+                        <button class="btn btn-warning" id="view_pdf">
                             PDF FILE
-                        </a>
+                        </button>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -812,6 +814,20 @@
                     $('#start').html(start);
                     $('#end').html(end);
                     $('#bud').html(data[0].budage_research + '.00 บาท');
+                    $('#view_pdf').click(function() {
+                        //console.log(data[0].research_id);
+                        var id = data[0].research_id;
+                        var url = '/view-pdf/' + id;
+                        //console.log(url);
+                        window.open(url, "_blank");
+                    })
+                    $('#view_word').click(function() {
+                        //console.log(data[0].research_id);
+                        var id = data[0].research_id;
+                        var url = '/view-word/' + id;
+                        //console.log(url);
+                        window.open(url, "_blank");
+                    })
                 }
             })
 

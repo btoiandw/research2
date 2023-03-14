@@ -376,7 +376,7 @@ class TbResearchController extends Controller
         $file_name = $p[0]->pdf_file;
         //dd($d);
         $file = $path . '/' . $file_name;
-        //dd($p,$path,$file_name,$file,$p[0]->word_file);
+        //dd($file_name,$file);
         return response()->file($file);
     }
 }
