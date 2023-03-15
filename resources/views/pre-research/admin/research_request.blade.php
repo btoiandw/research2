@@ -24,7 +24,9 @@
                             @foreach ($data_re as $item)
                                 <tr>
                                     <td align="center">{{ $i++ }}</td>
-                                    <td>{{ $item->research_th }}</td>
+                                    <td>
+                                        {!! Str::limit("$item->research_th", 50, ' ...') !!}
+                                    </td>
                                     <td align="center">
                                         <button class=" btn btn-info btn-sm" onclick="viewDetail({{ $item->research_id }})">
                                             <i class="fa-solid fa-eye"></i>
@@ -39,7 +41,8 @@
                                         @endif
                                     </td>
                                     <td align="center">
-                                        <button class="btn btn-sm btn-default">
+                                        <button class="btn btn-sm btn-default"
+                                            onclick="addSumFeed({{ $item->research_id }})">
                                             <i class="fa-solid fa-plus"></i><span>ข้อเสนอแนะ</span>
                                         </button>
                                     </td>
@@ -173,15 +176,18 @@
                     </div>
 
                     <div class="row">
-                        <div class="d-grid gap-2 d-md-flex mx-auto">
-                            <a class="btn btn-warning" id="view_word" href="{{-- route('userview-word', $data_de[0]->research_id) --}}" target="_blank">WORD
-                                FILE</a>
-                            <a class="btn btn-warning" id="view_pdf" href="{{-- route('userview-pdf', $data_de[0]->research_id) --}}" target="_blank">PDF
-                                FILE</a>
+                        <div class="d-grid gap-2 d-md-flex mx-5">
+                            <button class="btn btn-warning" id="view_word">
+                                WORD FILE
+                            </button>
+                            <button class="btn btn-warning" id="view_pdf">
+                                PDF FILE
+                            </button>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
+                  
                     <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -197,10 +203,10 @@
                     <h1 class="modal-title fs-5" id="add_directorLabel">เพิ่มคณะกรรมการ</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form method="POST" action="{{route('admin.add-director')}}">
+                <form method="POST" action="{{ route('admin.add-director') }}">
                     @csrf
                     <div class="modal-body">
-                        <input type="hidden" name="id_r" id="id_r" value=""/>
+                        <input type="hidden" name="id_r" id="id_r" value="" />
                         <div class="row mb-3">
                             <strong class="col-sm-3 col-form-label" align="right">ชื่อโครงร่างงานวิจัย : </strong>
                             <div class="col-sm-9">
@@ -274,6 +280,79 @@
             </div>
         </div>
     </div>
+
+    <!--add sum feed Modal -->
+    <div class="modal fade" id="addFeed" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="addFeedLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="addFeedLabel">ประเมินโครงร่างงานวิจัย</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <strong class="col-md-3">ชื่อโครงร่างงานวิจัยภาษาไทย</strong>
+                        <div class="col-md-9">
+                            <label for="" id="name_th"></label>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <strong class="col-md-3">ชื่อโครงร่างงานวิจัยอังกฤษ</strong>
+                        <div class="col-md-9">
+                            <label for="" id="name_en"></label>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label class="col-sm-2 col-form-label fw-bold">ผลการประเมิน</label>
+                        <div class="col-sm-10"onclick="pass()">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="AssessmentResults"
+                                    id="AssessmentResults1" value="ไม่ผ่าน" checked>
+                                <label class="form-check-label" for="AssessmentResults1">ไม่ผ่าน</label>
+                            </div>
+
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="AssessmentResults"
+                                    id="AssessmentResults2" value="ผ่าน" {{-- disabled --}}>
+                                <label class="form-check-label" for="AssessmentResults2">ผ่าน</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3 row"id="checkFile">
+                        <div class="col-sm-10">
+                            <div class="form-check form-check-inline">
+                                <input onclick="sugges()" class="form-check-input" type="checkbox" id="mustAddFile"
+                                    name="mustAddFile" value="mustAddFile">
+                                <label class="form-check-label text-danger"
+                                    for="mustAddFile">ต้องการเพิ่มไฟล์ข้อเสนอแนะ</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" row " id="suggestion">
+                        <label class="col-sm-3 col-form-label fw-bold">ข้อเสนอแนะ</label>
+                        <div class=" px-3">
+                            <textarea {{-- onkeyup="sugges()" --}} class="form-control" name="suggestion" {{-- id="suggestion" --}}
+                                placeholder="ระบุข้อเสนอแนะ" rows="10"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="row" id="suggestionFile">
+                        <label class="col-sm-3 col-form-label fw-bold">ไฟล์ข้อเสนอแนะ</label>
+                        <div class="col-sm-9">
+                            <input type="file" class="form-control" name="suggestionFile" id="suggestionFile"
+                                rows="20">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">ยืนยัน</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('js')
@@ -326,22 +405,45 @@
                 url: '/view/research/' + id,
                 dataType: 'JSON',
                 success: function(res) {
-
+                    moment.locale('th');
                     console.log(res.data_re);
                     var data = res.data_re;
                     createRows(res);
                     $('#viewdetail').modal('toggle');
-
+                    //console.log(html);
+                    var type_re = data[0].type_research_id;
+                    var type = type_re.split('_');
+                    //console.log(type);
+                    var area_re = data[0].research_area;
+                    var area = area_re.split('_');
+                    var start = moment(data[0].date_research_start).add(543, 'year').format('Do MMMM YYYY');
+                    var end = moment(data[0].date_research_end).add(543, 'year').format('Do MMMM YYYY');
+                    // console.log(start);
+                    //console.log(area);
                     $('#year').val(data[0].year_research);
                     $('#nameTH').html(data[0].research_th);
                     $('#nameEN').html(data[0].research_en);
                     $('#source').html(data[0].research_source_name);
-                    $('#type_re').html(data[0].type_research_id);
+                    $('#type_re').html(type[0] + ', ' + type[1]);
                     $('#key').html(data[0].keyword);
-                    $('#area').html(data[0].research_area);
-                    $('#start').html(data[0].date_research_start);
-                    $('#end').html(data[0].date_research_end);
-                    $('#bud').html(data[0].budage_research);
+                    $('#area').html(area[0] + ' ' + area[1] + ' ' + area[2]);
+                    $('#start').html(start);
+                    $('#end').html(end);
+                    $('#bud').html(data[0].budage_research + '.00 บาท');
+                    $('#view_pdf').click(function() {
+                        //console.log(data[0].research_id);
+                        var id = data[0].research_id;
+                        var url = '/view-pdf/' + id;
+                        //console.log(url);
+                        window.open(url, "_blank");
+                    })
+                    $('#view_word').click(function() {
+                        //console.log(data[0].research_id);
+                        var id = data[0].research_id;
+                        var url = '/view-word/' + id;
+                        //console.log(url);
+                        window.open(url, "_blank");
+                    })
                 }
             })
 
@@ -398,6 +500,86 @@
                 }
             })
             /*   */
+        }
+
+        function addSumFeed(id) {
+            $('#addFeed').modal('toggle');
+        }
+
+        $(document).ready(function() {
+            document.getElementById("suggestionFile").style.display = "none";
+        });
+
+        function sugges() {
+            var rb = document.getElementById('AssessmentResults2');
+            //var rb = document.querySelector('input[id="refers2"]:checked').value;
+            var ck = document.getElementById('mustAddFile');
+            var cf = document.getElementById('checkFile');
+            var x = document.getElementById("suggestionFile");
+            var z = document.getElementById("suggestion");
+            var bs = document.getElementById("save");
+
+            //x.value = x.value.toUpperCase();
+
+            console.log('false');
+            if (ck.checked == true) {
+                console.log('true');
+                Swal.fire({
+                    text: "คุณต้องการเพิ่มไฟล์ข้อเสนอแนะ ?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'ใช่',
+                    cancelButtonText: 'ไม่',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        x.style.display = "";
+                        z.style.display = "none";
+                        bs.style.display = "none";
+                    }
+                    if (result.dismiss) {
+                        //console.log('false');
+                        ck.checked = false;
+                        x.style.display = "none";
+                        z.style.display = "";
+                        bs.style.display = "";
+                    }
+                })
+
+            } else {
+                //console.log('false');
+                ck.style.display = "";
+                x.style.display = "none";
+                z.style.display = "";
+            }
+
+        }
+
+        function pass() {
+            var rb2 = document.getElementById('AssessmentResults2');
+            var rb1 = document.getElementById('AssessmentResults1');
+            //var rb = document.querySelector('input[id="refers2"]:checked').value;
+            var ck = document.getElementById('mustAddFile');
+            var cf = document.getElementById('checkFile');
+            var x = document.getElementById("suggestionFile");
+            var z = document.getElementById("suggestion");
+            var bs = document.getElementById("save");
+
+            //x.value = x.value.toUpperCase();
+
+            if (rb2.checked == true) {
+                cf.style.display = "none";
+                x.style.display = "none";
+                z.style.display = "none";
+                bs.style.display = "none";
+                console.log('true');
+            }
+            if (rb1.checked == true) {
+                cf.style.display = "";
+                bs.style.display = "";
+                sugges();
+            }
         }
     </script>
 @endpush

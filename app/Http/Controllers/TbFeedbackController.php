@@ -40,13 +40,19 @@ class TbFeedbackController extends Controller
     {
         //
         $nowDate = Carbon::now()->format('Y-m-d H:i:m');
-        for ($i = 0; $i < 3; $i++) {
+        //$id = 1;
+        $re_referess = $request->referees;
+        //dd($request->all(), $nowDate, $request->referees[0], $request->referees[1], $request->referees[2]);
+        for ($i = 0; $i < sizeof($re_referess); $i++) {
+            /*   dd($id); */
             $f_feed = new TbFeedback();
             $f_feed->research_id = $request->id_r;
             $f_feed->employee_referees_id = $request->referees[$i];
             $f_feed->date_send_referess = $nowDate;
             $f_feed->save();
+            //  $id++;
         }
+
         DB::table('tb_research')
             ->where('research_id', '=', $request->id_r)
             ->update(['research_status' => '1']);
@@ -104,8 +110,8 @@ class TbFeedbackController extends Controller
     public function viewFeed($id)
     {
         $data_fe = DB::table('tb_feedback')
-            ->join('tb_directors','tb_feedback.employee_referees_id','tb_directors.employee_referees_id')
-            ->join('tb_research','tb_feedback.research_id','=','tb_feedback.research_id')
+            ->join('tb_directors', 'tb_feedback.employee_referees_id', 'tb_directors.employee_referees_id')
+            ->join('tb_research', 'tb_feedback.research_id', '=', 'tb_feedback.research_id')
             ->where('tb_feedback.research_id', $id)
             ->get();
         return response()->json(['data_fe' => $data_fe]);

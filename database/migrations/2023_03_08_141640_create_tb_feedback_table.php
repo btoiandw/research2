@@ -15,7 +15,7 @@ class CreateTbFeedbackTable extends Migration
     {
         Schema::create('tb_feedback', function (Blueprint $table) {
            // $table->id();
-            $table->integer('research_id')->primary();
+            $table->integer('research_id');
             $table->integer('employee_referees_id');
 
             $table->dateTime('date_send_referess')->nullable();

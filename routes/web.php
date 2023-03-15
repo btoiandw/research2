@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -54,12 +55,18 @@ Route::get('/view-pdf/{id}', [\App\Http\Controllers\Pre\TbResearchController::cl
 Route::post('research/update', [\App\Http\Controllers\Pre\TbResearchController::class, 'update'])->name('user.update_research');
 
 
-Route::get('admin/deliver-list/{id}',[\App\Http\Controllers\Pre\TbAdminController::class,'deliverPages'])->name('admin.deliver-pages');
-Route::get('admin/report/cbg/{id}',[\App\Http\Controllers\Pre\TbAdminController::class,'cbgPages'])->name('admin.dbg-pages');
-Route::get('admin/report/cresearch/{id}',[\App\Http\Controllers\Pre\TbAdminController::class,'cresearchPages'])->name('admin.cresearch-pages');
+Route::get('admin/deliver-list/{id}', [\App\Http\Controllers\Pre\TbAdminController::class, 'deliverPages'])->name('admin.deliver-pages');
+Route::get('admin/report/cbg/{id}', [\App\Http\Controllers\Pre\TbAdminController::class, 'cbgPages'])->name('admin.dbg-pages');
+Route::get('admin/report/cresearch/{id}', [\App\Http\Controllers\Pre\TbAdminController::class, 'cresearchPages'])->name('admin.cresearch-pages');
 
 
-Route::get('/admin/cancel/{id}',[\App\Http\Controllers\Pre\TbAdminController::class,'show']);
-Route::get('/admin/cancel/admin/{id}',[\App\Http\Controllers\Pre\TbAdminController::class,'edit']);
-Route::post('/admin/search',[\App\Http\Controllers\Pre\TbAdminController::class,'searchAdmin']);
-Route::post('/admin/store',[\App\Http\Controllers\Pre\TbAdminController::class,'store']);
+Route::get('/admin/cancel/{id}', [\App\Http\Controllers\Pre\TbAdminController::class, 'show']);
+Route::get('/admin/cancel/admin/{id}', [\App\Http\Controllers\Pre\TbAdminController::class, 'edit']);
+Route::post('/admin/search', [\App\Http\Controllers\Pre\TbAdminController::class, 'searchAdmin']);
+Route::post('/admin/store', [\App\Http\Controllers\Pre\TbAdminController::class, 'store']);
+
+/* Route::get('/ff/{id}', function ($id) {
+    DB::table('tb_research')
+        ->where('research_id', '=', $id)
+        ->update(['research_status' => '0']);
+}); */

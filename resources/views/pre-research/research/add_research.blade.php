@@ -149,7 +149,7 @@
                                     <thead align="center">
                                         <tr>
                                             <th width="600px" style="font-size: 14px">ชื่อ-นามสกุล</th>
-                                            <th width="600px" style="font-size: 14px">สังกัด/คณะ</th>
+                                            {{--  <th width="600px" style="font-size: 14px">สังกัด/คณะ</th> --}}
                                             <th width="300px" style="font-size: 14px">บทบาทในการวิจัย</th>
                                             <th width="300px" style="font-size: 14px">ร้อยละบทบาทในการวิจัย</th>
                                             <th width="">
@@ -161,28 +161,12 @@
                                         <tr id="row[]">
                                             <td>
                                                 <input type="text" name="researcher[]" id="researcher"
-                                                    value="{{ $data[0]->full_name_th }}" class="form-control" required>
+                                                    value="{{ $data[0]->full_name_th }}" class="form-control autocomplete_txt" required>
                                             </td>
+
                                             <td>
-                                                <select class="form-select" id="faculty" name="faculty[]">
-                                                    <option value="">
-                                                        เลือกสังกัด/คณะ
-                                                        {{-- {{ $data[0]->organizational }}&nbsp;&nbsp;{{ $data[0]->major }} --}}
-                                                    </option>
-                                                    @foreach ($list_fac as $row)
-                                                        @if ($row->major == '0')
-                                                            <option value="{{ $row->id }} ">
-                                                                {{ $row->organizational }}</option>
-                                                        @else
-                                                            <option value="{{ $row->id }}">
-                                                                {{ $row->organizational }}&nbsp;&nbsp;{{ $row->major }}
-                                                            </option>
-                                                        @endif
-                                                    @endforeach
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <select class="form-select " name="role-research[]" id="role-research">
+                                                <select class="form-select disable" readonly name="role-research[]"
+                                                    id="role-research">
                                                     <option value="หัวหน้าโครงการวิจัย" selected readonly>
                                                         หัวหน้าโครงการวิจัย</option>
                                                     <option value="ผู้ร่วมวิจัย">ผู้ร่วมวิจัย</option>
@@ -191,7 +175,7 @@
                                             </td>
                                             <td>
                                                 <input type="number" class="form-control" name="pc[]" id="pc"
-                                                    required placeholder="0.00"{{--   onchange="Vpc()"onKeyUp="Vpc();" --}} />
+                                                    required placeholder="0.00" />
                                                 <input type="hidden" name="sum[]" id="sum">
                                             </td>
                                             <td>
@@ -743,18 +727,7 @@
             $('#addBtn').click(function() {
                 i++;
                 var tr = '<tr id="row' + i + '">' +
-                    '<td><input type="text" name="researcher[]" id="researcher" class="form-control"></td>' +
-                    '<td><select class="form-select" id="faculty" name="faculty[]"><option value="">--เลือกสังกัด/คณะ--</option> ' +
-                    '@foreach ($list_fac as $row)' +
-                    '@if ($row->major == '0')' +
-                    '<option value = "{{ $row->id }}" >{{ $row->organizational }} </option>' +
-                    '@else' +
-                    '<option value = "{{ $row->id }}" >{{ $row->organizational }} &nbsp;&nbsp;{{ $row->major }}</option>' +
-                    '@endif' +
-                    '@endforeach' +
-                    /* tr = tr + select_option(); */
-                    +
-                    '</td>' +
+                    '<td><input type="text" name="researcher[]" id="researcher" class="form-control autocomplete_txt"></td>' +
                     '<td><select class="form-select" name="role-research[]" id="role-research"><option value="หัวหน้าโครงการวิจัย">หัวหน้าโครงการวิจัย</option><option value="ผู้ร่วมวิจัย" selected readonly>ผู้ร่วมวิจัย</option></select></td>' +
                     '<td><input type="number" class="form-control" name="pc[]" id="pc"placeholder="0.00" onchange="Vpc()" /></td>' +
                     '<td><button type="button" id="btnDel" class="btn btn-danger" >-</button></td>' +
@@ -820,14 +793,14 @@
                         var url = '/view-pdf/' + id;
                         //console.log(url);
                         window.open(url, "_blank");
-                    })
+                    });
                     $('#view_word').click(function() {
                         //console.log(data[0].research_id);
                         var id = data[0].research_id;
                         var url = '/view-word/' + id;
                         //console.log(url);
                         window.open(url, "_blank");
-                    })
+                    });
                 }
             })
 
