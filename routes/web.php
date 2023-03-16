@@ -65,5 +65,5 @@ Route::get('/admin/cancel/admin/{id}', [\App\Http\Controllers\Pre\TbAdminControl
 Route::post('/admin/search', [\App\Http\Controllers\Pre\TbAdminController::class, 'searchAdmin']);
 Route::post('/admin/store', [\App\Http\Controllers\Pre\TbAdminController::class, 'store']);
 
-//Route::post('/get-researcher',[\App\Http\Controllers\Pre\TbSendResearchController::class,'getResearch']);
+Route::get('/users/cancel-research/{id}',[\App\Http\Controllers\Pre\TbResearchController::class,'cancel']);
 

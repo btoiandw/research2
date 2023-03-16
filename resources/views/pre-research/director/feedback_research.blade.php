@@ -147,16 +147,16 @@
                 </div>
                 <div class="modal-body">
                     <div class="row mb-3">
-                        <strong for="year" class="col-sm-2 col-form-label" align="right">ปีงบประมาณ</strong>
-                        <div class="col-sm-10">
+                        <strong for="year" class="col-sm-3 col-form-label" align="right">ปีงบประมาณ</strong>
+                        <div class="col-sm-9">
                             <input type="text" class=" form-control-plaintext" id="year" name="year">
                         </div>
                     </div>
 
                     <div class="row mb-3">
-                        <strong for="nameTH" class="col-sm-2 col-form-label "
+                        <strong for="nameTH" class="col-3 col-form-label "
                             align="right">{{-- &emsp;&emsp; --}}ชื่อโครงร่างงานวิจัยภาษาไทย</strong>
-                        <div class=" col-sm-10">
+                        <div class=" col-sm-9">
                             <label class="form-control-plaintext" id="nameTH" name="nameTH"></label>
                         </div>
                     </div>
@@ -177,7 +177,7 @@
                                     <tr>
                                         <th width="600px" style="font-size: 14px">ลำดับ</th>
                                         <th width="600px" style="font-size: 14px">ชื่อ-นามสกุล</th>
-                                        <th width="600px" style="font-size: 14px">สังกัด/คณะ</th>
+
                                         <th width="300px" style="font-size: 14px">ร้อยละบทบาทในการวิจัย</th>
                                     </tr>
                                 </thead>
@@ -186,8 +186,6 @@
                                 </tbody>
                             </table>
                         </div>
-
-
                     </div>
 
                     <div class="row mb-3">
@@ -226,6 +224,7 @@
                         <div class="row col-sm-9">
                             <div class="col-sm">
                                 <label class="form-control-plaintext" id="start" name="sdate"></label>
+
                             </div>
                             <strong for="inputEmail3" class="col-sm-4 col-form-label "
                                 align="right">วันที่สิ้นสุดการวิจัย</strong>
@@ -245,18 +244,20 @@
 
                         </div>
                     </div>
-                    <div class="d-grid gap-2 d-md-flex mx-5">
-                        <a href="{{ route('view.word', ['id' => $item->research_id]) }}" class="btn btn-warning"
-                            id="view_word" target="_blank">
-                            WORD FILE
-                        </a>
-                        <a href="{{ route('view.pdf', ['id' => $item->research_id]) }}" class="btn btn-warning"
-                            id="view_pdf" target="_blank">
-                            PDF FILE
-                        </a>
+
+                    <div class="row">
+                        <div class="d-grid gap-2 d-md-flex mx-5">
+                            <button class="btn btn-warning" id="view_word">
+                                WORD FILE
+                            </button>
+                            <button class="btn btn-warning" id="view_pdf">
+                                PDF FILE
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
+
                     <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -408,38 +409,45 @@
                 url: '/view/research/' + id,
                 dataType: 'JSON',
                 success: function(res) {
-
+                    moment.locale('th');
                     console.log(res.data_re);
                     var data = res.data_re;
                     createRows(res);
                     $('#viewdetail').modal('toggle');
-                    // $('#id_research').html(data[0].research_id);
-
-                    /* for (let i = 0; i < data.length; i++) {
-                        const fullname = data[i].full_name_th;
-                        const pname = data[i].pname;
-                        const major = data[i].major;
-                        const organizational = data[i].organizational;
-                        const pc = data[i].pc;
-
-
-                    } */
-                    //$('#researcher_re').html(html);
                     //console.log(html);
+                    var type_re = data[0].type_research_id;
+                    var type = type_re.split('_');
+                    //console.log(type);
+                    var area_re = data[0].research_area;
+                    var area = area_re.split('_');
+                    var start = moment(data[0].date_research_start).add(543, 'year').format('Do MMMM YYYY');
+                    var end = moment(data[0].date_research_end).add(543, 'year').format('Do MMMM YYYY');
+                    // console.log(start);
+                    //console.log(area);
                     $('#year').val(data[0].year_research);
                     $('#nameTH').html(data[0].research_th);
                     $('#nameEN').html(data[0].research_en);
                     $('#source').html(data[0].research_source_name);
-                    $('#type_re').html(data[0].type_research_id);
+                    $('#type_re').html(type[0] + ', ' + type[1]);
                     $('#key').html(data[0].keyword);
-                    $('#area').html(data[0].research_area);
-                    $('#start').html(data[0].date_research_start);
-                    $('#end').html(data[0].date_research_end);
-                    $('#bud').html(data[0].budage_research);
-
-                    /* $('#view_word').click(function(){
-
-                    }) */
+                    $('#area').html(area[0] + ' ' + area[1] + ' ' + area[2]);
+                    $('#start').html(start);
+                    $('#end').html(end);
+                    $('#bud').html(data[0].budage_research + '.00 บาท');
+                    $('#view_pdf').click(function() {
+                        //console.log(data[0].research_id);
+                        var id = data[0].research_id;
+                        var url = '/view-pdf/' + id;
+                        //console.log(url);
+                        window.open(url, "_blank");
+                    });
+                    $('#view_word').click(function() {
+                        //console.log(data[0].research_id);
+                        var id = data[0].research_id;
+                        var url = '/view-word/' + id;
+                        //console.log(url);
+                        window.open(url, "_blank");
+                    });
                 }
             })
 
@@ -457,13 +465,13 @@
                 for (var i = 0; i < len; i++) {
                     //var id = response['data_re'][i].full_name_th;
                     var nameth = res['data_re'][i].full_name_th;
-                    var major = res['data_re'][i].major;
+                   
                     var pc = res['data_re'][i].pc;
 
                     var tr_str = "<tr>" +
                         "<td align='center'>" + (i + 1) + "</td>" +
                         "<td align='center'>" + nameth + "</td>" +
-                        "<td align='center'>" + major + "</td>" +
+
                         "<td align='center'>" + pc + "</td>" +
                         "</tr>";
 

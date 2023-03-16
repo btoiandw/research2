@@ -52,37 +52,39 @@
                                     $i = 1;
                                 @endphp
                                 @foreach ($data_research as $item)
-                                    <tr>
-                                        <td>{{ $i++ }}</td>
-                                        <td>
-                                            {!! Str::limit("$item->research_th", 50, ' ...') !!}
-                                        </td>
-                                        <td>
-                                            {!! Str::limit("$item->research_en", 50, ' ...') !!}
-                                        </td>
-                                        <td>
-                                            <button class="btn btn-info btn-sm" type="button"
-                                                onclick="viewDetail({{ $item->research_id }})">
-                                                รายละเอียด
-                                            </button>
-                                        </td>
-                                        <td>
-                                            @if ($item->research_status == 0)
-                                                <button class="btn btn-yellow disabled btn-sm">
-                                                    รอตรวจสอบ
+                                    @if ($item->research_status != '11' && $item->research_status != '12')
+                                        <tr>
+                                            <td>{{ $i++ }}</td>
+                                            <td>
+                                                {!! Str::limit("$item->research_th", 50, ' ...') !!}
+                                            </td>
+                                            <td>
+                                                {!! Str::limit("$item->research_en", 50, ' ...') !!}
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-info btn-sm" type="button"
+                                                    onclick="viewDetail({{ $item->research_id }})">
+                                                    รายละเอียด
                                                 </button>
-                                            @else
-                                            @endif
-                                        </td>
-                                        <td>
-                                            <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-                                                <button class="btn btn-yellow me-md-2 btn-sm" type="button"
-                                                    onclick="edit({{ $item->research_id }})">แก้ไข</button>
-                                                <button class="btn btn-danger btn-sm" type="button"
-                                                    onclick="cancel_resesrch({{ $item->research_id }})">ยกเลิก</button>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                            </td>
+                                            <td>
+                                                @if ($item->research_status == 0)
+                                                    <button class="btn btn-yellow disabled btn-sm">
+                                                        รอตรวจสอบ
+                                                    </button>
+                                                @else
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                                                    <button class="btn btn-yellow me-md-2 btn-sm" type="button"
+                                                        onclick="edit({{ $item->research_id }})">แก้ไข</button>
+                                                    <button class="btn btn-danger btn-sm" type="button"
+                                                        onclick="cancel_resesrch({{ $item->research_id }})">ยกเลิก</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endif
                                 @endforeach
 
                             </tbody>
@@ -833,12 +835,31 @@
                         cancelButtonText: 'ยกเลิก'
                     }).then((result) => {
                         if (result.isConfirmed) {
+                            $.ajax({
+                                method: 'GET',
+                                dataType: 'JSON',
+                                url: '/users/cancel-research/' + id,
+                                success: function(respo) {
+                                    console.log(respo);
+                                    if (respo.status == true) {
+                                        Swal.fire({
+                                            text: 'ยกเลิกสำเร็จ!',
+                                            icon: 'success'
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                location.reload();
+                                            }
+                                        });
+                                    } else {
+                                        Swal.fire({
+                                            text: 'ยกเลิกไม่สำเร็จ!',
 
-                            Swal.fire(
-                                'Deleted!',
-                                'Your file has been deleted.',
-                                'success'
-                            )
+                                            icon: 'error'
+                                        });
+                                    }
+                                }
+                            })
+
                         }
                     })
                 }
@@ -890,6 +911,7 @@
             if (len > 0) {
                 for (var i = 0; i < len; i++) {
                     //var id = response['data_re'][i].full_name_th;
+                    var emp_id = res['data_re'][i].employee_id;
                     var nameth = res['data_re'][i].full_name_th;
                     // var major = res['data_re'][i].major;
                     var pc = res['data_re'][i].pc;
@@ -897,9 +919,11 @@
 
                     var tr_str = "<tr id='row" + i + "'>" +
                         "<td align='center'>" + (i + 1) + "</td>" +
-                        "<td align='center'>" + nameth + "</td>" +
+                        "<td align='center'><select class='form-select' name='researcher_ed[" + (i + 1) +
+                        "]'><option value='" + emp_id + "'>" + nameth + "</option></select></td>" +
                         // "<td align='center'>" + major + "</td>" +
-                        "<td align='center'>" + pc + "</td>" +
+                        "<td align='center'><input type='number' class='form-control' name='pc_ed[" + (i + 1) +
+                        "]' value='" + pc + "'/></td>" +
                         "<td align='center'><button type='button' id='btnDel' class='btn btn-danger btn-sm' ><i class='fa fa-minus'></i></button></td>"
                     "</tr>";
 

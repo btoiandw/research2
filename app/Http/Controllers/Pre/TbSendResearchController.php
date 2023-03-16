@@ -83,19 +83,5 @@ class TbSendResearchController extends Controller
         //
     }
 
-    /* public function getResearch(Request $request)
-    {
-        $name = $request->get('researcher');
-        $fieldName = $request->get('fieldName');
-
-        $name = strtolower(trim($name));
-
-        if (empty($fieldName)) {
-            $fieldName = 'name';
-        }
-
-        $researcher = DB::table('users')->where('LOWER(' . $fieldName . ')', 'LIKE', "$name%")->get();
-
-        return $researcher;
-    } */
+    
 }

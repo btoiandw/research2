@@ -21,7 +21,9 @@ class TbResearchController extends Controller
      */
     public function index($id, $roles)
     {
-        $list_user = DB::table('users')->get();
+
+        $list_user = DB::table('users')->join('tb_admins','users.employee_id','!=','tb_admins.employee_id')->get('users.*');
+        //dd($list_user);
         $list_fac = DB::table('tb_faculties')->get();
         $list_source = DB::table('tb_research_sources')->get();
         $data = DB::table('users')
@@ -65,14 +67,14 @@ class TbResearchController extends Controller
     {
         //
 
-        //dd($request->all(), $request->pc[0], $request->pc[2], $request->pc[3], sizeof($request->pc));
+        //dd($request->all(), sizeof($request->pc));
         $validation = $request->validate(
             [
                 'year_research' => 'required|max:4',
                 'research_nameTH' => 'required|unique:tb_research,research_th',
                 'research_nameEN' => 'required|unique:tb_research,research_en',
-                'researcher' => 'required',
-                'researcher.*' => 'required',
+                // 'researcher' => 'required',
+                // 'researcher.*' => 'required',
                 //'faculty' => 'required',
                 //'faculty.*' => 'required',
                 // 'role-research' => 'required',
@@ -96,8 +98,8 @@ class TbResearchController extends Controller
                 'year_research.required' => 'ข้อมูลห้ามเกิน 4 ตัว',
                 'research_nameTH.required' => 'โปรดระบุชื่อโครงร่างภาษาไทย',
                 'research_nameEN.required' => 'โปรดระบุชื่อโครงร่างภาษาอังกฤษ',
-                'researcher.required' => 'โปรดระบุชื่อนักวิจัย',
-                'researcher.*.required' => 'โปรดระบุชื่อนักวิจัย',
+                // 'researcher.required' => 'โปรดระบุชื่อนักวิจัย',
+                // 'researcher.*.required' => 'โปรดระบุชื่อนักวิจัย',
                 //'faculty.required' => 'โปรดระบุสังกัด/คณะ',
                 //'faculty.*.required' => 'โปรดระบุสังกัด/คณะ',
                 // 'role-research.required' => 'โปรดระบุบทบาทในการวิจัย',
@@ -148,22 +150,6 @@ class TbResearchController extends Controller
         //dd($id);
         $reYear = $request->year_research;
         $status = 0; //รอการตรวจสอบ
-
-        //หา id user ตามชื่อที่กรอกมา
-
-        /* $rc = $request->researcher;
-        $us = array();
-        $result = DB::table('users')->whereIn('full_name_th', $rc)->get('employee_id'); //whereIn ใช้กับ where array
-        //dd($result,$id_re,$area,$allType);
-        for ($i = 0; $i < sizeof($rc); $i++) {
-            if (empty($result[$i])) {
-                $us = $request->researcher[$i];
-                Alert::error('ไม่พบข้อมูลชื่อ-นามสกุลนักวิจัย', $us);
-                return redirect()->back();
-                //dd($rc, $result, sizeof($rc), $us,$i);
-            }
-        } */
-
 
         //เช็คค่าร้อยละงานวิจัยว่าครบ100มั้ย
         $pc = collect($request->pc);  //collect=>จับ array เป็นกลุ่มเพื่อนับจำนวน
@@ -286,37 +272,57 @@ class TbResearchController extends Controller
     public function update(Request $request)
     {
         //
+
         $research = DB::table('tb_research')
             ->where('research_id', $request->id)
             ->first();
-        //dd($research) ;
+        $send_e = DB::table('tb_send_research')->where('research_id', $request->id)->delete();
         $area = $request->ad . '_' . $request->ct . '_' . $request->zp;
-
+        //dd($request->all(), $send_e, $area, sizeof($request->pc_ed));
         //$research[0]->save();
-        $path = 'uploads/research/' . $research->year_research . '/' . $request->id;
-        $file_word = $path . '/' . $research->word_file;
-        $file_pdf = $path . '/' . $research->pdf_file;
-        if ($file_p = $request->file('f_pdf')) {
-            File::delete(public_path($file_pdf));
-            $namep = $file_p->getClientOriginalName();
-            $eNamep = explode('.', $namep);
-            $infop = end($eNamep);
-            $fileName_p = $research->research_id . "_0." . $infop;
+        if ($request->file('f_pdf') || $request->file('f_word')) {
+            $path = 'uploads/research/' . $research->year_research . '/' . $request->id;
+            $file_word = $path . '/' . $research->word_file;
+            $file_pdf = $path . '/' . $research->pdf_file;
+            if ($file_p = $request->file('f_pdf')) {
+                File::delete(public_path($file_pdf));
+                $namep = $file_p->getClientOriginalName();
+                $eNamep = explode('.', $namep);
+                $infop = end($eNamep);
+                $fileName_p = $research->research_id . "_0." . $infop;
+                $file_p->move($path, $fileName_p);
+                DB::table('tb_research')->where('research_id', $request->id)->update([
+                    'pdf_file' => $fileName_p,
+                    'updated_at' => Carbon::now()->format('Y-m-d H:i:m'),
+                ]);
+            }
 
-            $file_p->move($path, $fileName_p);
+            if ($file_w = $request->file('f_word')) {
+                File::delete(public_path($file_word));
+                $namew = $file_w->getClientOriginalName();
+                $eNamew = explode('.', $namew);
+                $infow = end($eNamew);
+                $fileName_w = $research->research_id . "_0." . $infow;
+
+                $file_w->move($path, $fileName_w);
+
+                DB::table('tb_research')->where('research_id', $request->id)->update([
+                    'word_file' => $fileName_w,
+                    'updated_at' => Carbon::now()->format('Y-m-d H:i:m'),
+                ]);
+            }
+            //return redirect()->back()->with('success_edit');
         }
 
-        if ($file_w = $request->file('f_word')) {
-            File::delete(public_path($file_word));
-            $namew = $file_w->getClientOriginalName();
-            $eNamew = explode('.', $namew);
-            $infow = end($eNamew);
-            $fileName_w = $research->research_id . "_0." . $infow;
-
-            $file_w->move($path, $fileName_w);
-        }
         //dd($file_p->move($path, $fileName_p), $file_w->move($path, $fileName_w));
 
+        for ($i = 1; $i <= sizeof($request->pc_ed); $i++) {
+            $send = new TbSendResearch();
+            $send->research_id = $request->id;
+            $send->id = $request->researcher_ed[$i];
+            $send->pc = $request->pc_ed[$i];
+            $send->save();
+        }
         $re = DB::table('tb_research')->where('research_id', $request->id)->update([
             'research_th' => $request->TH,
             'research_en' => $request->EN,
@@ -324,15 +330,13 @@ class TbResearchController extends Controller
             'research_area' => $area,
             'date_research_start' => $request->sdate,
             'date_research_end' => $request->edate,
-            'research_th' => $request->budage,
-            'pdf_file' => $fileName_p,
-            'word_file' => $fileName_w,
+            'budage_research' => $request->budage,
             'updated_at' => Carbon::now()->format('Y-m-d H:i:m'),
         ]);
+
         // $research->save();
-        if ($re) {
-            return redirect()->back()->with('success_edit');
-        }
+
+        return redirect()->back()->with('success_edit');
     }
 
     /**
@@ -384,5 +388,14 @@ class TbResearchController extends Controller
         $file = $path . '/' . $file_name;
         //dd($file_name,$file);
         return response()->file($file);
+    }
+
+    public function cancel($id)
+    {
+        DB::table('tb_research')->where('research_id', $id)->update([
+            'research_status' => '11',
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:m'),
+        ]);
+        return response()->json(['status' => true]);
     }
 }
