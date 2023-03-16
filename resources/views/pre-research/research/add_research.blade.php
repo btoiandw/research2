@@ -106,6 +106,7 @@
                     @csrf
                     <div class="modal-body">
                         <div class="d-flex justify-content-end align-content-end">
+
                             <label style="font-size: 10px">
                                 @php
                                     echo thaidate('วันlที่ j F พ.ศ.Y เวลา H:i:s');
@@ -160,14 +161,18 @@
                                     <tbody align="center" id="roleResearch">
                                         <tr id="row[]">
                                             <td>
-                                                <input type="text" name="researcher[]" id="researcher"
-                                                    value="{{ $data[0]->full_name_th }}" class="form-control autocomplete_txt" required>
+                                                <select class="form-select" disabled name="researcher[1]"
+                                                    id="resesrcher">
+                                                    <option value="{{ $data[0]->employee_id }}">
+                                                        {{ $data[0]->full_name_th }}
+                                                    </option>
+                                                </select>
                                             </td>
 
                                             <td>
-                                                <select class="form-select disable" readonly name="role-research[]"
+                                                <select class="form-select "disabled name="role-research[]"
                                                     id="role-research">
-                                                    <option value="หัวหน้าโครงการวิจัย" selected readonly>
+                                                    <option value="หัวหน้าโครงการวิจัย" selected>
                                                         หัวหน้าโครงการวิจัย</option>
                                                     <option value="ผู้ร่วมวิจัย">ผู้ร่วมวิจัย</option>
                                                 </select>
@@ -179,8 +184,8 @@
                                                 <input type="hidden" name="sum[]" id="sum">
                                             </td>
                                             <td>
-                                                <button type="button" name="addBtn" class="btn btn-info"
-                                                    id="addBtn">+</button>
+                                                <button type="button" name="addBtn" class="btn btn-info btn-sm"
+                                                    id="addBtn"><i class="fa fa-plus"></i></button>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -497,65 +502,25 @@
                                 for="message-text"style="text-align:left;font-weight:600;font-size:18px;background:#fff;border:none"
                                 class="pt-3 py-0 card-header">รายชื่อนักวิจัย</label>
                             <div class="card-body pt-0">
-                                <table class="table table-responsive" id="tableTap" name="tableTap">
+                                <table class="table table-responsive" id="edit_researcher" name="tableTap">
                                     <thead align="center">
                                         <tr>
+                                            <th style="font-size: 14px">ลำดับ</th>
                                             <th width="600px" style="font-size: 14px">ชื่อ-นามสกุล</th>
-                                            <th width="600px" style="font-size: 14px">สังกัด/คณะ</th>
-                                            <th width="300px" style="font-size: 14px">บทบาทในการวิจัย</th>
+                                            {{-- <th width="600px" style="font-size: 14px">สังกัด/คณะ</th>
+                                            <th width="300px" style="font-size: 14px">บทบาทในการวิจัย</th> --}}
                                             <th width="300px" style="font-size: 14px">ร้อยละบทบาทในการวิจัย</th>
                                             <th width="">
-
+                                                <button type="button" name="addBtnED" class="btn btn-info btn-sm"
+                                                    id="addBtnED"><i class="fa fa-plus"></i></button>
                                             </th>
                                         </tr>
                                     </thead>
-                                    <tbody align="center" id="roleResearch">
-                                        <tr id="row[]">
-                                            <td>
-                                                <input type="text" name="researcher[]" id="researcher"
-                                                    value="{{ $data[0]->full_name_th }}" class="form-control" required>
-                                            </td>
-                                            <td>
-                                                <select class="form-select" id="faculty" name="faculty[]">
-                                                    <option value="">
-                                                        เลือกสังกัด/คณะ
-                                                        {{-- {{ $data[0]->organizational }}&nbsp;&nbsp;{{ $data[0]->major }} --}}
-                                                    </option>
-                                                    @foreach ($list_fac as $row)
-                                                        @if ($row->major == '0')
-                                                            <option value="{{ $row->id }} ">
-                                                                {{ $row->organizational }}</option>
-                                                        @else
-                                                            <option value="{{ $row->id }}">
-                                                                {{ $row->organizational }}&nbsp;&nbsp;{{ $row->major }}
-                                                            </option>
-                                                        @endif
-                                                    @endforeach
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <select class="form-select " name="role-research[]" id="role-research">
-                                                    <option value="หัวหน้าโครงการวิจัย" selected readonly>
-                                                        หัวหน้าโครงการวิจัย</option>
-                                                    <option value="ผู้ร่วมวิจัย">ผู้ร่วมวิจัย</option>
-                                                </select>
+                                    <tbody align="center" id="ed_research">
 
-                                            </td>
-                                            <td>
-                                                <input type="number" class="form-control" name="pc[]" id="pc"
-                                                    required placeholder="0.00"{{--   onchange="Vpc()"onKeyUp="Vpc();" --}} />
-                                                <input type="hidden" name="sum[]" id="sum">
-                                            </td>
-                                            <td>
-                                                <button type="button" name="addBtn" class="btn btn-info"
-                                                    id="addBtn">+</button>
-                                            </td>
-                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
-
-
                         </div>
 
                         <div class="row mb-3">
@@ -726,17 +691,28 @@
             var i = 1;
             $('#addBtn').click(function() {
                 i++;
+                // var row = i;
                 var tr = '<tr id="row' + i + '">' +
-                    '<td><input type="text" name="researcher[]" id="researcher" class="form-control autocomplete_txt"></td>' +
-                    '<td><select class="form-select" name="role-research[]" id="role-research"><option value="หัวหน้าโครงการวิจัย">หัวหน้าโครงการวิจัย</option><option value="ผู้ร่วมวิจัย" selected readonly>ผู้ร่วมวิจัย</option></select></td>' +
-                    '<td><input type="number" class="form-control" name="pc[]" id="pc"placeholder="0.00" onchange="Vpc()" /></td>' +
-                    '<td><button type="button" id="btnDel" class="btn btn-danger" >-</button></td>' +
+                    '<td> <select class="form-select"name="researcher[' + i + ']" id="resesrcher_' + i +
+                    '">@foreach ($list_user as $key)<option value="{{ $key->employee_id }}">{{ $key->full_name_th }}</option>@endforeach</select></td>' +
+                    '<td><select class="form-select" name="role-research[]" id="role-research" disabled><option value="หัวหน้าโครงการวิจัย">หัวหน้าโครงการวิจัย</option><option value="ผู้ร่วมวิจัย" selected readonly>ผู้ร่วมวิจัย</option></select></td>' +
+                    '<td><input type="number" class="form-control" name="pc[' + i + ']" id="pc_' + i +
+                    '"placeholder="0.00" onchange="Vpc()" /></td>' +
+                    '<td><button type="button" id="btnDel" class="btn btn-danger btn-sm" ><i class="fa fa-minus"></i></button></td>' +
                     '</tr>';
                 $('#roleResearch').append(tr);
-                //alert('id:'.$id.'name:'.$name.'major:'.$major);
+                console.log(tr);
             });
+
+
         });
+        //autocomplete
+        //$(document).on('focus', '.autocomplete_txt', handleAutocomplete);
+
         $(document).on('click', '#btnDel', function() {
+            $(this).closest('tr').remove();
+        });
+        $(document).on('click', '#btnDelED', function() {
             $(this).closest('tr').remove();
         });
         $(document).ready(function() {
@@ -882,6 +858,7 @@
                     //console.log(address);
                     var add = address.split('_');
                     console.log(add);
+                    createRowsEdit(res);
                     $('#editResearch').modal('toggle');
                     // console.log(data[0].year_research);
                     $('#id').val(data[0].research_id);
@@ -901,6 +878,58 @@
                     $('#f_pdf').val(data[0].pdf_file);
                 }
             })
+        }
+
+        function createRowsEdit(res) {
+            var len = 0;
+            $('#edit_researcher tbody').empty(); // Empty <tbody>
+            if (res['data_re'] != null) {
+                len = res['data_re'].length;
+            }
+            console.log(len);
+            if (len > 0) {
+                for (var i = 0; i < len; i++) {
+                    //var id = response['data_re'][i].full_name_th;
+                    var nameth = res['data_re'][i].full_name_th;
+                    // var major = res['data_re'][i].major;
+                    var pc = res['data_re'][i].pc;
+
+
+                    var tr_str = "<tr id='row" + i + "'>" +
+                        "<td align='center'>" + (i + 1) + "</td>" +
+                        "<td align='center'>" + nameth + "</td>" +
+                        // "<td align='center'>" + major + "</td>" +
+                        "<td align='center'>" + pc + "</td>" +
+                        "<td align='center'><button type='button' id='btnDel' class='btn btn-danger btn-sm' ><i class='fa fa-minus'></i></button></td>"
+                    "</tr>";
+
+
+                    $("#edit_researcher tbody").append(tr_str);
+                }
+                $('#addBtnED').click(function() {
+                    // var row = i;
+                    len = len + 1;
+                    var tr = '<tr id="row_ed' + len + '">' +
+                        '<td align="center">' + len + '</td>' +
+                        '<td> <select class="form-select"name="researcher_ed[' + len +
+                        ']" id="resesrcher_ed_' +
+                        len +
+                        '">@foreach ($list_user as $key)<option value="{{ $key->employee_id }}">{{ $key->full_name_th }}</option>@endforeach</select></td>' +
+                        '<td><input type="number" class="form-control" name="pc_ed[' + len +
+                        ']" id="pc_ed_' + len +
+                        '"placeholder="0.00" /></td>' +
+                        '<td><button type="button" id="btnDelED" class="btn btn-danger btn-sm" ><i class="fa fa-minus"></i></button></td>' +
+                        '</tr>';
+                    $('#ed_research').append(tr);
+                    console.log('LEN:' + len);
+                });
+            } else {
+                var tr_str = "<tr>" +
+                    "<td align='center' colspan='4'>No record found.</td>" +
+                    "</tr>";
+
+                $("#edit_researcher tbody").append(tr_str);
+            }
         }
     </script>
 @endpush

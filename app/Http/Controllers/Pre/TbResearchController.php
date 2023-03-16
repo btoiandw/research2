@@ -32,6 +32,7 @@ class TbResearchController extends Controller
             ->join('tb_send_research', 'tb_research.research_id', '=', 'tb_send_research.research_id')
             ->where('tb_send_research.id', '=', $id)
             ->get();
+        //dd($id,$roles,$data,$list_source,$list_fac,$list_user,$data_research);
         return view('pre-research.research.add_research')->with([
             'id' => $id,
             'roles' => $roles,
@@ -39,7 +40,8 @@ class TbResearchController extends Controller
             'list_source' => $list_source,
             'list_fac' => $list_fac,
             'list_user' => $list_user,
-            'data_research' => $data_research
+            'data_research' => $data_research,
+            //'users_login'=>DB::table('users')->where('users.employee_id', $id)
         ]);
     }
 
@@ -62,6 +64,8 @@ class TbResearchController extends Controller
     public function store(Request $request)
     {
         //
+
+        //dd($request->all(), $request->pc[0], $request->pc[2], $request->pc[3], sizeof($request->pc));
         $validation = $request->validate(
             [
                 'year_research' => 'required|max:4',
@@ -71,8 +75,8 @@ class TbResearchController extends Controller
                 'researcher.*' => 'required',
                 //'faculty' => 'required',
                 //'faculty.*' => 'required',
-                'role-research' => 'required',
-                'role-research.*' => 'required',
+                // 'role-research' => 'required',
+                // 'role-research.*' => 'required',
                 'pc' => 'required',
                 'pc.*' => 'required|',
                 'source_id' => 'required',
@@ -96,8 +100,8 @@ class TbResearchController extends Controller
                 'researcher.*.required' => 'โปรดระบุชื่อนักวิจัย',
                 //'faculty.required' => 'โปรดระบุสังกัด/คณะ',
                 //'faculty.*.required' => 'โปรดระบุสังกัด/คณะ',
-                'role-research.required' => 'โปรดระบุบทบาทในการวิจัย',
-                'role-research.*.required' => 'โปรดระบุบทบาทในการวิจัย',
+                // 'role-research.required' => 'โปรดระบุบทบาทในการวิจัย',
+                // 'role-research.*.required' => 'โปรดระบุบทบาทในการวิจัย',
                 'pc.required' => 'โปรดระบุร้อยละบทบาทในการวิจัย',
                 'pc.*.required' => 'โปรดระบุร้อยละบทบาทในการวิจัย',
                 'source_id.required' => 'โปรดระบุชื่อแหล่งทุน',
@@ -147,7 +151,7 @@ class TbResearchController extends Controller
 
         //หา id user ตามชื่อที่กรอกมา
 
-        $rc = $request->researcher;
+        /* $rc = $request->researcher;
         $us = array();
         $result = DB::table('users')->whereIn('full_name_th', $rc)->get('employee_id'); //whereIn ใช้กับ where array
         //dd($result,$id_re,$area,$allType);
@@ -158,7 +162,7 @@ class TbResearchController extends Controller
                 return redirect()->back();
                 //dd($rc, $result, sizeof($rc), $us,$i);
             }
-        }
+        } */
 
 
         //เช็คค่าร้อยละงานวิจัยว่าครบ100มั้ย
@@ -196,18 +200,20 @@ class TbResearchController extends Controller
                         if ($filep->move($path, $fileName_p)) {
                             $pc_re = $request->pc;
                             //dd($request->all(), $result, $pc_re, $id_re, $area, $allType, $us, $sumpc, $fileName_w, $fileName_p);
-                            for ($i = 0; $i < sizeof($rc); $i++) {
-                                $send = new TbSendResearch();
-                                $send->research_id = $id_re;
-                                $send->id = $result[$i]->employee_id;
-                                $send->pc = $request->pc[$i];
+                            for ($i = 0; $i <= sizeof($pc_re); $i++) {
+                                if ($i == 0) {
+                                    $send = new TbSendResearch();
+                                    $send->research_id = $id_re;
+                                    $send->id = $request->id_users;
+                                    $send->pc = $request->pc[0];
+                                } elseif ($i == 1) {
+                                } else {
+                                    $send = new TbSendResearch();
+                                    $send->research_id = $id_re;
+                                    $send->id = $request->researcher[$i];
+                                    $send->pc = $request->pc[$i];
+                                }
                                 $send->save();
-                                /* DB::insert(
-                                    'insert into tb_send_research (research_id,id,pc) values (?, ?,?)',
-                                    $id_re,
-                                    $result[$i],
-                                    $request->pc[$i]
-                                ); */
                             }
                             //dd($send);
 

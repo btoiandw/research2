@@ -65,8 +65,5 @@ Route::get('/admin/cancel/admin/{id}', [\App\Http\Controllers\Pre\TbAdminControl
 Route::post('/admin/search', [\App\Http\Controllers\Pre\TbAdminController::class, 'searchAdmin']);
 Route::post('/admin/store', [\App\Http\Controllers\Pre\TbAdminController::class, 'store']);
 
-/* Route::get('/ff/{id}', function ($id) {
-    DB::table('tb_research')
-        ->where('research_id', '=', $id)
-        ->update(['research_status' => '0']);
-}); */
+//Route::post('/get-researcher',[\App\Http\Controllers\Pre\TbSendResearchController::class,'getResearch']);
+
