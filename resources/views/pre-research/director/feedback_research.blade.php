@@ -72,66 +72,74 @@
                     <h1 class="modal-title fs-5" id="addFeedLabel">ประเมินโครงร่างงานวิจัย</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="row mb-3">
-                        <strong class="col-md-3">ชื่อโครงร่างงานวิจัยภาษาไทย</strong>
-                        <div class="col-md-9">
-                            <label for="" id="name_th"></label>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <strong class="col-md-3">ชื่อโครงร่างงานวิจัยอังกฤษ</strong>
-                        <div class="col-md-9">
-                            <label for="" id="name_en"></label>
-                        </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label class="col-sm-2 col-form-label fw-bold">ผลการประเมิน</label>
-                        <div class="col-sm-10"onclick="pass()">
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="AssessmentResults"
-                                    id="AssessmentResults1" value="ไม่ผ่าน" checked>
-                                <label class="form-check-label" for="AssessmentResults1">ไม่ผ่าน</label>
-                            </div>
-
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="AssessmentResults"
-                                    id="AssessmentResults2" value="ผ่าน" {{-- disabled --}}>
-                                <label class="form-check-label" for="AssessmentResults2">ผ่าน</label>
+                <form action="{{ route('director.add-feed') }}" method="post" enctype="multipart/form-data" id="form-feed">
+                    @csrf
+                    <div class="modal-body">
+                        <input type="hidden" name="id_director" value="{{ $data[0]->employee_referees_id }}">
+                        <input type="hidden" name="id_re" id="id_re">
+                        <div class="row mb-3">
+                            <strong class="col-md-3">ชื่อโครงร่างงานวิจัยภาษาไทย</strong>
+                            <div class="col-md-9">
+                                <label for="" id="name_th"></label>
                             </div>
                         </div>
-                    </div>
-                    <div class="mb-3 row"id="checkFile">
-                        <div class="col-sm-10">
-                            <div class="form-check form-check-inline">
-                                <input onclick="sugges()" class="form-check-input" type="checkbox" id="mustAddFile"
-                                    name="mustAddFile" value="mustAddFile">
-                                <label class="form-check-label text-danger"
-                                    for="mustAddFile">ต้องการเพิ่มไฟล์ข้อเสนอแนะ</label>
+                        <div class="row mb-3">
+                            <strong class="col-md-3">ชื่อโครงร่างงานวิจัยอังกฤษ</strong>
+                            <div class="col-md-9">
+                                <label for="" id="name_en"></label>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-sm-2 col-form-label fw-bold">ผลการประเมิน</label>
+                            <div class="col-sm-10"onclick="pass()">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="AssessmentResults"
+                                        id="AssessmentResults1" value="ไม่ผ่าน" checked>
+                                    <label class="form-check-label" for="AssessmentResults1">ไม่ผ่าน</label>
+                                </div>
+
+                                <div class="form-check form-check-inline" id="AssessmentResults2">
+                                    <input class="form-check-input" type="radio" name="AssessmentResults"
+                                        id="AssessmentResults2" value="ผ่าน" {{-- disabled --}}>
+                                    <label class="form-check-label" for="AssessmentResults2">ผ่าน</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3 row"id="checkFile">
+                            <div class="col-sm-10">
+                                <div class="form-check form-check-inline">
+                                    <input onclick="sugges()" class="form-check-input" type="checkbox" id="mustAddFile"
+                                        name="mustAddFile" value="mustAddFile">
+                                    <label class="form-check-label text-danger"
+                                        for="mustAddFile">ต้องการเพิ่มไฟล์ข้อเสนอแนะ</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class=" row " id="suggestion">
+                            <label class="col-sm-3 col-form-label fw-bold">ข้อเสนอแนะ</label>
+                            <div class=" px-3">
+                                <textarea {{-- onkeyup="sugges()" --}} class="form-control" name="suggestion" id="comment"
+                                    placeholder="ระบุข้อเสนอแนะ" rows="10"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="row" id="suggestionFile">
+                            <label class="col-sm-3 col-form-label fw-bold">ไฟล์ข้อเสนอแนะ</label>
+                            <div class="col-sm-9">
+                                <input type="file" class="form-control" name="suggestionFile" id="suggestionFile"
+                                    rows="20">
+
                             </div>
                         </div>
                     </div>
-                    <div class=" row " id="suggestion">
-                        <label class="col-sm-3 col-form-label fw-bold">ข้อเสนอแนะ</label>
-                        <div class=" px-3">
-                            <textarea {{-- onkeyup="sugges()" --}} class="form-control" name="suggestion" {{-- id="suggestion" --}}
-                                placeholder="ระบุข้อเสนอแนะ" rows="10"></textarea>
-                        </div>
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-success" id="save" name="save"
+                            {{-- onclick="saveFeed()" --}} value="บันทึก" />
+                        <input type="submit" class="btn btn-primary" name="save" id="comfirm" value="ยืนยัน" />
+                        {{-- <button type="button" class="btn btn-danger" data-bs-dismiss="modal">ยกเลิก</button> --}}
                     </div>
+                </form>
 
-                    <div class="row" id="suggestionFile">
-                        <label class="col-sm-3 col-form-label fw-bold">ไฟล์ข้อเสนอแนะ</label>
-                        <div class="col-sm-9">
-                            <input type="file" class="form-control" name="suggestionFile" id="suggestionFile"
-                                rows="20">
-
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Understood</button>
-                </div>
             </div>
         </div>
     </div>
@@ -322,7 +330,38 @@
 
         function addFeed(id) {
             console.log(id);
-            $('#addFeed').modal('toggle');
+            $.ajax({
+                method: 'GET',
+                dataType: 'JSON',
+                url: '/view/research/' + id,
+                success: function(res) {
+                    var data = res.data_re;
+                    var data_feed = res.data_feed;
+                    //console.log(data_feed);
+                    var di = @json($data[0]->employee_referees_id);
+                    console.log('DI:' + di);
+                    for (let index = 0; index < data_feed.length; index++) {
+                        if (data_feed[index].employee_referees_id == di) {
+                            console.log(data_feed[index]);
+                            $('#addFeed').modal('toggle');
+                            $('#id_re').val(data[0].research_id);
+                            $('#name_th').html(data[0].research_th);
+                            $('#name_en').html(data[0].research_en);
+                            if (data_feed[index].feedback != null || data_feed[index].suggestionFile != null) {
+                                $('#checkFile').css('display','none');
+                                $('#AssessmentResults2').css('display','none');
+                                $('#comment').html(data_feed[index].feedback);
+                            } else {
+
+                            }
+
+                        }
+                    }
+
+
+                }
+            })
+
         }
     </script>
     <script>
@@ -338,10 +377,11 @@
             var x = document.getElementById("suggestionFile");
             var z = document.getElementById("suggestion");
             var bs = document.getElementById("save");
+            var bc = document.getElementById("comfirm");
 
             //x.value = x.value.toUpperCase();
 
-            console.log('false');
+            // console.log('false');
             if (ck.checked == true) {
                 console.log('true');
                 Swal.fire({
@@ -465,7 +505,7 @@
                 for (var i = 0; i < len; i++) {
                     //var id = response['data_re'][i].full_name_th;
                     var nameth = res['data_re'][i].full_name_th;
-                   
+
                     var pc = res['data_re'][i].pc;
 
                     var tr_str = "<tr>" +
@@ -484,6 +524,11 @@
 
                 $("#detail_researcher tbody").append(tr_str);
             }
+        }
+
+        function saveFeed() {
+            var frm = $('#form-feed').serialize();
+            console.log(frm);
         }
     </script>
 @endpush

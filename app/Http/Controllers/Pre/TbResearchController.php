@@ -22,7 +22,7 @@ class TbResearchController extends Controller
     public function index($id, $roles)
     {
 
-        $list_user = DB::table('users')->join('tb_admins','users.employee_id','!=','tb_admins.employee_id')->get('users.*');
+        $list_user = DB::table('users')->join('tb_admins', 'users.employee_id', '!=', 'tb_admins.employee_id')->get('users.*');
         //dd($list_user);
         $list_fac = DB::table('tb_faculties')->get();
         $list_source = DB::table('tb_research_sources')->get();
@@ -248,7 +248,8 @@ class TbResearchController extends Controller
             ->join('tb_faculties', 'users.organization_id', '=', 'tb_faculties.id')
             ->where('tb_research.research_id', '=', $id)
             ->get();
-        return response()->json(['data_re' => $data_re]);
+        $data_feed = DB::table('tb_feedback')->where('research_id', $id)->get();
+        return response()->json(['data_re' => $data_re, 'data_feed' => $data_feed]);
     }
 
     /**

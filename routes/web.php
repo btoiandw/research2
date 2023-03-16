@@ -49,9 +49,9 @@ Route::post('/admin/add-director', [\App\Http\Controllers\TbFeedbackController::
 Route::get('/admin/view-feed/director/{id}', [\App\Http\Controllers\TbFeedbackController::class, 'viewFeed'])->name('admin.view-feed-director');
 
 Route::get('director/feedback/{id}/{roles}', [\App\Http\Controllers\Pre\TbDirectorController::class, 'feedPages'])->name('director.feedPages');
+Route::post('/director/addfeed',[\App\Http\Controllers\TbFeedbackController::class,'addFeed'])->name('director.add-feed');
 Route::get('/view-word/{id}', [\App\Http\Controllers\Pre\TbResearchController::class, 'viewFile'])->name('view.word');
 Route::get('/view-pdf/{id}', [\App\Http\Controllers\Pre\TbResearchController::class, 'viewFilePDF'])->name('view.pdf');
-
 Route::post('research/update', [\App\Http\Controllers\Pre\TbResearchController::class, 'update'])->name('user.update_research');
 
 
