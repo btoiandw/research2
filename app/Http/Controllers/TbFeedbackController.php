@@ -193,4 +193,15 @@ class TbFeedbackController extends Controller
             return redirect()->back();
         }
     }
+    public function FeedDetail($id, $u_id)
+    {
+        $dt = DB::table('tb_feedback')
+            ->join('tb_directors', 'tb_feedback.employee_referees_id', '=', 'tb_directors.employee_referees_id')
+            ->join('tb_research', 'tb_feedback.research_id', '=', 'tb_research.research_id')
+            ->where('tb_feedback.research_id', $id)
+            ->where('tb_feedback.employee_referees_id', $u_id)
+            ->get();
+
+        return response()->json(['dt' => $dt]);
+    }
 }

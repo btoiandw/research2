@@ -54,7 +54,7 @@
                                 @foreach ($data_research as $item)
                                     @if ($item->research_status != '11' && $item->research_status != '12')
                                         <tr>
-                                            <td>{{ $i++ }}</td>
+                                            <td align="center">{{ $i++ }}</td>
                                             <td>
                                                 {!! Str::limit("$item->research_th", 50, ' ...') !!}
                                             </td>
@@ -68,7 +68,7 @@
                                                 </button>
                                             </td>
                                             <td>
-                                                @if ($item->research_status == 0)
+                                                @if ($item->research_status == 0 || $item->research_status == 1)
                                                     <button class="btn btn-yellow disabled btn-sm">
                                                         รอตรวจสอบ
                                                     </button>
@@ -172,8 +172,7 @@
                                             </td>
 
                                             <td>
-                                                <select class="form-select "disabled name="role-research[]"
-                                                    id="role-research">
+                                                <select class="form-select " name="role-research[]" id="role-research">
                                                     <option value="หัวหน้าโครงการวิจัย" selected>
                                                         หัวหน้าโครงการวิจัย</option>
                                                     <option value="ผู้ร่วมวิจัย">ผู้ร่วมวิจัย</option>
@@ -230,7 +229,14 @@
                                         ศิลปวัฒนธรรม
                                     </label>
                                 </div>
-
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="etc" id="etc">
+                                    <label class="form-check-label mb-1">
+                                        อื่นๆ
+                                    </label>
+                                    <input type="text" class="form-control input_type" name="type[]" id="type"
+                                        value="" />
+                                </div>
                             </div>
 
                         </fieldset>
@@ -338,16 +344,16 @@
                 </div>
                 <div class="modal-body">
                     <div class="row mb-3">
-                        <strong for="year" class="col-sm-2 col-form-label" align="right">ปีงบประมาณ</strong>
-                        <div class="col-sm-10">
+                        <strong for="year" class="col-sm-3 col-form-label" align="right">ปีงบประมาณ</strong>
+                        <div class="col-sm-9">
                             <input type="text" class=" form-control-plaintext" id="year" name="year">
                         </div>
                     </div>
 
                     <div class="row mb-3">
-                        <strong for="nameTH" class="col-sm-2 col-form-label "
+                        <strong for="nameTH" class="col-sm-3 col-form-label "
                             align="right">{{-- &emsp;&emsp; --}}ชื่อโครงร่างงานวิจัยภาษาไทย</strong>
-                        <div class=" col-sm-10">
+                        <div class=" col-sm-9">
                             <label class="form-control-plaintext" id="nameTH" name="nameTH"></label>
                         </div>
                     </div>
@@ -658,6 +664,7 @@
 
     <script>
         $(document).ready(function() {
+
             $('#research_table').DataTable({
                 rowReorder: {
                     selector: 'td:nth-child(2)'
@@ -697,13 +704,13 @@
                 var tr = '<tr id="row' + i + '">' +
                     '<td> <select class="form-select"name="researcher[' + i + ']" id="resesrcher_' + i +
                     '">@foreach ($list_user as $key)<option value="{{ $key->employee_id }}">{{ $key->full_name_th }}</option>@endforeach</select></td>' +
-                    '<td><select class="form-select" name="role-research[]" id="role-research" disabled><option value="หัวหน้าโครงการวิจัย">หัวหน้าโครงการวิจัย</option><option value="ผู้ร่วมวิจัย" selected readonly>ผู้ร่วมวิจัย</option></select></td>' +
+                    '<td><select class="form-select" name="role-research[]" id="role-research" ><option value="หัวหน้าโครงการวิจัย">หัวหน้าโครงการวิจัย</option><option value="ผู้ร่วมวิจัย" selected readonly>ผู้ร่วมวิจัย</option></select></td>' +
                     '<td><input type="number" class="form-control" name="pc[' + i + ']" id="pc_' + i +
                     '"placeholder="0.00" onchange="Vpc()" /></td>' +
                     '<td><button type="button" id="btnDel" class="btn btn-danger btn-sm" ><i class="fa fa-minus"></i></button></td>' +
                     '</tr>';
                 $('#roleResearch').append(tr);
-                console.log(tr);
+                // console.log(tr);
             });
 
 
@@ -730,6 +737,11 @@
         });
 
         function AddModal() {
+            var etc = document.getElementById('etc');
+            var in_ty = document.getElementById('.input_type');
+            if (etc.checked == false) {
+                in_ty.style.display = "none";
+            }
             $('#addResearch').modal('toggle');
         }
 
@@ -749,6 +761,13 @@
                     var type_re = data[0].type_research_id;
                     var type = type_re.split('_');
                     //console.log(type);
+                    var ty = '';
+                    console.log('len:' + type.length);
+                    if (type.length == 2) {
+                        ty = type[0] + ', ' + type[1]
+                    } else {
+                        ty = data[0].type_research_id;
+                    }
                     var area_re = data[0].research_area;
                     var area = area_re.split('_');
                     var start = moment(data[0].date_research_start).add(543, 'year').format('Do MMMM YYYY');
@@ -759,7 +778,7 @@
                     $('#nameTH').html(data[0].research_th);
                     $('#nameEN').html(data[0].research_en);
                     $('#source').html(data[0].research_source_name);
-                    $('#type_re').html(type[0] + ', ' + type[1]);
+                    $('#type_re').html(ty);
                     $('#key').html(data[0].keyword);
                     $('#area').html(area[0] + ' ' + area[1] + ' ' + area[2]);
                     $('#start').html(start);
@@ -916,11 +935,10 @@
                     // var major = res['data_re'][i].major;
                     var pc = res['data_re'][i].pc;
 
-
                     var tr_str = "<tr id='row" + i + "'>" +
                         "<td align='center'>" + (i + 1) + "</td>" +
                         "<td align='center'><select class='form-select' name='researcher_ed[" + (i + 1) +
-                        "]'><option value='" + emp_id + "'>" + nameth + "</option></select></td>" +
+                        "]'><option value='" + emp_id + "' >" + nameth + "</option></select></td>" +
                         // "<td align='center'>" + major + "</td>" +
                         "<td align='center'><input type='number' class='form-control' name='pc_ed[" + (i + 1) +
                         "]' value='" + pc + "'/></td>" +
@@ -930,6 +948,7 @@
 
                     $("#edit_researcher tbody").append(tr_str);
                 }
+                console.log(res['data_re'].employee_id);
                 $('#addBtnED').click(function() {
                     // var row = i;
                     len = len + 1;
@@ -938,14 +957,14 @@
                         '<td> <select class="form-select"name="researcher_ed[' + len +
                         ']" id="resesrcher_ed_' +
                         len +
-                        '">@foreach ($list_user as $key)<option value="{{ $key->employee_id }}">{{ $key->full_name_th }}</option>@endforeach</select></td>' +
+                        '">@foreach ($list_user as $key) <option value="{{ $key->employee_id }}" {{ $key->employee_id == '+res["data_re"].employee_id+' ? 'disabled' : '' }}>{{ $key->full_name_th }}</option>@endforeach</select></td>' +
                         '<td><input type="number" class="form-control" name="pc_ed[' + len +
                         ']" id="pc_ed_' + len +
                         '"placeholder="0.00" /></td>' +
                         '<td><button type="button" id="btnDelED" class="btn btn-danger btn-sm" ><i class="fa fa-minus"></i></button></td>' +
                         '</tr>';
                     $('#ed_research').append(tr);
-                    console.log('LEN:' + len);
+                    //console.log('LEN:' + len);
                 });
             } else {
                 var tr_str = "<tr>" +

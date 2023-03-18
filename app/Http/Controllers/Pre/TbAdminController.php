@@ -142,7 +142,7 @@ class TbAdminController extends Controller
     {
         $data = DB::table('users')->where('employee_id', $id)->get();
         $data_re = DB::table('tb_research')
-            ->distinct()
+            ->distinct('tb_research.research_id')
             ->join('tb_feedback', 'tb_research.research_id', '=', 'tb_feedback.research_id')
             ->where('tb_research.research_status', '!=', '0')
             ->where('tb_research.research_status', '!=', '2')
@@ -151,14 +151,14 @@ class TbAdminController extends Controller
             ->where('tb_research.research_status', '!=', '8')
             ->where('tb_research.research_status', '!=', '9')
             ->where('tb_research.research_status', '!=', '10')
-            //->where('tb_feedback.status', '=', '0')
+            ->where('tb_feedback.status', '=', '0')
             //->groupBy('tb_feedback.research_id')
             //->select('tb_feedback.research_id', 'tb_feedback.employee_referees_id', 'tb_feedback.date_send_referess', 'tb_feedback.status', 'tb_research.*')
             //->groupBy('tb_research.research_id')
             ->select('tb_feedback.status', 'tb_research.*')
             ->get()
             /* ->toArray() */;
-        // dd($data_re);
+        //dd($data_re);
         return view('pre-research.admin.research_send_d')->with(['id' => $id, 'data' => $data[0], 'data_re' => $data_re]);
     }
 

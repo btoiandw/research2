@@ -18,15 +18,15 @@
                 </div>
                 <div class="row">
                     <div class="col-3">GENDER : </div>
-                    <div class="col-9">{{$data[0]->pname}} {{$data[0]->gender}}</div>
+                    <div class="col-9">{{$data[0]->gender}}</div>
                 </div>
                 <div class="row">
                     <div class="col-3">FACUTY : </div>
-                    <div class="col-9">{{$data[0]->major}} {{$data[0]->organizational}}</div>
+                    <div class="col-9">{{$data[0]->organizational}}</div>
                 </div>
                 <div class="row">
                     <div class="col-3">EMAIL : </div>
-                    <div class="col-9">{{$data[0]->pname}} {{$data[0]->email}}</div>
+                    <div class="col-9">{{$data[0]->email}}</div>
                 </div>
                 <div class="row">
                     <div class="col-3">PHONE : </div>

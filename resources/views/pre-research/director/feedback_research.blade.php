@@ -1,6 +1,7 @@
 @extends('layouts.UD.ud')
 @section('content')
     <div class=" container-fluid mt-5">
+
         <div class="row mb-3 mt-3">
             <div class="col-xl-12">
                 <div class="bg-white rounded shadow-xl m-dash p-2">
@@ -46,13 +47,12 @@
                                                     <i class="fa-solid fa-comment"></i> ประเมิน
                                                 </button>
                                             @else
-                                                <button class="btn btn-success btn-sm">
+                                                <button class="btn btn-success btn-sm"
+                                                    onclick="viewFeed({{ $item->research_id }},{{ $data[0]->employee_referees_id }})">
                                                     ดูการประเมิน
                                                 </button>
                                             @endif
-
                                         </td>
-
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -118,8 +118,8 @@
                         <div class=" row " id="suggestion">
                             <label class="col-sm-3 col-form-label fw-bold">ข้อเสนอแนะ</label>
                             <div class=" px-3">
-                                <textarea {{-- onkeyup="sugges()" --}} class="form-control" name="suggestion" id="comment"
-                                    placeholder="ระบุข้อเสนอแนะ" rows="10"></textarea>
+                                <textarea {{-- onkeyup="sugges()" --}} class="form-control" name="suggestion" id="comment" placeholder="ระบุข้อเสนอแนะ"
+                                    rows="10"></textarea>
                             </div>
                         </div>
 
@@ -135,7 +135,7 @@
                     <div class="modal-footer">
                         <input type="submit" class="btn btn-success" id="save" name="save"
                             {{-- onclick="saveFeed()" --}} value="บันทึก" />
-                        <input type="submit" class="btn btn-primary" name="save" id="comfirm" value="ยืนยัน" />
+                        <input type="submit" class="btn btn-primary" name="save" id="comfirm" value="ส่งการประเมิน" />
                         {{-- <button type="button" class="btn btn-danger" data-bs-dismiss="modal">ยกเลิก</button> --}}
                     </div>
                 </form>
@@ -271,6 +271,59 @@
             </div>
         </div>
     </div>
+
+    <!-- view Feed Modal -->
+    <div class="modal fade" id="viewFeed" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="viewFeedLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="viewFeedLabel">รายละเอียด</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="" method="post" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row justify-content-center">
+                            <input type="hidden" name="research_id" id="research_id" value="">
+                            <div class="mb-3 row">
+                                <strong class="col-sm-3 col-form-label fw-bold">ชื่อโครงร่างงานวิจัยภาษาไทย</strong>
+                                <div class="col-sm-9">
+                                    <label readonly class="form-control-plaintext" id="th"></label>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <strong class="col-sm-3 col-form-label fw-bold">ชื่อโครงร่างงานวิจัยภาษาอังกฤษ</strong>
+                                <div class="col-sm-9">
+                                    <label readonly class="form-control-plaintext" id="en"></label>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <strong class="col-sm-3 col-form-label fw-bold">ผลการประเมิน</strong>
+                                <div class="col-sm-9">
+                                    <input type="text" readonly class=" form-control-plaintext"
+                                        name="Assessment_result" id="result" value="">
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row ">
+                                <strong class="col-sm-3 col-form-label fw-bold">ข้อเสนอแนะ</strong>
+                                <div class="col-sm-9">
+                                    <label readonly class=" form-control-plaintext" name="suggestion"
+                                        id="sg_cm"></label>
+
+                                    <button class="btn btn-warning" name="suggestionFile" id="sg_F">ดูไฟล์</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">ปิด</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 @push('js')
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -348,8 +401,8 @@
                             $('#name_th').html(data[0].research_th);
                             $('#name_en').html(data[0].research_en);
                             if (data_feed[index].feedback != null || data_feed[index].suggestionFile != null) {
-                                $('#checkFile').css('display','none');
-                                $('#AssessmentResults2').css('display','none');
+                                $('#checkFile').css('display', 'none');
+                                $('#AssessmentResults2').css('display', 'none');
                                 $('#comment').html(data_feed[index].feedback);
                             } else {
 
@@ -526,9 +579,37 @@
             }
         }
 
-        function saveFeed() {
-            var frm = $('#form-feed').serialize();
-            console.log(frm);
+        function viewFeed(id, u_id) {
+            console.log(id);
+            console.log('uid:' + u_id);
+            $.ajax({
+                method: 'GET',
+                dataType: 'JSON',
+                url: '/view/feed/detail/' + id + '/' + u_id,
+                success: function(res) {
+                    console.log(res.dt[0]);
+                    var data = res.dt[0];
+                    var cm = '';
+
+                    if (data.feedback != null) {
+                        cm = data.feedback;
+                        $('#sg_F').css('display', 'none');
+                        $('#sg_cm').html(cm);
+                    } else if (data.suggestionFile != null) {
+                        $('#sg_cm').css('display', 'none');
+
+                    } else {
+
+                    }
+
+                    $('#viewFeed').modal('toggle');
+                    $('#th').html(data.research_th);
+                    $('#en').html(data.research_en);
+                    $('#result').val(data.Assessment_result);
+                }
+            })
+            //
+
         }
     </script>
 @endpush

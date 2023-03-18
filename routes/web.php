@@ -49,7 +49,7 @@ Route::post('/admin/add-director', [\App\Http\Controllers\TbFeedbackController::
 Route::get('/admin/view-feed/director/{id}', [\App\Http\Controllers\TbFeedbackController::class, 'viewFeed'])->name('admin.view-feed-director');
 
 Route::get('director/feedback/{id}/{roles}', [\App\Http\Controllers\Pre\TbDirectorController::class, 'feedPages'])->name('director.feedPages');
-Route::post('/director/addfeed',[\App\Http\Controllers\TbFeedbackController::class,'addFeed'])->name('director.add-feed');
+Route::post('/director/addfeed', [\App\Http\Controllers\TbFeedbackController::class, 'addFeed'])->name('director.add-feed');
 Route::get('/view-word/{id}', [\App\Http\Controllers\Pre\TbResearchController::class, 'viewFile'])->name('view.word');
 Route::get('/view-pdf/{id}', [\App\Http\Controllers\Pre\TbResearchController::class, 'viewFilePDF'])->name('view.pdf');
 Route::post('research/update', [\App\Http\Controllers\Pre\TbResearchController::class, 'update'])->name('user.update_research');
@@ -65,5 +65,6 @@ Route::get('/admin/cancel/admin/{id}', [\App\Http\Controllers\Pre\TbAdminControl
 Route::post('/admin/search', [\App\Http\Controllers\Pre\TbAdminController::class, 'searchAdmin']);
 Route::post('/admin/store', [\App\Http\Controllers\Pre\TbAdminController::class, 'store']);
 
-Route::get('/users/cancel-research/{id}',[\App\Http\Controllers\Pre\TbResearchController::class,'cancel']);
+Route::get('/users/cancel-research/{id}', [\App\Http\Controllers\Pre\TbResearchController::class, 'cancel']);
 
+Route::get('/view/feed/detail/{id}/{u_id}', [\App\Http\Controllers\TbFeedbackController::class, 'FeedDetail']);

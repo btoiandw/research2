@@ -248,7 +248,18 @@ class TbResearchController extends Controller
             ->join('tb_faculties', 'users.organization_id', '=', 'tb_faculties.id')
             ->where('tb_research.research_id', '=', $id)
             ->get();
+        $data_r = DB::table('tb_research')
+            ->join('tb_send_research', 'tb_research.research_id', '=', 'tb_send_research.research_id')
+            ->join('users', 'tb_send_research.id', '=', 'users.employee_id')
+            ->where('tb_research.research_id', '=', $id)
+            ->get('tb_send_research.id');
         $data_feed = DB::table('tb_feedback')->where('research_id', $id)->get();
+        //dd($data_r);
+        /* for ($i = 0; $i < sizeof($data_re); $i++) {
+            //$data_u[$i] = $data_re[$i]->employee_id;
+            $data_u = DB::table('users')->where('employee_id', '!=', $data_re->employee_id)->get('employee_id');
+        } */
+        //dd($id, $data_u);
         return response()->json(['data_re' => $data_re, 'data_feed' => $data_feed]);
     }
 

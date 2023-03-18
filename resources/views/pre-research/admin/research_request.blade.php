@@ -187,7 +187,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                  
+
                     <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -347,8 +347,10 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">ยืนยัน</button>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    <input type="submit" class="btn btn-success" id="save" name="save" {{-- onclick="saveFeed()" --}}
+                        value="บันทึก" />
+                    <input type="submit" class="btn btn-primary" name="save" id="comfirm"
+                        value="ส่งการประเมิน" />
                 </div>
             </div>
         </div>
