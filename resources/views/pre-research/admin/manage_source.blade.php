@@ -71,50 +71,57 @@
                     <h1 class="modal-title fs-5" id="addSourceLabel">เพิ่มแหล่งทุน</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="row mb-3">
-                        <strong class="col-3">ประจำปี</strong>
-                        <div class="col-9">
-                            <input type="text" name="ye" id="ye" class=" form-control"
-                                value="@php echo thaidate('Y'); @endphp" />
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <strong class="col-3">ชื่อแหล่งทุน</strong>
-                        <div class="col-9">
-                            <input type="text" name="name_so" id="name_so" class=" form-control" />
-                        </div>
-                    </div>
-
-                    <div class="row mb-3">
-                        <strong class="col-form-label col-sm-3 pt-0">ประเภทแหล่งทุน</strong>
-                        <div class="col-sm-9">
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="type[]" id="type" value="ภายนอก">
-                                <label class="form-check-label" for="type">
-                                    ภายนอก
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="type[]" id="type" value="ภายใน">
-                                <label class="form-check-label" for="gridRadios2">
-                                    ภายใน
-                                </label>
+                <form action="{{ route('admin.source-store') }}" method="post" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row mb-3">
+                            <strong class="col-3">ประจำปี</strong>
+                            <div class="col-9">
+                                <input type="text" name="ye" id="ye" class=" form-control"
+                                    value="{{ date('Y') + 544 }}" />
                             </div>
                         </div>
-                    </div>
+                        <div class="row mb-3">
+                            <strong class="col-3">ชื่อแหล่งทุน</strong>
+                            <div class="col-9">
+                                <input type="text" name="name_so" id="name_so" class=" form-control" />
+                            </div>
+                        </div>
 
-                    <div class="row mb-3">
-                        <strong class="col-sm-3 col-form-label" align="right">ไฟล์ตัวอย่างโครงร่างงาน</strong>
-                        <div class=" col-sm-9">
-                            <input type="file" name="file" id="file" class=" form-control" required>
+                        <div class="row mb-3">
+                            <strong class="col-form-label col-sm-3 pt-0">ประเภทแหล่งทุน</strong>
+                            <div class="col-sm-9">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="type" id="type"
+                                        value="ภายนอก">
+                                    <label class="form-check-label" for="type">
+                                        ภายนอก
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="type" id="type"
+                                        value="ภายใน">
+                                    <label class="form-check-label" for="gridRadios2">
+                                        ภายใน
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <strong class="col-sm-3 col-form-label" align="right">ไฟล์ตัวอย่างโครงร่างงาน</strong>
+                            <div class=" col-sm-9">
+                                <input type="file" name="file" id="file" class=" form-control" required>
+                                <span class="text-danger">*ไฟล์ .pdf และ .docx เท่านั้น</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">ยืนยัน</button>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">ยกเลิก</button>
-                </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">ยืนยัน</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">ยกเลิก</button>
+                    </div>
+                </form>
+
             </div>
         </div>
     </div>
@@ -125,7 +132,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="editSourceLabel">เพิ่มแหล่งทุน</h1>
+                    <h1 class="modal-title fs-5" id="editSourceLabel">แก้ไขแหล่งทุน</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="{{ route('admin.edit-source') }}" method="post" id="editSo"
@@ -168,7 +175,7 @@
                         <div class="row">
                             <strong class="col-sm-3 col-form-label" align="right">ไฟล์ตัวอย่างโครงร่างงาน</strong>
                             <div class=" col-sm-9">
-                                <input type="file" name="file" id="file" class=" form-control">
+                                <input type="file" name="file" id="file_e" class=" form-control" />
                             </div>
                         </div>
                     </div>
@@ -222,7 +229,7 @@
             $.ajax({
                 method: 'GET',
                 dataType: 'JSON',
-                url: '/view/source/' + id,
+                url: '/admin/view/source/' + id,
                 success: function(res) {
                     //console.log(res.data[0]);
                     var data = res.data[0];
@@ -240,7 +247,7 @@
                         $('#type_in').attr('checked', true);
                     }
 
-                    $('#file').val(data.ex_research);
+                    //$('#file').val(data.ex_research);
                 }
             })
         }
@@ -299,7 +306,7 @@
         function viewFile(id) {
             console.log(id);
             //var id = id;
-            var url = '/view/source/' + id;
+            var url = '/view/source/file/' + id;
             //console.log(url);
             window.open(url, "_blank");
         }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Pre;
 
 use App\Http\Controllers\Controller;
+use App\Models\TbResearchSource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -16,7 +17,7 @@ class TbSourceController extends Controller
     public function manageSource($id)
     {
         $data = DB::table('users')->where('employee_id', $id)->get();
-        $data_s = DB::table('tb_research_sources')->where('status', '=', '1')->get();
+        $data_s = DB::table('tb_research_sources')->where('status', '=', '1')->orderBy('research_sources_id','desc')->get();
         //dd($data_s);
         return view('pre-research.admin.manage_source')->with(['id' => $id, 'data' => $data[0], 'data_s' => $data_s]);
     }
@@ -81,5 +82,31 @@ class TbSourceController extends Controller
         $file = $path . '/' . $file_name;
         //dd($p,$path,$file_name,$file,$p[0]->word_file);
         return response()->file($file);
+    }
+
+    public function store(Request $request)
+    {
+        $path = 'uploads/source/' . $request->ye;
+        if ($file_p = $request->file('file')) {
+
+            //File::delete(public_path($file_old));
+            $namep = $file_p->getClientOriginalName();
+            $eNamep = explode('.', $namep);
+            $infop = end($eNamep);
+
+            $fileName_p = $request->ye . "_" . $request->name_so . "." . $infop;
+            if ($file_p->move($path, $fileName_p)) {
+                $source = new TbResearchSource();
+                $source->research_source_name = $request->name_so;
+                $source->Year_source = $request->ye;
+                $source->type_research_source = $request->type;
+                $source->ex_research = $fileName_p;
+                $source->status = '1';
+                $source->save();
+                return redirect()->back();
+            }
+            // dd($request->all(), $path, $fileName_p);
+            //dd($request->all(), $source, $file_p, $file_ex, $fileName_p, $path);
+        }
     }
 }
