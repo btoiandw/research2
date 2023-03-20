@@ -165,6 +165,7 @@ class TbAdminController extends Controller
     public function deliverPages($id)
     {
         $data = DB::table('users')->where('employee_id', $id)->get();
+        $data_de =DB::table('tb_deliver_lists')->where('status','1')->get();
         //dd($data[0]);
         return view('pre-research.admin.deliver_list')->with(['data' => $data[0], 'id' => $id]);
     }

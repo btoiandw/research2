@@ -19,6 +19,7 @@ class CreateTbResearchSourcesTable extends Migration
             $table->string('Year_source');
             $table->string('type_research_source');
             $table->string('ex_research')->nullable();
+            $table->string('status')->default('1');
             $table->timestamps();
         });
     }
