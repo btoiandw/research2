@@ -73,3 +73,4 @@ Route::get('/cencel/source/{id}',[\App\Http\Controllers\Pre\TbSourceController::
 Route::post('/admin/edit/source',[\App\Http\Controllers\Pre\TbSourceController::class,'edit'])->name('admin.edit-source');
 Route::get('/view/source/file/{id}',[\App\Http\Controllers\Pre\TbSourceController::class,'viewFile']);
 Route::post('/admin/source/store',[\App\Http\Controllers\Pre\TbSourceController::class,'store'])->name('admin.source-store');
+Route::post('/admin/list',[\App\Http\Controllers\TbDeliverListController::class,'store'])->name('admin.deliver-store');

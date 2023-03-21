@@ -5,10 +5,10 @@
             <div class="row col-5 me-3">
                 <strong class="col-auto">แหล่งทุน</strong>
                 <select class="form-select" aria-label="Default select example">
-                    <option selected>Open this select menu</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
+                    <option selected>-- เลือกแหล่งทุน --</option>
+                    @foreach ($data_so as $item)
+                        <option value="{{ $item->research_sources_id }}">{{ $item->research_source_name }}</option>
+                    @endforeach
                 </select>
             </div>
             <div class="col-4">
@@ -31,7 +31,7 @@
                 <input class="form-control" id="" name="" placeholder="MM/DD/YYY" type="date" />
             </div>
         </div>
-        <div class="row justify-content-center pt-3 pb-3">
+        <div class="row justify-content-center pt-3">
             <strong class="col-auto" align="right">ประเภทงานวิจัย</strong>
             <div class="col-8">
                 <div class="form-check">
@@ -49,7 +49,7 @@
 
             </div>
         </div>
-        <div class="row justify-content-center">
+        {{-- <div class="row justify-content-center">
 
             <div class="row col-5 me-3">
                 <div class="d-grid d-md-flex container-fluid">
@@ -58,7 +58,7 @@
             </div>
             <div class="col-4">
             </div>
-        </div>
+        </div> --}}
 
         <hr style="border: 0.3px solid #B2B2B2;" class="m-4" />
         <div class="table-responsive container-fluid">
@@ -69,8 +69,7 @@
                         <th class="fw-bolder" style="font-size: 15px">แหล่งทุน</th>
                         <th class="fw-bolder" style="font-size: 15px">ประเภทงานวิจัย</th>
                         <th class="fw-bolder" style="font-size: 15px">คณะ/สังกัด</th>
-                        <th class="fw-bolder" style="font-size: 15px">วันที่</th>
-
+                        <th class="fw-bolder" style="font-size: 15px">จำนวนเงิน</th>
                     </tr>
                 </thead>
 

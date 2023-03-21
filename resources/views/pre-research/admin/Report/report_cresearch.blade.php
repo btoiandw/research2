@@ -31,7 +31,7 @@
                 <input class="form-control" id="" name="" placeholder="MM/DD/YYY" type="date" />
             </div>
         </div>
-        <div class="row justify-content-center pt-3 pb-3">
+        <div class="row justify-content-center pt-3">
             <strong class="col-auto" align="right">ประเภทงานวิจัย</strong>
             <div class="col-8">
                 <div class="form-check">
@@ -49,7 +49,7 @@
 
             </div>
         </div>
-        <div class="row justify-content-center">
+       {{--  <div class="row justify-content-center">
 
             <div class="row col-5 me-3">
                 <div class="d-grid d-md-flex container-fluid">
@@ -58,7 +58,7 @@
             </div>
             <div class="col-4">
             </div>
-        </div>
+        </div> --}}
 
         <hr style="border: 0.3px solid #B2B2B2;" class="m-4" />
         <div class="table-responsive container-fluid">

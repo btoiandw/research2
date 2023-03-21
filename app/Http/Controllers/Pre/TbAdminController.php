@@ -165,21 +165,30 @@ class TbAdminController extends Controller
     public function deliverPages($id)
     {
         $data = DB::table('users')->where('employee_id', $id)->get();
-        $data_de =DB::table('tb_deliver_lists')->where('status','1')->get();
-        //dd($data[0]);
-        return view('pre-research.admin.deliver_list')->with(['data' => $data[0], 'id' => $id]);
+        $data_de = DB::table('tb_deliver_lists')->where('status', '1')->get();
+        $data_so = DB::table('tb_research_sources')->where('status', '1')->get();
+        $data_ty = DB::table('tb_research')->get('type_research_id');
+
+        //dd($data, $data_de, $data_so, $data_ty);
+        return view('pre-research.admin.deliver_list')->with(['data' => $data[0], 'id' => $id, 'data_de' => $data_de, 'data_so' => $data_so, 'data_ty' => $data_ty]);
     }
     public function cbgPages($id)
     {
         $data = DB::table('users')->where('employee_id', $id)->get();
+        $data_de = DB::table('tb_deliver_lists')->where('status', '1')->get();
+        $data_so = DB::table('tb_research_sources')->where('status', '1')->get();
+        $data_ty = DB::table('tb_research')->get('type_research_id');
         //dd($data[0]);
-        return view('pre-research.admin.Report.report_cbg')->with(['data' => $data[0], 'id' => $id]);
+        return view('pre-research.admin.Report.report_cbg')->with(['data' => $data[0], 'id' => $id, 'data_de' => $data_de, 'data_so' => $data_so, 'data_ty' => $data_ty]);
     }
     public function cresearchPages($id)
     {
         $data = DB::table('users')->where('employee_id', $id)->get();
+        $data_de = DB::table('tb_deliver_lists')->where('status', '1')->get();
+        $data_so = DB::table('tb_research_sources')->where('status', '1')->get();
+        $data_ty = DB::table('tb_research')->get('type_research_id');
         //dd($data[0]);
-        return view('pre-research.admin.Report.report_cresearch')->with(['data' => $data[0], 'id' => $id]);
+        return view('pre-research.admin.Report.report_cresearch')->with(['data' => $data[0], 'id' => $id, 'data_de' => $data_de, 'data_so' => $data_so, 'data_ty' => $data_ty]);
     }
 
     public function searchAdmin(Request $request)

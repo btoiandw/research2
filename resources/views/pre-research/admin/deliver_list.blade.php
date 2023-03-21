@@ -19,7 +19,21 @@
                         </thead>
 
                         <tbody>
-
+                            @php
+                                $i = 1;
+                            @endphp
+                            @foreach ($data_de as $item)
+                                <tr>
+                                    <td>{{ $i++ }}</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                        <button class="btn btn-yellow btn-sm me-2">แก้ไข</button>
+                                        <button class="btn btn-danger btn-sm">ยกเลิก</button>
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -36,18 +50,19 @@
                     <button type="button" class="btn-close" {{-- data-bs-dismiss="modal"  --}}aria-label="Close"
                         onclick="location.reload()"></button>
                 </div>
-                <form action="" method="post">
+                <form action="{{ route('admin.deliver-store') }}" method="post">
+                    @csrf
                     <div class="modal-body">
                         <div class="row mb-3">
                             <strong class=" col-sm-3">แหล่งทุน</strong>
                             <div class="col-sm-9">
                                 <select class="form-select" id="source_id" name="source_id">
-                                    <option value="">--เลือกแหล่งทุน--</option>
-                                    {{-- @foreach ($list_source as $row)
+                                    <option value="" >-- เลือกแหล่งทุน --</option>
+                                    @foreach ($data_so as $row)
                                         <option value="{{ $row->research_sources_id }}">
                                             {{ $row->research_source_name }}
                                         </option>
-                                    @endforeach --}}
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
