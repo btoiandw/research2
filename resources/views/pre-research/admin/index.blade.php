@@ -20,10 +20,10 @@
                     <div class="col-3">GENDER : </div>
                     <div class="col-9">{{ $data->gender }}</div>
                 </div>
-                <div class="row">
+                {{-- <div class="row">
                     <div class="col-3">FACUTY : </div>
                     <div class="col-9">{{ $data->major }} {{ $data->organizational }}</div>
-                </div>
+                </div> --}}
                 <div class="row">
                     <div class="col-3">EMAIL : </div>
                     <div class="col-9">{{ $data->email }}</div>

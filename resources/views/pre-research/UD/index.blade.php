@@ -25,7 +25,7 @@
                     @if ($data[0]->organization_id == 0)
                         <div class="col-9">บุคคลภายนอก</div>
                     @else
-                        <div class="col-9">{{ $data[0]->major }} {{ $data[0]->organizational }}</div>
+                        <div class="col-9">{{ $data[0]->major }} {{ $data[0]->organizational_name }}</div>
                     @endif
 
                 </div>

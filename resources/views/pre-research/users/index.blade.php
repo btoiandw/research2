@@ -22,7 +22,7 @@
                 </div>
                 <div class="row">
                     <div class="col-3">FACUTY : </div>
-                    <div class="col-9">{{$data[0]->organizational}}</div>
+                    <div class="col-9">{{$data[0]->major_name}} {{$data[0]->organizational_name}}</div>
                 </div>
                 <div class="row">
                     <div class="col-3">EMAIL : </div>

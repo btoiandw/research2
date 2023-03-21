@@ -737,10 +737,15 @@
         });
 
         function AddModal() {
-            var etc = document.getElementById('etc');
+            /* var etc = document.getElementById('etc');
             var in_ty = document.getElementById('.input_type');
             if (etc.checked == false) {
                 in_ty.style.display = "none";
+            }*/
+            if ($('#etc').attr('checked', false)) {
+                $('.input_type').css('display', 'none');
+            }else{
+                $('.input_type').css('display', 'box');
             }
             $('#addResearch').modal('toggle');
         }

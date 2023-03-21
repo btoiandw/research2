@@ -16,7 +16,10 @@ class TbAdminController extends Controller
      */
     public function index($id)
     {
-        $data = DB::table('users')->join('tb_faculties', 'users.organization_id', '=', 'tb_faculties.id')->where('employee_id', $id)->get();
+        $data = DB::table('users')
+            ->join('tb_majors', 'users.major_id', '=', 'tb_majors.major_id')
+            ->join('tb_faculties','tb_majors.organization_id','=','tb_faculties.organization_id')
+            ->where('employee_id', $id)->get();
         //dd($data[0]);
         return view('pre-research.admin.index')->with(['data' => $data[0], 'id' => $id]);
     }

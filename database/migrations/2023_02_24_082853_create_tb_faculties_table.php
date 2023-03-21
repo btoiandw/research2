@@ -14,9 +14,17 @@ class CreateTbFacultiesTable extends Migration
     public function up()
     {
         Schema::create('tb_faculties', function (Blueprint $table) {
-            $table->id();
-            $table->string('organizational');
-            $table->string('major');
+            $table->id('organization_id');
+            $table->string('organizational_name');
+            //$table->string('major');
+            $table->timestamps();
+        });
+
+        Schema::create('tb_majors', function (Blueprint $table) {
+            $table->id('major_id');
+            $table->string('major_name');
+            $table->integer('organization_id');
+            $table->string('group_disciplines');
             $table->timestamps();
         });
     }
@@ -29,5 +37,6 @@ class CreateTbFacultiesTable extends Migration
     public function down()
     {
         Schema::dropIfExists('tb_faculties');
+        Schema::dropIfExists('tb_major');
     }
 }

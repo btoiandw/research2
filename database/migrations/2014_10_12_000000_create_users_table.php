@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('full_name_th');
             $table->string('full_name_eng');
             $table->string('gender');
-            $table->integer('organization_id');
+            $table->integer('major_id');
             $table->integer('work_status'); //1=work,0=not work
             $table->string('tel');
             $table->string('email')->unique();

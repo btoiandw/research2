@@ -16,7 +16,11 @@ class UDController extends Controller
     public function index($id, $roles)
     {
         //
-        $data = DB::table('tb_directors')->join('tb_faculties', 'tb_directors.organization_id', '=', 'tb_faculties.id')->where('employee_id', $id)->get();
+        $data = DB::table('tb_directors')
+            ->join('tb_majors', 'tb_directors.major_id', '=', 'tb_majors.major_id')
+            ->join('tb_faculties','tb_majors.organization_id','=','tb_faculties.organization_id')
+            ->where('employee_id', $id)
+            ->get();
         return view('pre-research.UD.index')->with(['id' => $id, 'roles' => $roles, 'data' => $data]);
     }
 

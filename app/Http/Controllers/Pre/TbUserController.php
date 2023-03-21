@@ -15,7 +15,11 @@ class TbUserController extends Controller
     public function index($id, $roles)
     {
         //
-        $data = DB::table('users')->join('tb_faculties', 'users.organization_id', '=', 'tb_faculties.id')->where('users.employee_id', $id)->get();
+        $data = DB::table('users')
+            ->join('tb_majors', 'users.major_id', '=', 'tb_majors.major_id')
+            ->join('tb_faculties','tb_majors.organization_id','=','tb_faculties.organization_id')
+            ->where('users.employee_id', $id)
+            ->get();
         return view('pre-research.users.index')->with(['id' => $id, 'roles' => $roles, 'data' => $data]);
     }
 
