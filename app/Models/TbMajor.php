@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class TbMajor extends Model
 {
     use HasFactory;
-
     protected $fillable = [
         'major_id',
         'major_name',

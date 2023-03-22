@@ -68,14 +68,14 @@ class TbResearchController extends Controller
     {
         //
 
-        //dd($request->all(), sizeof($request->pc));
+        //dd($request->all(), sizeof($request->pc), sizeof($request->type));
         $validation = $request->validate(
             [
                 'year_research' => 'required|max:4',
                 'research_nameTH' => 'required|unique:tb_research,research_th',
                 'research_nameEN' => 'required|unique:tb_research,research_en',
-                // 'researcher' => 'required',
-                // 'researcher.*' => 'required',
+                // 'researcher' => "unique:tb_send_research.research_id,tb_send_research.id",
+                // 'researcher.*' => "unique:tb_send_research.research_id,tb_send_research.id",
                 //'faculty' => 'required',
                 //'faculty.*' => 'required',
                 // 'role-research' => 'required',
@@ -83,8 +83,8 @@ class TbResearchController extends Controller
                 'pc' => 'required',
                 'pc.*' => 'required|',
                 'source_id' => 'required',
-                'type' => 'required',
-                'type.*' => 'required',
+                // 'type' => 'required',
+                // 'type.*' => 'required',
                 'keyword' => 'required',
                 'address' => 'required',
                 'city' => 'required',
@@ -99,8 +99,8 @@ class TbResearchController extends Controller
                 'year_research.required' => 'ข้อมูลห้ามเกิน 4 ตัว',
                 'research_nameTH.required' => 'โปรดระบุชื่อโครงร่างภาษาไทย',
                 'research_nameEN.required' => 'โปรดระบุชื่อโครงร่างภาษาอังกฤษ',
-                // 'researcher.required' => 'โปรดระบุชื่อนักวิจัย',
-                // 'researcher.*.required' => 'โปรดระบุชื่อนักวิจัย',
+                // "researcher.unique:tb_send_research.research_id,tb_send_research.id" => 'โปรดระบุชื่อนักวิจัยไม่ซ้ำกัน',
+                // "researcher.*.unique:tb_send_research.research_id,tb_send_research.id" => 'โปรดระบุชื่อนักวิจัยไม่ซ้ำกัน',
                 //'faculty.required' => 'โปรดระบุสังกัด/คณะ',
                 //'faculty.*.required' => 'โปรดระบุสังกัด/คณะ',
                 // 'role-research.required' => 'โปรดระบุบทบาทในการวิจัย',
@@ -108,8 +108,8 @@ class TbResearchController extends Controller
                 'pc.required' => 'โปรดระบุร้อยละบทบาทในการวิจัย',
                 'pc.*.required' => 'โปรดระบุร้อยละบทบาทในการวิจัย',
                 'source_id.required' => 'โปรดระบุชื่อแหล่งทุน',
-                'type.required' => 'โปรดระบุประเภทในการวิจัย',
-                'type.*.required' => 'โปรดระบุประเภทในการวิจัย',
+                // 'type.required' => 'โปรดระบุประเภทในการวิจัย',
+                // 'type.*.required' => 'โปรดระบุประเภทในการวิจัย',
                 'keyword.required' => 'โปรดระบุคำสำคัญในการวิจัย',
                 'address.required' => 'โปรดระบุพื้นที่ในการวิจัย',
                 'city.required' => 'โปรดระบุพื้นที่ในการวิจัย',
@@ -130,12 +130,14 @@ class TbResearchController extends Controller
         $type = $request->type;
         //$cType = count($type);
         $allType = array();
-        if (count($type) > 1) {
+        if (count($request->type) == 3 && $type[2] != null) {
+            $allType = $type[0] . "_" . $type[1] . "_" . $type[2];
+        } elseif (count($type) == 3 && $type[2] == null) {
             $allType = $type[0] . "_" . $type[1];
         } else {
             $allType = $type[0];
         }
-        //dd($type[0], count($type), $allType);
+        //dd($type[0], count($type), $allType, $request->all(), sizeof($request->pc), sizeof($request->type));
         $address = $request->address;
         $city = $request->city;
         $zipcode = $request->zipcode;
@@ -186,8 +188,11 @@ class TbResearchController extends Controller
                     if ($filew->move($path, $fileName_w)) { //move=>เซฟในโฟลเดอร์ ''=>''แรกชื่อโฟลเดอร์ $name=>ชื่อไฟล์  ->จะอยู่ในโฟลเดอร์ public
                         if ($filep->move($path, $fileName_p)) {
                             $pc_re = $request->pc;
-                            //dd($request->all(), $result, $pc_re, $id_re, $area, $allType, $us, $sumpc, $fileName_w, $fileName_p);
+
+
                             for ($i = 0; $i <= sizeof($pc_re); $i++) {
+                                $da_send = DB::table('tb_send_research')->where('research_id', $id_re)->get();
+                                //dd($da_send, $request->all(), $pc_re, $id_re, $area, $allType, $sumpc, $fileName_w, $fileName_p);
                                 if ($i == 0) {
                                     $send = new TbSendResearch();
                                     $send->research_id = $id_re;
@@ -200,6 +205,7 @@ class TbResearchController extends Controller
                                     $send->id = $request->researcher[$i];
                                     $send->pc = $request->pc[$i];
                                 }
+
                                 $send->save();
                             }
                             //dd($send);

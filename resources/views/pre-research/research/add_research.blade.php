@@ -118,35 +118,35 @@
                         </div>
                         <div class="row mb-3">
                             <input type="hidden" name="id_users" id="id_users" value="{{ $id }}" />
-                            <label for="year_research" class="col-sm-2 col-form-label" align="right">ปีงบประมาณ</label>
-                            <div class="col-sm-10">
+                            <strong for="year_research" class="col-sm-3 col-form-label" align="right">ปีงบประมาณ</strong>
+                            <div class="col-sm-9">
                                 <input type="text" class="form-control" id="year_research" value="{{ date('Y') + 544 }}"
                                     name="year_research">
                             </div>
                         </div>
 
                         <div class="row mb-3">
-                            <label for="research_nameTH" class="col-sm-2 col-form-label "
-                                align="right">{{-- &emsp;&emsp; --}}ชื่อโครงร่างงานวิจัยภาษาไทย</label>
-                            <div class=" col-sm-10">
+                            <strong for="research_nameTH" class="col-sm-3 col-form-label "
+                                align="right">{{-- &emsp;&emsp; --}}ชื่อโครงร่างงานวิจัยภาษาไทย</strong>
+                            <div class=" col-sm-9">
                                 <textarea class="form-control" id="research_nameTH" name="research_nameTH" required></textarea>
 
                             </div>
 
                         </div>
                         <div class="row mb-3">
-                            <label for="research_nameEN" class="col-sm-2 col-form-label"
-                                align="right">{{-- &emsp;&emsp; --}}ชื่อโครงร่างงานวิจัยภาษาอังกฤษ</label>
-                            <div class=" col-sm-10">
+                            <strong for="research_nameEN" class="col-sm-3 col-form-label"
+                                align="right">{{-- &emsp;&emsp; --}}ชื่อโครงร่างงานวิจัยภาษาอังกฤษ</strong>
+                            <div class=" col-sm-9">
                                 <textarea class="form-control" id="research_nameEN" name="research_nameEN" required></textarea>
 
                             </div>
 
                         </div>
                         <div class="mb-3">
-                            <label
+                            <strong
                                 for="message-text"style="text-align:left;font-weight:600;font-size:18px;background:#fff;border:none"
-                                class="pt-3 py-0 card-header">รายชื่อนักวิจัย</label>
+                                class="pt-3 py-0 card-header">รายชื่อนักวิจัย</strong>
                             <div class="card-body pt-0">
                                 <table class="table table-responsive" id="tableTap" name="tableTap">
                                     <thead align="center">
@@ -197,9 +197,9 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="message-text" class="col-sm-2 col-form-label"
-                                align="right">แหล่งทุนวิจัย</label>
-                            <div class="col-sm-10">
+                            <strong for="message-text" class="col-sm-3 col-form-label"
+                                align="right">แหล่งทุนวิจัย</strong>
+                            <div class="col-sm-9">
                                 <select class="form-select" id="source_id" name="source_id">
                                     <option value="">--เลือกแหล่งทุน--</option>
                                     @foreach ($list_source as $row)
@@ -213,8 +213,8 @@
 
                         </div>
                         <fieldset class="row mb-3">
-                            <legend class="col-form-label col-sm-2 pt-0" align="right">ประเภทงานวิจัย</legend>
-                            <div class="col-sm-10">
+                            <strong class="col-form-label col-sm-3 pt-0" align="right">ประเภทงานวิจัย</strong>
+                            <div class="col-sm-9">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" name="type[]" id="type"
                                         value="ชุมชนท้องถิ่น">
@@ -234,16 +234,16 @@
                                     <label class="form-check-label mb-1">
                                         อื่นๆ
                                     </label>
-                                    <input type="text" class="form-control input_type" name="type[]" id="type"
-                                        value="" />
+                                    <input type="text" class="form-control input_type" name="type[]" id="inty"
+                                        value="" style="display: none" />
                                 </div>
                             </div>
 
                         </fieldset>
 
                         <div class="row mb-3">
-                            <label for="inputEmail3" class="col-sm-2 col-form-label" align="right">คำสำคัญ</label>
-                            <div class="col-sm-10">
+                            <strong for="inputEmail3" class="col-sm-3 col-form-label" align="right">คำสำคัญ</strong>
+                            <div class="col-sm-9">
                                 <textarea name="keyword" id="keyword" placeholder="คำสำคัญในการวิจัย" class="form-control" required></textarea>
                                 <span class="text-danger">โปรดใช้เครื่องหมาย , ในการคั่นคำ</span>
 
@@ -252,9 +252,9 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="inputEmail3" class="col-sm-2 col-form-label"
-                                align="right">พื้นที่ในการวิจัย</label>
-                            <div class="row col-sm-10">
+                            <strong for="inputEmail3" class="col-sm-3 col-form-label"
+                                align="right">พื้นที่ในการวิจัย</strong>
+                            <div class="row col-sm-9">
                                 <div class="col-sm-7">
                                     <input type="text" class="form-control" placeholder="ที่อยู่" name="address"
                                         required aria-label="ที่อยู่">
@@ -274,15 +274,14 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="inputEmail3" class="col-sm-2 col-form-label"
-                                align="right">วันที่เริ่มต้นการวิจัย</label>
-                            <div class="row col-sm-10">
+                            <strong for="inputEmail3" class="col-sm-3 col-form-label"
+                                align="right">วันที่เริ่มต้นการวิจัย</strong>
+                            <div class="row col-sm-9">
                                 <div class="col-sm">
                                     <input class="form-control" id="sdate" name="sdate" placeholder="MM/DD/YYY"
                                         type="date" required />
-
                                 </div>
-                                <label for="inputEmail3" class="col-sm-2 col-form-label "
+                                <label for="inputEmail3" class="col-sm-3 col-form-label "
                                     align="right">วันที่สิ้นสุดการวิจัย</label>
                                 <div class="col-sm">
                                     <div class="col-sm">
@@ -295,9 +294,9 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="inputEmail3" class="col-sm-2 col-form-label"
-                                align="right">งบประมาณการวิจัย</label>
-                            <div class="col-sm-10">
+                            <strong for="inputEmail3" class="col-sm-3 col-form-label"
+                                align="right">งบประมาณการวิจัย</strong>
+                            <div class="col-sm-9">
                                 <input name="budage" id="budage" type="number" placeholder="0.00"
                                     class="form-control" required>
 
@@ -305,8 +304,8 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label class="col-sm-2 col-form-label " align="right">ไฟล์ Word</label>
-                            <div class=" col-sm-10">
+                            <strong class="col-sm-3 col-form-label " align="right">ไฟล์ Word</strong>
+                            <div class=" col-sm-9">
                                 <input type="file" name="word" id="word" class=" form-control" required>
                                 <span class="text-danger">*ไฟล์ .doc และ .docx เท่านั้น</span>
 
@@ -314,8 +313,8 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label class="col-sm-2 col-form-label" align="right">ไฟล์ PDF</label>
-                            <div class=" col-sm-10">
+                            <strong class="col-sm-3 col-form-label" align="right">ไฟล์ PDF</strong>
+                            <div class=" col-sm-9">
                                 <input type="file" name="pdf" id="pdf" class=" form-control" required>
                                 <span class="text-danger">*ไฟล์ .pdf เท่านั้น</span>
 
@@ -715,8 +714,6 @@
 
 
         });
-        //autocomplete
-        //$(document).on('focus', '.autocomplete_txt', handleAutocomplete);
 
         $(document).on('click', '#btnDel', function() {
             $(this).closest('tr').remove();
@@ -735,18 +732,17 @@
             };
             date_input.datepicker(options);
         });
+        $(document).ready(function() {
+            $('#etc').on('change', function() {
+                if ($(this).is(':checked')) {
+                    $('#inty').show();
+                } else {
+                    $('#inty').hide();
+                }
+            });
+        });
 
         function AddModal() {
-            /* var etc = document.getElementById('etc');
-            var in_ty = document.getElementById('.input_type');
-            if (etc.checked == false) {
-                in_ty.style.display = "none";
-            }*/
-            if ($('#etc').attr('checked', false)) {
-                $('.input_type').css('display', 'none');
-            }else{
-                $('.input_type').css('display', 'box');
-            }
             $('#addResearch').modal('toggle');
         }
 
@@ -768,8 +764,10 @@
                     //console.log(type);
                     var ty = '';
                     console.log('len:' + type.length);
-                    if (type.length == 2) {
-                        ty = type[0] + ', ' + type[1]
+                    if (type.length == 3) {
+                        ty = type[0] + ', ' + type[1] + ', ' + type[2];
+                    } else if (type.length == 2) {
+                        ty = type[0] + ', ' + type[1];
                     } else {
                         ty = data[0].type_research_id;
                     }

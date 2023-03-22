@@ -9,7 +9,6 @@ class TbSendResearch extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'send_id',
         'research_id',
         'id',
         'pc'

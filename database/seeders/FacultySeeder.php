@@ -203,7 +203,7 @@ class FacultySeeder extends Seeder
                 'major_id' => '18',
                 'major_name' => 'โปรแกรมวิชาภูมิสารสนเทศ',
                 'organization_id' => '2',
-                'group_disciplines' => 'กลุ่มสาขามนุษยศาสตร์และสังคมศาสตร์',
+                'group_disciplines' => 'กลุ่มสาขาวิทยศาสตร์และเทคโนโลยี',
             ],
             [
                 'major_id' => '19',
