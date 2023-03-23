@@ -293,7 +293,7 @@
                     <button type="button" class="btn-close" {{-- data-bs-dismiss="modal"  --}}aria-label="Close"
                         onclick="location.reload()"></button>
                 </div>
-                <form action="" method="post">
+                <form action="{{ route('admin.list-edit') }}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <div class="row mb-3">
@@ -342,9 +342,45 @@
                             </div>
                         </div>
                         <div id="box">
-                            <div class="row mb-3 row-lesson mx-2" id="row_l[]">
-                                <strong class="col-sm-2  " id="le_l">งวดที่ <span id="nu">1</span></strong>
-                                <textarea name="lesson[]" id="lesson_i_1" rows="5" class=" form-control col-8 me-2 "></textarea>
+                            <div class="row mb-3 row-lesson mx-2" id="rw_1">
+                                <strong class="col-sm-2  " id="le_1">งวดที่ <span id="nu">1</span></strong>
+                                <textarea name="lesson_1" id="lesson_i_1" rows="5" class=" form-control col-8 me-2 "></textarea>
+                            </div>
+                            <div class="row mb-3 row-lesson mx-2" id="rw_2">
+                                <strong class="col-sm-2  " id="le_2">งวดที่ <span id="nu">2</span></strong>
+                                <textarea name="lesson_2" id="lesson_i_2" rows="5" class=" form-control col-8 me-2 "></textarea>
+                            </div>
+                            <div class="row mb-3 row-lesson mx-2" id="rw_3">
+                                <strong class="col-sm-2  " id="le_3">งวดที่ <span id="nu">3</span></strong>
+                                <textarea name="lesson_3" id="lesson_i_3" rows="5" class=" form-control col-8 me-2 "></textarea>
+                            </div>
+                            <div class="row mb-3 row-lesson mx-2" id="rw_4">
+                                <strong class="col-sm-2  " id="le_4">งวดที่ <span id="nu">4</span></strong>
+                                <textarea name="lesson_4" id="lesson_i_4" rows="5" class=" form-control col-8 me-2 "></textarea>
+                            </div>
+                            <div class="row mb-3 row-lesson mx-2" id="rw_5">
+                                <strong class="col-sm-2  " id="le_5">งวดที่ <span id="nu">5</span></strong>
+                                <textarea name="lesson_5" id="lesson_i_5" rows="5" class=" form-control col-8 me-2 "></textarea>
+                            </div>
+                            <div class="row mb-3 row-lesson mx-2" id="rw_6">
+                                <strong class="col-sm-2  " id="le_6">งวดที่ <span id="nu">6</span></strong>
+                                <textarea name="lesson_6" id="lesson_i_6" rows="5" class=" form-control col-8 me-2 "></textarea>
+                            </div>
+                            <div class="row mb-3 row-lesson mx-2" id="rw_7">
+                                <strong class="col-sm-2  " id="le_7">งวดที่ <span id="nu">7</span></strong>
+                                <textarea name="lesson_7" id="lesson_i_7" rows="5" class=" form-control col-8 me-2 "></textarea>
+                            </div>
+                            <div class="row mb-3 row-lesson mx-2" id="rw_8">
+                                <strong class="col-sm-2  " id="le_8">งวดที่ <span id="nu">8</span></strong>
+                                <textarea name="lesson_8" id="lesson_i_8" rows="5" class=" form-control col-8 me-2 "></textarea>
+                            </div>
+                            <div class="row mb-3 row-lesson mx-2" id="rw_9">
+                                <strong class="col-sm-2  " id="le_9">งวดที่ <span id="nu">9</span></strong>
+                                <textarea name="lesson_9" id="lesson_i_9" rows="5" class=" form-control col-8 me-2 "></textarea>
+                            </div>
+                            <div class="row mb-3 row-lesson mx-2" id="rw_10">
+                                <strong class="col-sm-2  " id="le_l_10">งวดที่ <span id="nu">10</span></strong>
+                                <textarea name="lesson_10" id="lesson_i_10" rows="5" class=" form-control col-8 me-2 "></textarea>
                             </div>
                         </div>
 
@@ -452,7 +488,7 @@
                 success: function(res) {
                     moment.locale('th');
                     var data = res.data_dl[0];
-                    console.log(data);
+                    //console.log(data);
                     $('#editModal').modal('toggle');
 
                     $('#source').html(data.research_source_name);
@@ -461,6 +497,101 @@
                     $('#contact_en').val(data.Date_end_contract);
 
                     $('#lesson_i_1').html(data.lesson1);
+                    if (data.lesson2 != null) {
+                        $('#num').val(2);
+                        $('#lesson_i_2').html(data.lesson2);
+                    } else {
+                        $('#rw_2').css('display', 'none');
+                    }
+
+                    if (data.lesson3 != null) {
+                        $('#num').val(3);
+                        $('#lesson_i_3').html(data.lesson3);
+                    } else {
+                        $('#rw_3').css('display', 'none');
+                    }
+
+                    if (data.lesson4 != null) {
+                        $('#num').val(4);
+                        $('#lesson_i_4').html(data.lesson4);
+                    } else {
+                        $('#rw_4').css('display', 'none');
+                    }
+
+                    if (data.lesson5 != null) {
+                        $('#num').val(5);
+                        $('#lesson_i_5').html(data.lesson5);
+                    } else {
+                        $('#rw_5').css('display', 'none');
+                    }
+
+                    if (data.lesson6 != null) {
+                        $('#num').val(6);
+                        $('#lesson_i_6').html(data.lesson6);
+                    } else {
+                        $('#rw_6').css('display', 'none');
+                    }
+
+                    if (data.lesson7 != null) {
+                        $('#r_7').val(7);
+                        $('#lesson_i_7').html(data.lesson7);
+                    } else {
+                        $('#rw_7').css('display', 'none');
+                    }
+
+                    if (data.lesson8 != null) {
+                        $('#num').val(8);
+                        $('#lesson_i_8').html(data.lesson8);
+                    } else {
+                        $('#rw_8').css('display', 'none');
+                    }
+
+                    if (data.lesson9 != null) {
+                        $('#num').val(9);
+                        $('#lesson_i_9').html(data.lesson9);
+                    } else {
+                        $('#rw_9').css('display', 'none');
+                    }
+
+                    if (data.lesson10 != null) {
+                        $('#num').val(10);
+                        $('#lesson_i_10').html(data.lesson10);
+                    } else {
+                        $('#rw_10').css('display', 'none');
+                    }
+
+
+                    var c_num = $('#num').val();
+                    console.log(c_num);
+
+                    $('#addNum').on('click', function() {
+                        c_num++;
+                        // $('#nu').html(i);
+                        if (c_num > 10) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'จำนวนงวดต้องไม่เกิน 10 งวด',
+                            })
+                        } else {
+
+                            $('#num').val(c_num);
+                            console.log(c_num);
+                            tr = '<div class="row mb-3 mx-2"  id="row' + c_num + '">' +
+                                '<strong class="col-sm-2 " id="le">งวดที่ <span id="nu">' + c_num +
+                                '</span></strong>' +
+                                // '<div class="col-sm-10">' +
+                                '<textarea name="lesson[]" id="lesson' + c_num +
+                                '" rows="5" class=" form-control col-8 me-2 "></textarea>' +
+                                '<button class="btn btn-danger btn-sm col-auto" type="button" id="btnDel">' +
+                                '<i class="fa-solid fa-minus"></i>' +
+                                '</button>' +
+                                // '</div>' +
+                                '</div>';
+
+                            $('#box').append(tr);
+                        }
+                    });
                 }
             })
 

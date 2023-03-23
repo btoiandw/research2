@@ -123,14 +123,20 @@ class TbAdminController extends Controller
     public function rePages($id)
     {
         $data_re = DB::table('tb_research')
-            ->where('research_status', '!=', '1')
-            ->where('research_status', '!=', '3')
-            ->where('research_status', '!=', '5')
+            ->where('research_status', '!=', '1') //
+            ->where('research_status', '!=', '4')
             ->where('research_status', '!=', '7')
+            ->where('research_status', '!=', '10')
             ->get();
         $data = DB::table('users')->where('employee_id', $id)->get();
         $data_d = DB::table('tb_directors')->where('work_status', '=', '1')->get();
-        return view('pre-research.admin.research_request')->with(['data_re' => $data_re, 'id' => $id, 'data' => $data[0], 'data_d' => $data_d]);
+
+        $data_list = DB::table('tb_deliver_lists')
+            ->join('tb_research_sources', 'tb_deliver_lists.research_source_id', '=', 'tb_research_sources.research_sources_id')
+            ->where('tb_deliver_lists.status', '=', '1')
+            ->get();
+        //dd($data_re, $data, $data_d);
+        return view('pre-research.admin.research_request')->with(['data_re' => $data_re, 'id' => $id, 'data' => $data[0], 'data_d' => $data_d, 'data_list' => $data_list]);
     }
     public function manaUser($id)
     {
@@ -147,17 +153,38 @@ class TbAdminController extends Controller
         $data_re = DB::table('tb_research')
             ->distinct('tb_research.research_id')
             ->join('tb_feedback', 'tb_research.research_id', '=', 'tb_feedback.research_id')
-            ->where('tb_research.research_status', '!=', '0')
+            ->where('tb_research.research_status', '!=', '0') //
             ->where('tb_research.research_status', '!=', '2')
-            ->where('tb_research.research_status', '!=', '4')
+            ->where('tb_research.research_status', '!=', '3')
+            ->where('tb_research.research_status', '!=', '5')
             ->where('tb_research.research_status', '!=', '6')
             ->where('tb_research.research_status', '!=', '8')
             ->where('tb_research.research_status', '!=', '9')
-            ->where('tb_research.research_status', '!=', '10')
-            ->where('tb_feedback.status', '=', '0')
-            //->groupBy('tb_feedback.research_id')
-            //->select('tb_feedback.research_id', 'tb_feedback.employee_referees_id', 'tb_feedback.date_send_referess', 'tb_feedback.status', 'tb_research.*')
-            //->groupBy('tb_research.research_id')
+            ->where('tb_research.research_status', '!=', '11')
+            ->where('tb_research.research_status', '!=', '12')
+            ->where('tb_research.research_status', '!=', '13')
+            ->where('tb_research.research_status', '!=', '14')
+            ->where('tb_research.research_status', '!=', '15')
+            //status research
+            //    0=>รอตรวจ(ส่งครั้งแรก)
+            //    1=>admin ส่งให้กรรมการครั้งที่ 1
+            //    2=>admin ส่งให้นักวิจัยแก้ครั้งที่ 1
+
+            //    3=>รอตรวสอบการปรับแก้ครั้งที่ 1
+            //    4=>admin ส่งให้กรรมการครั้งที่ 1
+            //    5=>admin ส่งให้นักวิจัยแก้ครั้งที่ 2
+
+            //    6=>รอตรวสอบการปรับแก้ครั้งที่ 2
+            //    7=>admin ส่งให้กรรมการครั้งที่ 2
+            //    8=>admin ส่งให้นักวิจัยแก้ครั้งที่ 3
+
+            //    9=>รอตรวสอบการปรับแก้ครั้งที่ 3
+            //    10=>admin ส่งให้กรรมการครั้งที่ 3
+            //    11=>อนุมัติ
+            //    12=>ยกเลิก
+            //    13=>ไม่ผ่าน
+            //    14=>ไม่ผ่านการตรวจสอบจากแอดมิน
+            //    15=>ผ่าน
             ->select('tb_feedback.status', 'tb_research.*')
             ->get()
             /* ->toArray() */;
@@ -202,5 +229,18 @@ class TbAdminController extends Controller
     {
         $data = DB::table('users')->where('username', $request->id_card)->get();
         return response()->json(['data' => $data]);
+    }
+
+    public function approve(Request $request)
+    {
+        $validation = $request->validate(
+            [
+                'list_app' => 'required'
+            ],
+            [
+                'list_app.required' => 'โปรดระบุรายการส่งมอบในการทำสัญญา'
+            ]
+        );
+        dd($request->all());
     }
 }

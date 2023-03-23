@@ -1,5 +1,18 @@
 @extends('layouts.admin.admin')
 @section('content')
+    @if ($errors->any())
+        <!-- ตรวจสอบว่ามี Error ของ validation ขึ้นมาหรือเปล่า -->
+
+        <div class="alert alert-danger" id="ERROR_COPY" style="display:none;">
+            <ul style="list-style: none;">
+                @foreach ($errors->all() as $error)
+                    <!-- ทำการ วน Loop เพื่อแสดง Error ของ validation ขึ้นมาทั้งหมด -->
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        <!-- ref - https://laravel.com/docs/7.x/validation#DisplayingTheValidationErrors  -->
+    @endif
     <div class="row mb-3 mt-3">
         <div class="col-xl-12">
             <div class="bg-white rounded shadow-xl m-dash p-2">
@@ -41,21 +54,43 @@
                                         @endif
                                     </td>
                                     <td align="center">
-                                        <button class="btn btn-sm btn-default"
-                                            onclick="addSumFeed({{ $item->research_id }})">
-                                            <i class="fa-solid fa-plus"></i><span>ข้อเสนอแนะ</span>
-                                        </button>
+                                        @if (
+                                            $item->research_status == 0 ||
+                                                $item->research_status == 3 ||
+                                                $item->research_status == 6 ||
+                                                $item->research_status == 9)
+                                            <button class="btn btn-sm btn-default"
+                                                onclick="addSumFeed({{ $item->research_id }})">
+                                                <i class="fa-solid fa-plus"></i><span>ข้อเสนอแนะ</span>
+                                            </button>
+                                        @endif
+
                                     </td>
                                     <td align="center">
-                                        <button class="btn btn-default btn-sm"
-                                            onclick="addDirector({{ $item->research_id }})">
-                                            <i class="fa-solid fa-user-plus"></i>
-                                        </button>
+                                        @if (
+                                            $item->research_status == 0 ||
+                                                $item->research_status == 3 ||
+                                                $item->research_status == 6 ||
+                                                $item->research_status == 9)
+                                            <button class="btn btn-default btn-sm"
+                                                onclick="addDirector({{ $item->research_id }})">
+                                                <i class="fa-solid fa-user-plus"></i>
+                                            </button>
+                                        @endif
+
                                     </td>
                                     <td align="center">
-                                        <button class="btn btn-danger btn-sm">
-                                            <i class="fa-solid fa-xmark"></i><span>ยกเลิก</span>
-                                        </button>
+                                        @if ($item->research_status == 15)
+                                            <button class="btn btn-sm" style="background-color: #2ec4b6;color:#fff"
+                                                onclick="approve({{ $item->research_id }})">
+                                                <i class="fa-solid fa-file-invoice"></i> อนุมัติสัญญา
+                                            </button>
+                                        @else
+                                            <button class="btn btn-danger btn-sm">
+                                                <i class="fa-solid fa-xmark"></i><span>ยกเลิก</span>
+                                            </button>
+                                        @endif
+
                                     </td>
                                 </tr>
                             @endforeach
@@ -355,6 +390,72 @@
             </div>
         </div>
     </div>
+
+    <!--add sum feed Modal -->
+    <div class="modal fade" id="approve" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="approveLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="approveLabel">อนุมัติสัญญาทุน</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('admin.approve-contact') }}" method="post">
+                    @csrf
+                    <div class="modal-body">
+                        <input type="hidden" name="id_re" id="id_re">
+                        <div class="row mb-3">
+                            <strong class="col-3">ชื่อโครงร่างงานวิจัยภาษาไทย</strong>
+                            <div class="col-9">
+                                <input type="text" name="" id="n_th" value=""
+                                    class=" form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <strong class="col-3">ชื่อโครงร่างงานวิจัยภาษาอังกฤษ</strong>
+                            <div class="col-9">
+                                <input type="text" name="" id="n_en" value=""
+                                    class=" form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <strong class="col-3">ชื่อแหล่งทุนงานวิจัย</strong>
+                            <div class="col-9">
+                                <input type="text" name="" id="s_re" value=""
+                                    class=" form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <strong class="col-3">ประเภทงานวิจัย</strong>
+                            <div class="col-9">
+                                <input type="text" name="" id="t_re" value=""
+                                    class=" form-control" readonly>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <strong class="col-sm-3 col-form-label">รายการส่งมอบ</strong>
+                            <div class="col-sm-9">
+                                <select class="form-select" id="list_app" name="list_app">
+                                    <option value="">-- เลือกรายการส่งมอบ --</option>
+                                    @foreach ($data_list as $row)
+                                        <option value="{{ $row->deliver_id }}">
+                                            {{ $row->research_source_name }} {{ $row->Type_research }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" type="submit">ยืนยัน</button>
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">ปิด</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('js')
@@ -364,7 +465,18 @@
     <script src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.datatables.net/rowreorder/1.3.1/js/dataTables.rowReorder.min.js"></script>
-
+    <script>
+        var has_error = {{ $errors->count() > 0 ? 'true' : 'false' }};
+        if (has_error) {
+            Swal.fire({
+                title: 'Error',
+                icon: 'error',
+                type: 'error',
+                html: jQuery("#ERROR_COPY").html(),
+                showCloseButton: true,
+            });
+        }
+    </script>
     <script>
         $(document).ready(function() {
             $('#research_table').DataTable({
@@ -416,6 +528,16 @@
                     var type_re = data[0].type_research_id;
                     var type = type_re.split('_');
                     //console.log(type);
+                    var ty = '';
+                    console.log('len:' + type.length);
+                    if (type.length == 3) {
+                        ty = type[0] + ', ' + type[1] + ', ' + type[2];
+                    } else if (type.length == 2) {
+                        ty = type[0] + ', ' + type[1];
+                    } else {
+                        ty = data[0].type_research_id;
+                    }
+                    //console.log(type);
                     var area_re = data[0].research_area;
                     var area = area_re.split('_');
                     var start = moment(data[0].date_research_start).add(543, 'year').format('Do MMMM YYYY');
@@ -426,7 +548,7 @@
                     $('#nameTH').html(data[0].research_th);
                     $('#nameEN').html(data[0].research_en);
                     $('#source').html(data[0].research_source_name);
-                    $('#type_re').html(type[0] + ', ' + type[1]);
+                    $('#type_re').html(ty);
                     $('#key').html(data[0].keyword);
                     $('#area').html(area[0] + ' ' + area[1] + ' ' + area[2]);
                     $('#start').html(start);
@@ -582,6 +704,39 @@
                 bs.style.display = "";
                 sugges();
             }
+        }
+
+        function approve(id) {
+            console.log(id);
+            $.ajax({
+                type: 'GET',
+                url: '/view/research/' + id,
+                dataType: 'JSON',
+                success: function(res) {
+                    moment.locale('th');
+                    console.log(res.data_re);
+                    var data = res.data_re;
+                    //$('#n_th').val(data.)
+                    var type_re = data[0].type_research_id;
+                    var type = type_re.split('_');
+                    //console.log(type);
+                    var ty = '';
+                    console.log('len:' + type.length);
+                    if (type.length == 3) {
+                        ty = type[0] + ', ' + type[1] + ', ' + type[2];
+                    } else if (type.length == 2) {
+                        ty = type[0] + ', ' + type[1];
+                    } else {
+                        ty = data[0].type_research_id;
+                    }
+                    $('#id_re').val(data[0].research_id);
+                    $('#n_th').val(data[0].research_th);
+                    $('#n_en').val(data[0].research_en);
+                    $('#s_re').val(data[0].research_source_name);
+                    $('#t_re').val(ty);
+                }
+            })
+            $('#approve').modal('toggle');
         }
     </script>
 @endpush

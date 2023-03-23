@@ -204,4 +204,88 @@ class TbFeedbackController extends Controller
 
         return response()->json(['dt' => $dt]);
     }
+
+    public function sumFeed(Request $request)
+    {
+        $research_id = $request->id;
+
+
+        $data = DB::table('tb_research')
+            ->where('research_id', $research_id)
+            //->update(['research_summary_feedback'=>$request->suggestion,'research_status'=>'1'])
+            ->get();
+        //dd($request->all(), $data);
+        $reYear = $data[0]->year_research;
+        $submit = $request->save;
+        $suggestion = $request->suggestion;
+        $filefeed = $request->file('suggestionFile');
+
+        //dd($u,$filefeed);
+        if ($suggestion != '') {
+            $feedResult = $suggestion;
+        } else {
+            $feedResult = null;
+        }
+
+        if ($filefeed != '') {
+            $reYear = $data[0]->year_research;
+            $file_name = $filefeed->getClientOriginalName();
+            $eNamep = explode('.', $file_name);
+            $infop = end($eNamep);
+
+            $file = $research_id . "_0_SumFeedback." . $infop;
+            $path = 'uploads/research/' . $reYear . '/' . $research_id; //path save file
+
+            $filefeed->move($path, $file);
+        } else {
+            $file = null;
+        }
+        // dd($request->all(), $data, $file, $suggestion, $submit);
+
+        /* if radio ผ่าน/ไม่ผ่าน */
+        if ($request->AssessmentResults == 'ไม่ผ่าน') {
+            if ($submit == "บันทึก") {
+                DB::table('tb_research')
+                    //->where('employee_referees_id', $direc_id)
+                    ->where('research_id', $research_id)
+                    ->update([
+                        //'research_status' => '1',
+                        //'feedback' => $feedResult,
+                        'research_summary_feedback' => $request->AssessmentResults,
+                        'summary_feedback_file' => $file,
+                        'updated_at' => Carbon::now()->format('Y-m-d H:i:m'),
+                    ]);
+                return redirect()->back();
+
+                //DB::update();
+            } elseif ($submit == "ยืนยัน") {
+                /// DB::update();
+                DB::table('tb_research')
+                    //->where('employee_referees_id', $direc_id)
+                    ->where('research_id', $research_id)
+                    ->update([
+                        //'research_status' => '1',
+                        //'feedback' => $feedResult,
+                        'research_summary_feedback' => $request->AssessmentResults,
+                        'summary_feedback_file' => $file,
+                        'updated_at' => Carbon::now()->format('Y-m-d H:i:m'),
+                    ]);
+                return redirect()->back();
+            }
+        } elseif ($request->AssessmentResults == 'ผ่าน') {
+            /// DB::update();
+
+            DB::table('tb_research')
+                //->where('employee_referees_id', $direc_id)
+                ->where('research_id', $research_id)
+                ->update([
+                    'research_status' => '15',
+                    //'feedback' => $feedResult,
+                    'research_summary_feedback' => $request->AssessmentResults,
+                    'summary_feedback_file' => $file,
+                    'updated_at' => Carbon::now()->format('Y-m-d H:i:m'),
+                ]);
+            return redirect()->back();
+        }
+    }
 }

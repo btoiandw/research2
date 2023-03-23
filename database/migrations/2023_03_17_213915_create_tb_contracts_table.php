@@ -14,7 +14,7 @@ class CreateTbContractsTable extends Migration
     public function up()
     {
         Schema::create('tb_contracts', function (Blueprint $table) {
-            $table->id('contract_id');
+            $table->integer('contract_id');
             $table->integer('research_id');
             $table->string('file_cont')->nullable();
             $table->date('date_start_cont');
@@ -25,6 +25,8 @@ class CreateTbContractsTable extends Migration
             $table->integer('deliver_id');
             $table->string('contract_status');
             $table->timestamps();
+
+            $table->primary(['contract_id','research_id']);
         });
     }
 

@@ -77,3 +77,6 @@ Route::post('/admin/source/store',[\App\Http\Controllers\Pre\TbSourceController:
 Route::post('/admin/list',[\App\Http\Controllers\TbDeliverListController::class,'store'])->name('admin.deliver-store');
 Route::get('/admin/view/list/{id}',[\App\Http\Controllers\TbDeliverListController::class,'view']);
 Route::get('/admin/cancel/list/{id}',[\App\Http\Controllers\TbDeliverListController::class,'cancel']);
+Route::post('/admin/list/edit',[\App\Http\Controllers\TbDeliverListController::class,'update'])->name('admin.list-edit');
+Route::post('/admin/sum/feed',[\App\Http\Controllers\TbFeedbackController::class,'sumFeed'])->name('admin.add-sumFeed');
+Route::post('/admin/approve/contact',[\App\Http\Controllers\Pre\TbAdminController::class,'approve'])->name('admin.approve-contact');

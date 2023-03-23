@@ -91,7 +91,7 @@
                         </div>
                         <div class="mb-3 row">
                             <label class="col-sm-2 col-form-label fw-bold">ผลการประเมิน</label>
-                            <div class="col-sm-10"onclick="pass()">
+                            <div class="col-sm-10"{{-- onclick="pass()" --}}>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="AssessmentResults"
                                         id="AssessmentResults1" value="ไม่ผ่าน" checked>
@@ -135,7 +135,8 @@
                     <div class="modal-footer">
                         <input type="submit" class="btn btn-success" id="save" name="save"
                             {{-- onclick="saveFeed()" --}} value="บันทึก" />
-                        <input type="submit" class="btn btn-primary" name="save" id="comfirm" value="ส่งการประเมิน" />
+                        <input type="submit" class="btn btn-primary" name="save" id="comfirm"
+                            value="ส่งการประเมิน" />
                         {{-- <button type="button" class="btn btn-danger" data-bs-dismiss="modal">ยกเลิก</button> --}}
                     </div>
                 </form>
@@ -306,7 +307,7 @@
                                 </div>
                             </div>
 
-                            <div class="mb-3 row ">
+                            <div class="mb-3 row " id="div_cm">
                                 <strong class="col-sm-3 col-form-label fw-bold">ข้อเสนอแนะ</strong>
                                 <div class="col-sm-9">
                                     <label readonly class=" form-control-plaintext" name="suggestion"
@@ -422,6 +423,20 @@
             document.getElementById("suggestionFile").style.display = "none";
         });
 
+        $('#AssessmentResults2').on('click', function() {
+            $('#checkFile').css('display', 'none');
+            $('#suggestionFile').css('display', 'none');
+            $('#suggestion').css('display', 'none');
+            $('#save').css('display', 'none');
+        })
+        $('#AssessmentResults1').on('click', function() {
+            $('#checkFile').css('display', 'block');
+            $('#suggestionFile').css('display', 'block');
+            $('#suggestion').css('display', 'block');
+            $('#save').css('display', 'block');
+            sugges();
+        })
+
         function sugges() {
             var rb = document.getElementById('AssessmentResults2');
             //var rb = document.querySelector('input[id="refers2"]:checked').value;
@@ -467,32 +482,6 @@
                 z.style.display = "";
             }
 
-        }
-
-        function pass() {
-            var rb2 = document.getElementById('AssessmentResults2');
-            var rb1 = document.getElementById('AssessmentResults1');
-            //var rb = document.querySelector('input[id="refers2"]:checked').value;
-            var ck = document.getElementById('mustAddFile');
-            var cf = document.getElementById('checkFile');
-            var x = document.getElementById("suggestionFile");
-            var z = document.getElementById("suggestion");
-            var bs = document.getElementById("save");
-
-            //x.value = x.value.toUpperCase();
-
-            if (rb2.checked == true) {
-                cf.style.display = "none";
-                x.style.display = "none";
-                z.style.display = "none";
-                bs.style.display = "none";
-                console.log('true');
-            }
-            if (rb1.checked == true) {
-                cf.style.display = "";
-                bs.style.display = "";
-                sugges();
-            }
         }
 
         function viewDetail(id) {
@@ -601,7 +590,10 @@
                     } else {
 
                     }
+                    if (data.Assessment_result == 'ผ่าน') {
+                        $('#div_cm').css('display', 'none');
 
+                    }
                     $('#viewFeed').modal('toggle');
                     $('#th').html(data.research_th);
                     $('#en').html(data.research_en);

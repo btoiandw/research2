@@ -26,6 +26,8 @@ class CreateTbFeedbackTable extends Migration
             $table->string('suggestionFile')->nullable();
             $table->dateTime('Date_feedback_research')->nullable();
             $table->timestamps();
+
+            $table->primary(['research_id','employee_referees_id']);
         });
     }
 
