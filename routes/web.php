@@ -80,3 +80,6 @@ Route::get('/admin/cancel/list/{id}',[\App\Http\Controllers\TbDeliverListControl
 Route::post('/admin/list/edit',[\App\Http\Controllers\TbDeliverListController::class,'update'])->name('admin.list-edit');
 Route::post('/admin/sum/feed',[\App\Http\Controllers\TbFeedbackController::class,'sumFeed'])->name('admin.add-sumFeed');
 Route::post('/admin/approve/contact',[\App\Http\Controllers\Pre\TbAdminController::class,'approve'])->name('admin.approve-contact');
+
+
+Route::get('/gen/pdf', [\App\Http\Controllers\Pre\PDFController::class, 'generatePDF']);

@@ -1,0 +1,26 @@
+{
+    "sarabun": {
+        "100_italic": "C:\\inetpub\\wwwroot\\research2\\storage\\fonts\/sarabun_100_italic_ac8d31cf02f2e6ac5c788347530bc931",
+        "200_italic": "C:\\inetpub\\wwwroot\\research2\\storage\\fonts\/sarabun_200_italic_29d560aef8bbbe09bb4418b1f7199182",
+        "300_italic": "C:\\inetpub\\wwwroot\\research2\\storage\\fonts\/sarabun_300_italic_b176119818e4ab05eb54267da3eff90b",
+        "italic": "C:\\inetpub\\wwwroot\\research2\\storage\\fonts\/sarabun_italic_12928dcf9c157c001281c8694cbe3896",
+        "500_italic": "C:\\inetpub\\wwwroot\\research2\\storage\\fonts\/sarabun_500_italic_c760825fc0e16d7c0e4d522f4f8704a9",
+        "600_italic": "C:\\inetpub\\wwwroot\\research2\\storage\\fonts\/sarabun_600_italic_a78f10af190ec37f15803a26f6a3357d",
+        "bold_italic": "C:\\inetpub\\wwwroot\\research2\\storage\\fonts\/sarabun_bold_italic_6d913d8ba0e5c9c32e384d9acd8a8c3b",
+        "800_italic": "C:\\inetpub\\wwwroot\\research2\\storage\\fonts\/sarabun_800_italic_f3002dcf133e5597986180b08d4d1da5",
+        "100": "C:\\inetpub\\wwwroot\\research2\\storage\\fonts\/sarabun_100_96bf8c9e626e9a818474bca74aa89359",
+        "200": "C:\\inetpub\\wwwroot\\research2\\storage\\fonts\/sarabun_200_be4dfb982c759554dee96cea142bac1d",
+        "300": "C:\\inetpub\\wwwroot\\research2\\storage\\fonts\/sarabun_300_55a1bb8c5c82c7daab9003629f185990",
+        "normal": "C:\\inetpub\\wwwroot\\research2\\storage\\fonts\/sarabun_normal_618c7e0367b8be883c9e4b7b2597563d",
+        "500": "C:\\inetpub\\wwwroot\\research2\\storage\\fonts\/sarabun_500_c7f39676e9ee5bc446a50df3a6b925aa",
+        "600": "C:\\inetpub\\wwwroot\\research2\\storage\\fonts\/sarabun_600_3389ebac76344d94167e718d51e3a113",
+        "bold": "C:\\inetpub\\wwwroot\\research2\\storage\\fonts\/sarabun_bold_e7f1d83ac989e742e2b695d93dbd89bb",
+        "800": "sarabun_800_4e18b735435ab08170022ab1c9d62050"
+    },
+    "thsarabunnew": {
+        "normal": "C:\\inetpub\\wwwroot\\research2\\storage\\fonts\/thsarabunnew_normal_068fa2e5d7c0d9176df88dc7b7a4ee42",
+        "bold": "C:\\inetpub\\wwwroot\\research2\\storage\\fonts\/thsarabunnew_bold_ba715f537bf26c4def9b2897b7597546",
+        "italic": "C:\\inetpub\\wwwroot\\research2\\storage\\fonts\/thsarabunnew_italic_7bb243c380e8c94a294f163b3c0f0364",
+        "bold_italic": "thsarabunnew_bold_italic_f0ddc32c8180b68ec42184c093705497"
+    }
+}
