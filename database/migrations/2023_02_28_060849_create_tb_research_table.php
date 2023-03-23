@@ -14,7 +14,7 @@ class CreateTbResearchTable extends Migration
     public function up()
     {
         Schema::create('tb_research', function (Blueprint $table) {
-            $table->integer('research_id');
+            $table->unsignedBigInteger('research_id');
             $table->timestamp('date_upload_file');
             $table->string('research_th');
             $table->string('research_en');
@@ -33,6 +33,8 @@ class CreateTbResearchTable extends Migration
             /*0=รอตรวจสอบ, 1=ไม่ผ่าน/ปรับปรุงครั้งที่ 1, 2=ไม่ผ่าน/ปรับปรุงครั้งที่ 2, 3=ไม่ผ่าน/ปรับปรุงครั้งที่ 3, 4=ผ่าน, 5=ยกเลิก,6=รอการตวจสอบจากคระกรรมการ,7=ไม่ผ่านการตรวจสอบโดยแอดมิน */
             $table->string('year_research');
             $table->timestamps();
+
+            $table->primary(['research_id', 'date_upload_file']);
         });
     }
 

@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -74,3 +75,5 @@ Route::post('/admin/edit/source',[\App\Http\Controllers\Pre\TbSourceController::
 Route::get('/view/source/file/{id}',[\App\Http\Controllers\Pre\TbSourceController::class,'viewFile']);
 Route::post('/admin/source/store',[\App\Http\Controllers\Pre\TbSourceController::class,'store'])->name('admin.source-store');
 Route::post('/admin/list',[\App\Http\Controllers\TbDeliverListController::class,'store'])->name('admin.deliver-store');
+Route::get('/admin/view/list/{id}',[\App\Http\Controllers\TbDeliverListController::class,'view']);
+Route::get('/admin/cancel/list/{id}',[\App\Http\Controllers\TbDeliverListController::class,'cancel']);

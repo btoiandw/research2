@@ -18,7 +18,7 @@ class TbAdminController extends Controller
     {
         $data = DB::table('users')
             ->join('tb_majors', 'users.major_id', '=', 'tb_majors.major_id')
-            ->join('tb_faculties','tb_majors.organization_id','=','tb_faculties.organization_id')
+            ->join('tb_faculties', 'tb_majors.organization_id', '=', 'tb_faculties.organization_id')
             ->where('employee_id', $id)->get();
         //dd($data[0]);
         return view('pre-research.admin.index')->with(['data' => $data[0], 'id' => $id]);
@@ -168,7 +168,11 @@ class TbAdminController extends Controller
     public function deliverPages($id)
     {
         $data = DB::table('users')->where('employee_id', $id)->get();
-        $data_de = DB::table('tb_deliver_lists')->where('status', '1')->get();
+        $data_de = DB::table('tb_deliver_lists')
+            ->join('tb_research_sources', 'tb_deliver_lists.research_source_id', '=', 'tb_research_sources.research_sources_id')
+            ->where('tb_deliver_lists.status', '1')
+            ->orderBy('tb_deliver_lists.deliver_id', 'desc')
+            ->get();
         $data_so = DB::table('tb_research_sources')->where('status', '1')->get();
         $data_ty = DB::table('tb_research')->get('type_research_id');
 

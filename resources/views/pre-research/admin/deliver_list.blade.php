@@ -12,7 +12,7 @@
                             <tr class=" align-middle">
                                 <th class="fw-bolder" style="font-size: 15px">ลำดับ</th>
                                 <th class="fw-bolder" style="font-size: 15px">ชื่อแหล่งทุนงานวิจัย</th>
-                                <th class=" fw-bolder" style="font-size: 15px">ประเภทแหล่งทุน</th>
+                                <th class=" fw-bolder" style="font-size: 15px">ประเภทงานวิจัย</th>
                                 <th class=" fw-bolder" style="font-size: 15px">รายละเอียด</th>
                                 <th class=" fw-bolder" style="font-size: 15px">จัดการ</th>
                             </tr>
@@ -24,13 +24,23 @@
                             @endphp
                             @foreach ($data_de as $item)
                                 <tr>
-                                    <td>{{ $i++ }}</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td align="center">{{ $i++ }}</td>
                                     <td>
-                                        <button class="btn btn-yellow btn-sm me-2">แก้ไข</button>
-                                        <button class="btn btn-danger btn-sm">ยกเลิก</button>
+                                        {{ $item->research_source_name }}
+                                    </td>
+                                    <td>
+                                        {{ $item->Type_research }}
+                                    </td>
+                                    <td align="center">
+                                        <button class="btn btn-info btn-sm" onclick="viewDetail({{ $item->deliver_id }})">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </button>
+                                    </td>
+                                    <td align="center">
+                                        <button class="btn btn-yellow btn-sm me-2"
+                                            onclick="edit({{ $item->deliver_id }})">แก้ไข</button>
+                                        <button class="btn btn-danger btn-sm"
+                                            onclick="cancel({{ $item->deliver_id }})">ยกเลิก</button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -57,7 +67,7 @@
                             <strong class=" col-sm-3">แหล่งทุน</strong>
                             <div class="col-sm-9">
                                 <select class="form-select" id="source_id" name="source_id">
-                                    <option value="" >-- เลือกแหล่งทุน --</option>
+                                    <option value="">-- เลือกแหล่งทุน --</option>
                                     @foreach ($data_so as $row)
                                         <option value="{{ $row->research_sources_id }}">
                                             {{ $row->research_source_name }}
@@ -127,7 +137,220 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary">ยืนยัน</button>
+                        <button type="submit" class="btn btn-primary">ยืนยัน</button>
+                        <button type="button" class="btn btn-danger" {{-- data-bs-dismiss="modal" --}}
+                            onclick="location.reload()">ยกเลิก</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <!--View detail Modal -->
+    <div class="modal fade" id="viewModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="viewModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="viewModalLabel">รายละเอียดรายการส่งมอบ</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                {{--  <form action="{{ route('admin.deliver-store') }}" method="post">
+                    @csrf --}}
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <strong class=" col-sm-3">แหล่งทุน</strong>
+                        <div class="col-sm-9">
+                            <label for="" id="so"></label>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <strong class="col-sm-3">ประเภทงานวิจัย</strong>
+                        <div class="col-sm-9">
+                            <label for="" id="ty"></label>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <strong class="col-sm-3">วันที่เริ่มต้นสัญญา</strong>
+                        <div class="col-sm-9">
+                            <div class="row">
+                                <div class="col-auto">
+                                    <label for="" id="start"></label>
+                                </div>
+                                <div class="col-sm-1">
+                                    <strong>ถึง</strong>
+                                </div>
+                                <div class="col-auto">
+                                    <label for="" id="end"></label>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="table mb-0">
+                        <div class="card-body pt-0">
+                            <table class="table table-responsive" id="detail_list" name="detail_list">
+                                <thead align="center">
+                                    <tr>
+                                        <th width="300px" style="font-size: 14px">งวดที่</th>
+                                        <th width="800px" style="font-size: 14px" class=" text-wrap">รายละเอียด</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dt_list">
+                                    <tr id="row_1">
+                                        <td align="center" class="fw-bolder"><label
+                                                for=""id="r_1"></label></td>
+                                        <td>
+                                            <textarea class=" form-control-plaintext" readonly for="" id="dl_1"></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr id="row_2">
+                                        <td align="center" class="fw-bolder"><label
+                                                for=""id="r_2"></label></td>
+                                        <td>
+                                            <textarea class=" form-control-plaintext" readonly for="" id="dl_2"></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr id="row_3">
+                                        <td align="center" class="fw-bolder"><label
+                                                for=""id="r_3"></label></td>
+                                        <td>
+                                            <textarea class=" form-control-plaintext" for="" id="dl_3"></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr id="row_4">
+                                        <td align="center" class="fw-bolder"><label
+                                                for=""id="r_4"></label></td>
+                                        <td>
+                                            <textarea class=" form-control-plaintext" for="" id="dl_4"></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr id="row_5">
+                                        <td align="center" class="fw-bolder"><label
+                                                for=""id="r_5"></label></td>
+                                        <td>
+                                            <textarea class=" form-control-plaintext" for="" id="dl_5"></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr id="row_6">
+                                        <td align="center" class="fw-bolder"><label
+                                                for=""id="r_6"></label></td>
+                                        <td>
+                                            <textarea class=" form-control-plaintext" for="" id="dl_6"></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr id="row_7">
+                                        <td align="center" class="fw-bolder"><label
+                                                for=""id="r_7"></label></td>
+                                        <td>
+                                            <textarea class=" form-control-plaintext" for="" id="dl_7"></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr id="row_8">
+                                        <td align="center" class="fw-bolder"><label
+                                                for=""id="r_8"></label></td>
+                                        <td>
+                                            <textarea class=" form-control-plaintext" for="" id="dl_8"></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr id="row_9">
+                                        <td align="center" class="fw-bolder"><label
+                                                for=""id="r_9"></label></td>
+                                        <td>
+                                            <textarea class=" form-control-plaintext" for="" id="dl_9"></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr id="row_10">
+                                        <td align="center" class="fw-bolder"><label
+                                                for=""id="r_10"></label></td>
+                                        <td>
+                                            <textarea class=" form-control-plaintext" for="" id="dl_10"></textarea>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"data-bs-dismiss="modal">ปิด</button>
+                </div>
+                {{-- </form> --}}
+            </div>
+        </div>
+    </div>
+
+    <!--edit Modal -->
+    <div class="modal fade" id="editModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="editModalLabel">แก้ไขรายการส่งมอบ</h1>
+                    <button type="button" class="btn-close" {{-- data-bs-dismiss="modal"  --}}aria-label="Close"
+                        onclick="location.reload()"></button>
+                </div>
+                <form action="" method="post">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row mb-3">
+                            <strong class=" col-sm-3">แหล่งทุน</strong>
+                            <div class="col-sm-9">
+                                <label for="" id="source"></label>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <strong class="col-sm-3">ประเภทงานวิจัย</strong>
+                            <div class="col-sm-9">
+                                <label for="" id="type_d"></label>
+                            </div>
+
+                        </div>
+                        <div class="row mb-3">
+                            <strong class="col-sm-3">วันที่เริ่มต้นสัญญา</strong>
+                            <div class="col-sm-9">
+                                <input type="date" name="contact_start" id="contact_st" class=" form-control"
+                                    data-date-format="DD MM YYYY" min="" />
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <strong class="col-sm-3">วันที่สิ้นสุดสัญญา</strong>
+                            <div class="col-sm-9">
+                                <input type="date" name="contact_end" id="contact_en" class=" form-control"
+                                    data-date-format="DD MM YYYY" min="" />
+                            </div>
+                        </div>
+
+                        <div class="row g-3 align-items-center justify-content-center mb-3">
+                            <div class="col-auto">
+                                <strong for="inputPassword6" class="col-form-label">จำนวนงวด</strong>
+                            </div>
+                            <div class="col-auto">
+                                <input type="text" name="number" min="1" max="10" id="num"
+                                    class=" form-control disabled" readonly value="" />
+                            </div>
+                            <div class="col-auto">
+                                <span id="passwordHelpInline" class="form-text">
+                                    <button class="btn btn-default btn-sm me-2" type="button" id="addNum">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+
+                                </span>
+                            </div>
+                        </div>
+                        <div id="box">
+                            <div class="row mb-3 row-lesson mx-2" id="row_l[]">
+                                <strong class="col-sm-2  " id="le_l">งวดที่ <span id="nu">1</span></strong>
+                                <textarea name="lesson[]" id="lesson_i_1" rows="5" class=" form-control col-8 me-2 "></textarea>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">ยืนยัน</button>
                         <button type="button" class="btn btn-danger" {{-- data-bs-dismiss="modal" --}}
                             onclick="location.reload()">ยกเลิก</button>
                     </div>
@@ -194,6 +417,7 @@
                     $('#boxLesson').append(tr);
                 }
             })
+
         })
         $(document).on('click', '#btnDel', function() {
             var len = $('#number').val();
@@ -218,6 +442,185 @@
             $('#number').val(1);
             $('#addModal').modal('toggle');
             var divRow = document.getElementById('#boxLesson');
+        }
+
+        function edit(id) {
+            $.ajax({
+                method: 'GET',
+                dataType: 'JSON',
+                url: '/admin/view/list/' + id,
+                success: function(res) {
+                    moment.locale('th');
+                    var data = res.data_dl[0];
+                    console.log(data);
+                    $('#editModal').modal('toggle');
+
+                    $('#source').html(data.research_source_name);
+                    $('#type_d').html(data.Type_research);
+                    $('#contact_st').val(data.Date_start_contract);
+                    $('#contact_en').val(data.Date_end_contract);
+
+                    $('#lesson_i_1').html(data.lesson1);
+                }
+            })
+
+        }
+
+        function viewDetail(id) {
+            $.ajax({
+                method: 'GET',
+                dataType: 'JSON',
+                url: '/admin/view/list/' + id,
+                success: function(res) {
+                    //console.log(res.data_dl[0]);
+                    moment.locale('th');
+                    var data = res.data_dl[0];
+                    console.log(data);
+                    var start = moment(data.Date_start_contract).add(543, 'year').format(
+                        'วันที่ Do เดือนMMMM พ.ศ.YYYY');
+                    var end = moment(data.Date_end_contract).add(543, 'year').format(
+                        'วันที่ Do เดือนMMMM พ.ศ.YYYY');
+                    var type_re = data.Type_research;
+                    var type = type_re.split('_');
+                    //console.log(type);
+                    var ty = '';
+                    //console.log('len:' + type.length);
+                    if (type.length == 3) {
+                        ty = type[0] + ', ' + type[1] + ', ' + type[2];
+                    } else if (type.length == 2) {
+                        ty = type[0] + ', ' + type[1];
+                    } else {
+                        ty = data.Type_research;
+                    }
+
+                    $('#viewModal').modal('toggle');
+                    $('#so').html(data.research_source_name);
+                    $('#ty').html(ty);
+                    $('#start').html(start);
+                    $('#end').html(end);
+
+                    if (data.lesson1 != null) {
+                        $('#r_1').html('1');
+                        $('#dl_1').html(data.lesson1);
+                    } else {
+                        $('#row_1').css('display', 'none');
+                    }
+
+                    if (data.lesson2 != null) {
+                        $('#r_2').html('2');
+                        $('#dl_2').html(data.lesson2);
+                    } else {
+                        $('#row_2').css('display', 'none');
+                    }
+
+                    if (data.lesson3 != null) {
+                        $('#r_3').html('3');
+                        $('#dl_3').html(data.lesson3);
+                    } else {
+                        $('#row_3').css('display', 'none');
+                    }
+
+                    if (data.lesson4 != null) {
+                        $('#r_4').html('4');
+                        $('#dl_4').html(data.lesson4);
+                    } else {
+                        $('#row_4').css('display', 'none');
+                    }
+
+                    if (data.lesson5 != null) {
+                        $('#r_5').html('5');
+                        $('#dl_5').html(data.lesson5);
+                    } else {
+                        $('#row_5').css('display', 'none');
+                    }
+
+                    if (data.lesson6 != null) {
+                        $('#r_6').html('6');
+                        $('#dl_6').html(data.lesson6);
+                    } else {
+                        $('#row_6').css('display', 'none');
+                    }
+
+                    if (data.lesson7 != null) {
+                        $('#r_7').html('7');
+                        $('#dl_7').html(data.lesson7);
+                    } else {
+                        $('#row_7').css('display', 'none');
+                    }
+
+                    if (data.lesson8 != null) {
+                        $('#r_8').html('8');
+                        $('#dl_8').html(data.lesson8);
+                    } else {
+                        $('#row_8').css('display', 'none');
+                    }
+
+                    if (data.lesson9 != null) {
+                        $('#r_9').html('9');
+                        $('#dl_9').html(data.lesson9);
+                    } else {
+                        $('#row_9').css('display', 'none');
+                    }
+
+                    if (data.lesson10 != null) {
+                        $('#r_10').html('10');
+                        $('#dl_10').html(data.lesson10);
+                    } else {
+                        $('#row_10').css('display', 'none');
+                    }
+                }
+            })
+
+        }
+
+        function cancel(id) {
+            console.log(id);
+            $.ajax({
+                method: 'GET',
+                dataType: 'JSON',
+                url: '/admin/view/list/' + id,
+                success: function(res) {
+                    var data = res.data_dl;
+                    Swal.fire({
+                        title: 'คุณต้องการยกเลิกแหล่งทุนวิจัย?',
+                        text: 'ชื่อแหล่งทุนวิจัย : ' + data[0].research_source_name,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'ยืนยัน',
+                        cancelButtonText: 'ยกเลิก'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                method: 'GET',
+                                dataType: 'JSON',
+                                url: '/admin/cancel/list/' + id,
+                                success: function(respo) {
+                                    console.log(respo);
+                                    if (respo.status == true) {
+                                        Swal.fire({
+                                            text: 'ยกเลิกสำเร็จ!',
+                                            icon: 'success'
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                location.reload();
+                                            }
+                                        });
+                                    } else {
+                                        Swal.fire({
+                                            text: 'ยกเลิกไม่สำเร็จ!',
+
+                                            icon: 'error'
+                                        });
+                                    }
+                                }
+                            })
+
+                        }
+                    })
+                }
+            })
         }
     </script>
 @endpush

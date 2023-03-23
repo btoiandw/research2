@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Carbon;
+use RealRashid\SweetAlert\Facades\Alert;
+
 use function GuzzleHttp\Promise\all;
 
 class TbSourceController extends Controller
@@ -17,7 +19,7 @@ class TbSourceController extends Controller
     public function manageSource($id)
     {
         $data = DB::table('users')->where('employee_id', $id)->get();
-        $data_s = DB::table('tb_research_sources')->where('status', '=', '1')->orderBy('research_sources_id','desc')->get();
+        $data_s = DB::table('tb_research_sources')->where('status', '=', '1')->orderBy('research_sources_id', 'desc')->get();
         //dd($data_s);
         return view('pre-research.admin.manage_source')->with(['id' => $id, 'data' => $data[0], 'data_s' => $data_s]);
     }
@@ -86,6 +88,19 @@ class TbSourceController extends Controller
 
     public function store(Request $request)
     {
+        $validation = $request->validate(
+            [
+                'name_so' => 'required',
+                'type' => 'required',
+                'file' => 'required|file|mimes:pdf,doc,docx'
+            ],
+            [
+                'name_so.required' => 'โปรดระบุชื่อแหล่งทุนวิจัย',
+                'type.required' => 'โปรดระบุประเภทแหล่งทุนวิจัย',
+                'file.required' => 'โปรดระบุไฟล์ตัวอย่างแหล่งทุนวิจัย',
+                'file.mimes:pdf,doc,docx' => 'โปรดระบุไฟล์ตัวอย่างแหล่งทุนวิจัยเป็นนามสกุล .pdf, .doc, .docx'
+            ]
+        );
         $path = 'uploads/source/' . $request->ye;
         if ($file_p = $request->file('file')) {
 
@@ -102,8 +117,11 @@ class TbSourceController extends Controller
                 $source->type_research_source = $request->type;
                 $source->ex_research = $fileName_p;
                 $source->status = '1';
-                $source->save();
-                return redirect()->back();
+                //$source->save();
+                if ($source->save()) {
+                    Alert::success('เพิ่มข้อมูลแหล่งทุนสำเร็จ');
+                    return redirect()->back();
+                }
             }
             // dd($request->all(), $path, $fileName_p);
             //dd($request->all(), $source, $file_p, $file_ex, $fileName_p, $path);

@@ -192,7 +192,7 @@ class TbResearchController extends Controller
 
                             for ($i = 0; $i <= sizeof($pc_re); $i++) {
                                 $da_send = DB::table('tb_send_research')->where('research_id', $id_re)->get();
-                                //dd($da_send, $request->all(), $pc_re, $id_re, $area, $allType, $sumpc, $fileName_w, $fileName_p);
+                                //dd($da_send, $request->all(), sizeof($pc_re), $sumpc, $pc_re, $id_re, $area, $allType, $fileName_w, $fileName_p);
                                 if ($i == 0) {
                                     $send = new TbSendResearch();
                                     $send->research_id = $id_re;
@@ -206,7 +206,13 @@ class TbResearchController extends Controller
                                     $send->pc = $request->pc[$i];
                                 }
 
-                                $send->save();
+
+                                if (!$send->save()) {
+                                    Alert::error('โปรดระบุชื่อนักวิจัยไม่ซ้ำกัน');
+                                    return redirect()->back();
+                                } else {
+                                    $send->save();
+                                }
                             }
                             //dd($send);
 
@@ -292,13 +298,16 @@ class TbResearchController extends Controller
     public function update(Request $request)
     {
         //
-
+        $send_old = DB::table('tb_send_research')->where('research_id', $request->id)->get();
         $research = DB::table('tb_research')
             ->where('research_id', $request->id)
             ->first();
+        $researcher_id = array();
+        $researcher_pc = array();
+
         $send_e = DB::table('tb_send_research')->where('research_id', $request->id)->delete();
         $area = $request->ad . '_' . $request->ct . '_' . $request->zp;
-        //dd($request->all(), $send_e, $area, sizeof($request->pc_ed));
+        //dd($request->all(), $send_old, sizeof($researcher_id), sizeof($researcher_pc), $area, sizeof($request->pc_ed));
         //$research[0]->save();
         if ($request->file('f_pdf') || $request->file('f_word')) {
             $path = 'uploads/research/' . $research->year_research . '/' . $request->id;
@@ -336,13 +345,30 @@ class TbResearchController extends Controller
 
         //dd($file_p->move($path, $fileName_p), $file_w->move($path, $fileName_w));
 
-        for ($i = 1; $i <= sizeof($request->pc_ed); $i++) {
-            $send = new TbSendResearch();
-            $send->research_id = $request->id;
-            $send->id = $request->researcher_ed[$i];
-            $send->pc = $request->pc_ed[$i];
-            $send->save();
+        try {
+
+            for ($i = 1; $i <= sizeof($request->pc_ed); $i++) {
+                $send = new TbSendResearch();
+                $send->research_id = $request->id;
+                $send->id = $request->researcher_ed[$i];
+                $send->pc = $request->pc_ed[$i];
+
+                $send->save();
+            }
+        } catch (\Exception $e) {
+            /* for ($i = 0; $i < sizeof($send_old); $i++) {
+                // $researcher_id[$i] = $send_old[$i]->id;
+                // $researcher_pc[$i] = $send_old[$i]->pc;
+                $send_o = new TbSendResearch();
+                $send_o->research_id = $send_old[$i]->research_id;
+                $send_o->id = $send_old[$i]->id;
+                $send_o->pc = $send_old[$i]->pc;
+                $send_o->save();
+            } */
+            Alert::error('โปรดระบุชื่อนักวิจัยไม่ซ้ำกัน');
+            return redirect()->back();
         }
+
         $re = DB::table('tb_research')->where('research_id', $request->id)->update([
             'research_th' => $request->TH,
             'research_en' => $request->EN,

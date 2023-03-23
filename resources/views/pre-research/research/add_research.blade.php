@@ -619,7 +619,7 @@
                             </div>
                         </div>
 
-                        <div class="row mb-3">
+                        <div class="row">
                             <label class="col-sm-2 col-form-label" align="right">ไฟล์ PDF</label>
                             <div class=" col-sm-10">
                                 <input type="file" name="f_pdf" id="f_pdf" class=" form-control">
@@ -702,14 +702,14 @@
                 // var row = i;
                 var tr = '<tr id="row' + i + '">' +
                     '<td> <select class="form-select"name="researcher[' + i + ']" id="resesrcher_' + i +
-                    '">@foreach ($list_user as $key)<option value="{{ $key->employee_id }}">{{ $key->full_name_th }}</option>@endforeach</select></td>' +
+                    '">@foreach ($list_user as $key)<option value="{{ $key->employee_id }}" {{ $key->employee_id == $data[0]->employee_id ? 'disabled' : '' }}>{{ $key->full_name_th }}</option>@endforeach</select></td>' +
                     '<td><select class="form-select" name="role-research[]" id="role-research" ><option value="หัวหน้าโครงการวิจัย">หัวหน้าโครงการวิจัย</option><option value="ผู้ร่วมวิจัย" selected readonly>ผู้ร่วมวิจัย</option></select></td>' +
                     '<td><input type="number" class="form-control" name="pc[' + i + ']" id="pc_' + i +
                     '"placeholder="0.00" onchange="Vpc()" /></td>' +
                     '<td><button type="button" id="btnDel" class="btn btn-danger btn-sm" ><i class="fa fa-minus"></i></button></td>' +
                     '</tr>';
                 $('#roleResearch').append(tr);
-                // console.log(tr);
+                console.log(i);
             });
 
 

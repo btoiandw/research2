@@ -8,6 +8,20 @@
             )
         </script>
     @endif
+
+    @if ($errors->any())
+        <!-- ตรวจสอบว่ามี Error ของ validation ขึ้นมาหรือเปล่า -->
+
+        <div class="alert alert-danger" id="ERROR_COPY" style="display:none;">
+            <ul style="list-style: none;">
+                @foreach ($errors->all() as $error)
+                    <!-- ทำการ วน Loop เพื่อแสดง Error ของ validation ขึ้นมาทั้งหมด -->
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        <!-- ref - https://laravel.com/docs/7.x/validation#DisplayingTheValidationErrors  -->
+    @endif
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
         <button class="btn btn-primary me-md-2" type="button" onclick="AddSource()">เพิ่มแหล่งทุน</button>
     </div>
@@ -197,7 +211,18 @@
     <script src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.datatables.net/rowreorder/1.3.1/js/dataTables.rowReorder.min.js"></script>
-
+    <script>
+        var has_error = {{ $errors->count() > 0 ? 'true' : 'false' }};
+        if (has_error) {
+            Swal.fire({
+                title: 'Error',
+                icon: 'error',
+                type: 'error',
+                html: jQuery("#ERROR_COPY").html(),
+                showCloseButton: true,
+            });
+        }
+    </script>
     <script>
         $(document).ready(function() {
             $('#admin_table').DataTable({
@@ -256,7 +281,7 @@
             $.ajax({
                 method: 'GET',
                 dataType: 'JSON',
-                url: '/view/source/' + id,
+                url: '/admin/view/source/' + id,
                 success: function(res) {
                     var data = res.data[0];
                     Swal.fire({
