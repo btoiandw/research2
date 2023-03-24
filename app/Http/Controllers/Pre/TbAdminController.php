@@ -150,21 +150,14 @@ class TbAdminController extends Controller
     public function ResearchDirector($id)
     {
         $data = DB::table('users')->where('employee_id', $id)->get();
+
         $data_re = DB::table('tb_research')
             ->distinct('tb_research.research_id')
             ->join('tb_feedback', 'tb_research.research_id', '=', 'tb_feedback.research_id')
-            ->where('tb_research.research_status', '!=', '0') //
-            ->where('tb_research.research_status', '!=', '2')
-            ->where('tb_research.research_status', '!=', '3')
-            ->where('tb_research.research_status', '!=', '5')
-            ->where('tb_research.research_status', '!=', '6')
-            ->where('tb_research.research_status', '!=', '8')
-            ->where('tb_research.research_status', '!=', '9')
-            ->where('tb_research.research_status', '!=', '11')
-            ->where('tb_research.research_status', '!=', '12')
-            ->where('tb_research.research_status', '!=', '13')
-            ->where('tb_research.research_status', '!=', '14')
-            ->where('tb_research.research_status', '!=', '15')
+            ->where('tb_research.research_status', '=', '1') //
+            ->orWhere('tb_research.research_status', '=', '4')
+            ->orWhere('tb_research.research_status', '=', '7')
+            ->orWhere('tb_research.research_status', '=', '10')
             //status research
             //    0=>รอตรวจ(ส่งครั้งแรก)
             //    1=>admin ส่งให้กรรมการครั้งที่ 1
@@ -186,8 +179,7 @@ class TbAdminController extends Controller
             //    14=>ไม่ผ่านการตรวจสอบจากแอดมิน
             //    15=>ผ่าน
             ->select('tb_feedback.status', 'tb_research.*')
-            ->get()
-            /* ->toArray() */;
+            ->get();
         //dd($data_re);
         return view('pre-research.admin.research_send_d')->with(['id' => $id, 'data' => $data[0], 'data_re' => $data_re]);
     }

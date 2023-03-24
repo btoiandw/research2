@@ -68,21 +68,78 @@
                                                 </button>
                                             </td>
                                             <td>
-                                                @if ($item->research_status == 0 || $item->research_status == 1)
+                                                @if ($item->research_summary_feedback_0 != null || $item->summary_feedback_file_0 != null)
+                                                    <button class="btn btn-warning btn-sm"
+                                                        onclick="editNot_1({{ $item->research_id }})">
+                                                        ไม่ผ่าน/ปรับแก้คั้งที่ 1
+                                                    </button>
+                                                @endif
+                                                @if ($item->research_summary_feedback_1 != null || $item->summary_feedback_file_1 != null)
+                                                    <button class="btn btn-warning btn-sm">
+                                                        ไม่ผ่าน/ปรับแก้คั้งที่ 1
+                                                    </button>
+                                                @endif
+                                                @if ($item->research_summary_feedback_2 != null || $item->summary_feedback_file_2 != null)
+                                                    <button class="btn btn-warning btn-sm">
+                                                        ไม่ผ่าน/ปรับแก้คั้งที่ 2
+                                                    </button>
+                                                @endif
+                                                @if ($item->research_summary_feedback_3 != null || $item->summary_feedback_file_3 != null)
+                                                    <button class="btn btn-warning btn-sm">
+                                                        ไม่ผ่าน/ปรับแก้คั้งที่ 3
+                                                    </button>
+                                                @endif
+                                                @if (
+                                                    $item->research_status == 0 ||
+                                                        $item->research_status == 3 ||
+                                                        $item->research_status == 6 ||
+                                                        $item->research_status == 9)
                                                     <button class="btn btn-yellow disabled btn-sm">
                                                         รอตรวจสอบ
                                                     </button>
+                                                @elseif (
+                                                    $item->research_status == 1 ||
+                                                        $item->research_status == 4 ||
+                                                        $item->research_status == 7 ||
+                                                        $item->research_status == 10)
+                                                    <button class="btn btn-yellow disabled btn-sm">
+                                                        รอตรวจสอบจากกรรมการ
+                                                    </button>
                                                 @elseif ($item->research_status == 14)
-                                                    <button class="btn btn-warning btn-sm"
+                                                    <button class="btn btn-warning disabled btn-sm"
                                                         onclick="viewCommentAd({{ $item->research_id }})">
                                                         ไม่ผ่านการตรวจสอบจากแอดมิน
+                                                    </button>
+                                                @elseif ($item->research_status == 12)
+                                                    <button class="btn btn-danger disabled btn-sm">
+                                                        ยกเลิก
+                                                    </button>
+                                                @elseif ($item->research_status == 13)
+                                                    <button class="btn btn-danger disabled btn-sm">
+                                                        ไม่ผ่าน
+                                                    </button>
+                                                @elseif ($item->research_status == 15)
+                                                    <button class="btn btn-success disabled btn-sm">
+                                                        รอการอนุมัติสัญญา
+                                                    </button>
+                                                @elseif ($item->research_status == 11)
+                                                    <button class="btn btn-success disabled btn-sm">
+                                                        อนุมัติสัญญา
                                                     </button>
                                                 @endif
                                             </td>
                                             <td>
                                                 <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-                                                    <button class="btn btn-yellow me-md-2 btn-sm" type="button"
-                                                        onclick="edit({{ $item->research_id }})">แก้ไข</button>
+                                                    @if (
+                                                        $item->research_status == 1 ||
+                                                            $item->research_status == 4 ||
+                                                            $item->research_status == 7 ||
+                                                            $item->research_status == 10)
+                                                    @else
+                                                        <button class="btn btn-yellow me-md-2 btn-sm" type="button"
+                                                            onclick="edit({{ $item->research_id }})">แก้ไข</button>
+                                                    @endif
+
                                                     <button class="btn btn-danger btn-sm" type="button"
                                                         onclick="cancel_resesrch({{ $item->research_id }})">ยกเลิก</button>
                                                 </div>
@@ -665,7 +722,7 @@
                             <label for="" id="name_en"></label>
                         </div>
                     </div>
-                   
+
                     <div class="row mb-3">
                         <strong class="col-md-3">ผลการประเมิน</strong>
                         <div class="col-md-9">
@@ -682,6 +739,67 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!--edit Not Modal -->
+    <div class="modal fade" id="edit_1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="edit_1Label" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="edit_1Label">ปรับแก้ตามข้อเสนอแนะ</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('users.add-et1') }}" method="post" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        <input type="hidden" name="e1_id" id="e1_id">
+                        <div class="row mb-3">
+                            <strong class="col-md-3">ชื่อโครงร่างงานวิจัยภาษาไทย</strong>
+                            <div class="col-md-9">
+                                <textarea for="" id="e1_th" cols="30" rows="5" class=" form-control-plaintext" readonly></textarea>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <strong class="col-md-3">ชื่อโครงร่างงานวิจัยอังกฤษ</strong>
+                            <div class="col-md-9">
+                                <textarea for="" id="e1_en" cols="30" rows="5" class=" form-control-plaintext" readonly></textarea>
+                            </div>
+                        </div>
+                        <div class="mb-3 row " id="div_cm">
+                            <strong class="col-sm-3 col-form-label fw-bold">ข้อเสนอแนะ</strong>
+                            <div class="col-sm-9">
+                                <label readonly class=" form-control-plaintext" name="suggestion" id="sg_cm"></label>
+
+                                <button class="btn btn-warning" name="suggestionFile" id="sg_F">ดูไฟล์</button>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <strong class="col-sm-2">ไฟล์ Word</strong>
+                            <div class=" col-sm-10">
+                                <input type="file" name="word" id="e1_word" class=" form-control" required>
+                                <span class="text-danger">*ไฟล์ .doc และ .docx เท่านั้น</span>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <strong class="col-sm-2">ไฟล์ PDF</strong>
+                            <div class=" col-sm-10">
+                                <input type="file" name="pdf" id="e1_pdf" class=" form-control" required>
+                                <span class="text-danger">*ไฟล์ .pdf เท่านั้น</span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-primary" name="submit" value="ยืนยัน" />
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">ยกเลิก</button>
+                    </div>
+                </form>
+
             </div>
         </div>
     </div>
@@ -1028,6 +1146,48 @@
             console.log(id);
 
             $('#view').modal('toggle');
+        }
+
+        function editNot_1(id) {
+            console.log(id);
+            $.ajax({
+                type: 'GET',
+                url: '/view/research/' + id,
+                dataType: 'JSON',
+                success: function(res) {
+                    moment.locale('th');
+                    // console.log(res.data_re);
+                    var data = res.data_re;
+                    console.log(data);
+                    var cm = '';
+
+                    if (data[0].research_summary_feedback_0 != null) {
+                        cm = data[0].research_summary_feedback_0;
+                        $('#sg_F').css('display', 'none');
+                        $('#sg_cm').html(cm);
+                    } else if (data[0].summary_feedback_file_0 != null) {
+                        cm = data[0].summary_feedback_file_0;
+                        $('#sg_cm').css('display', 'none');
+                        $('#sg_F').html(cm);
+                    } else {
+
+                    }
+                    $('#e1_id').val(data[0].research_id);
+                    $('#e1_th').val(data[0].research_th);
+                    $('#e1_en').val(data[0].research_en);
+                    // $('#feed_de').html(comment);
+                    $('#edit_1').modal('toggle');
+
+                    $('#sg_F').on('click', function() {
+                        var id = data[0].research_id;
+                        var val = data[0].summary_feedback_file_0;
+                        var url = '/view/sum/feed/' + id + '/' + val;
+                        //console.log(url);
+                        window.open(url, "_blank");
+                    })
+                }
+            })
+
         }
     </script>
 @endpush

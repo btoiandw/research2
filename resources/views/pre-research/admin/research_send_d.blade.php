@@ -41,7 +41,7 @@
                                         </button>
                                     </td>
                                     <td align="center">
-                                        
+
                                         <button class="btn btn-sm btn-default"
                                             onclick="addSumfeed({{ $item->research_id }})">สรุปข้อเสนอแนะ</button>
                                     </td>
@@ -326,10 +326,13 @@
             console.log(id);
             $.ajax({
                 type: 'GET',
-                url: '/admin/view-feed/director/' + id,
+                url: '/view/research/' + id,
                 dataType: 'JSON',
                 success: function(res) {
-                    var data = res.data_fe[0];
+                    moment.locale('th');
+                    //console.log(res.data_re);
+                    var data = res.data_re[0];
+                    console.log(data);
                     $('#id_r').val(data.research_id);
                     $('#nm_th').html(data.research_th);
                     $('#nm_en').html(data.research_en);

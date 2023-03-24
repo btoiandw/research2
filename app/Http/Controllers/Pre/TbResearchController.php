@@ -34,6 +34,7 @@ class TbResearchController extends Controller
         $data_research = DB::table('tb_research')
             ->join('tb_send_research', 'tb_research.research_id', '=', 'tb_send_research.research_id')
             ->where('tb_send_research.id', '=', $id)
+            ->orderBy('tb_research.updated_at', 'desc')
             ->get();
         //dd($id,$roles,$data,$list_source,$list_fac,$list_user,$data_research);
         return view('pre-research.research.add_research')->with([
@@ -218,7 +219,7 @@ class TbResearchController extends Controller
 
                             $research = new TbResearch();
                             $research->research_id = $id_re;
-                            $research->date_upload_file = $nowDate;
+                            $research->date_upload_file_0 = $nowDate;
                             $research->research_th = $request->research_nameTH;
                             $research->research_en = $request->research_nameEN;
                             $research->research_source_id = $request->source_id;
@@ -228,8 +229,8 @@ class TbResearchController extends Controller
                             $research->date_research_end = $request->edate;
                             $research->research_area = $area;
                             $research->budage_research = $request->budage;
-                            $research->word_file = $fileName_w;
-                            $research->pdf_file = $fileName_p;
+                            $research->word_file_0 = $fileName_w;
+                            $research->pdf_file_0 = $fileName_p;
                             $research->research_status = $status;
                             $research->year_research = $reYear;
                             $research->save();
@@ -482,7 +483,7 @@ class TbResearchController extends Controller
         } else {
             $file = null;
         }
-       // dd($request->all(), $data, $file, $suggestion, $submit);
+        // dd($request->all(), $data, $file, $suggestion, $submit);
 
         /* if radio ผ่าน/ไม่ผ่าน */
         if ($request->AssessmentResults == 'ไม่ผ่าน') {
@@ -514,20 +515,116 @@ class TbResearchController extends Controller
                     ]);
                 return redirect()->back();
             }
-        } /* elseif ($request->AssessmentResults == 'ผ่าน') {
-            /// DB::update();
+        }
+    }
 
-            DB::table('tb_research')
-                //->where('employee_referees_id', $direc_id)
-                ->where('research_id', $research_id)
-                ->update([
-                    'research_status' => '1',
-                    //'feedback' => $feedResult,
-                    'research_summary_feedback' => $request->AssessmentResults,
-                    'summary_feedback_file' => $file,
-                    'updated_at' => Carbon::now()->format('Y-m-d H:i:m'),
-                ]);
-            return redirect()->back();
-        } */
+    public function viewSumFeed($id, $val)
+    {
+        //dd($id, $val);
+        $p = DB::table('tb_research')->select('*')->where('research_id', '=', $id)->get();
+
+        $path = 'uploads/research/' . $p[0]->year_research . '/' . $p[0]->research_id;
+        //$u = Auth::user()->id;
+        if ($p[0]->summary_feedback_file_0 == $val) {
+            $file_name = $p[0]->summary_feedback_file_0;
+        } elseif ($p[0]->summary_feedback_file_1 == $val) {
+            $file_name = $p[0]->summary_feedback_file_1;
+        } elseif ($p[0]->summary_feedback_file_2 == $val) {
+            $file_name = $p[0]->summary_feedback_file_2;
+        } else {
+            $file_name = $p[0]->summary_feedback_file_3;
+        }
+        // $file_name = $p[0]->word_file;
+        //dd($d);
+        $file = $path . '/' . $file_name;
+        //dd($p, $path, $file_name, $file);
+        return response()->file($file);
+    }
+
+    public function addET(Request $request)
+    {
+        $validation = $request->validate(
+            [
+                'word' => 'required|file|mimes:doc,docx',
+                'pdf' => 'required|file|mimes:pdf'
+            ],
+            [
+                'word.required' => 'โปรดระบุไฟล์ word',
+                'pdf.required' => 'โปรดระบุไฟล์ pdf',
+                'word.mimes' => 'โปรดระบุไฟล์ word นามสกุล .doc และ .docx เท่านั้น',
+                'pdf.mimes' => 'โปรดระบุไฟล์ pdf นามสกุล .pdf เท่านั้น',
+            ]
+        );
+        $data_e = DB::table('tb_research')->where('research_id', $request->e1_id)->get();
+        $status = '';
+        if ($data_e[0]->research_status == 2) {
+            $status = '3';
+        } elseif ($data_e[0]->research_status == 5) {
+            $status = '6';
+        } elseif ($data_e[0]->research_status == 8) {
+            $status = '9';
+        }
+
+        if ($filew = $request->file('word')) {
+            if ($filep = $request->file('pdf')) {
+                //get ชื่อไฟล์จากที่กรอก
+                $namep = $filep->getClientOriginalName();
+                $name = $filew->getClientOriginalName();
+
+                //แยกชื่ออกจากนามสกุลไฟล์ word
+                $eNamew = explode('.', $name);
+                $infow = end($eNamew);
+                //mix name+status to file name
+                $fileName_w = $data_e[0]->research_id . "_" . $status . "." . $infow; //ทำการรวมตัวแปร $id กับ $status และ $infow
+                //แยกชื่ออกจากนามสกุลไฟล์ pdf
+                $eNamep = explode('.', $namep);
+                $infop = end($eNamep);
+                $fileName_p = $data_e[0]->research_id . "_" . $status . "." . $infop;
+
+                $path = 'uploads/research/' . $data_e[0]->year_research . '/' . $data_e[0]->research_id;
+                //$filew->move('uploads/research/'.$reYear.'/'.$id_re, $fileName_w);
+                if ($filew->move($path, $fileName_w)) { //move=>เซฟในโฟลเดอร์ ''=>''แรกชื่อโฟลเดอร์ $name=>ชื่อไฟล์  ->จะอยู่ในโฟลเดอร์ public
+                    if ($filep->move($path, $fileName_p)) {
+
+                        if ($data_e[0]->research_status == 2) {
+                            DB::table('tb_research')
+                                ->where('research_id', '=', $request->e1_id)
+                                ->update([
+                                    'research_status' => $status,
+                                    'word_file_1' => $fileName_w,
+                                    'pdf_file_1' => $fileName_p,
+                                    'date_upload_file_1' => Carbon::now()->format('Y-m-d H:i:m'),
+                                    'updated_at' => Carbon::now()->format('Y-m-d H:i:m'),
+                                ]);
+                        } elseif ($data_e[0]->research_status == 5) {
+                            DB::table('tb_research')
+                                ->where('research_id', '=', $request->e1_id)
+                                ->update([
+                                    'research_status' => $status,
+                                    'word_file_2' => $fileName_w,
+                                    'pdf_file_2' => $fileName_p,
+                                    'date_upload_file_2' => Carbon::now()->format('Y-m-d H:i:m'),
+                                    'updated_at' => Carbon::now()->format('Y-m-d H:i:m'),
+                                ]);
+                        } elseif ($data_e[0]->research_status == 8) {
+                            DB::table('tb_research')
+                                ->where('research_id', '=', $request->e1_id)
+                                ->update([
+                                    'research_status' => $status,
+                                    'word_file_3' => $fileName_w,
+                                    'pdf_file_3' => $fileName_p,
+                                    'date_upload_file_3' => Carbon::now()->format('Y-m-d H:i:m'),
+                                    'updated_at' => Carbon::now()->format('Y-m-d H:i:m'),
+                                ]);
+                        }
+                        Alert::success('เพิ่มไฟล์ปรับแก้สำเร็จ');
+                        return redirect()->back();
+                    }
+                }
+            }
+        }
+
+
+        //dd($request->all(), $data_e[0]->research_status);
     }
 }

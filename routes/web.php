@@ -83,5 +83,13 @@ Route::post('/admin/approve/contact', [\App\Http\Controllers\Pre\TbAdminControll
 
 
 Route::post('/admin/comment/base', [\App\Http\Controllers\Pre\TbResearchController::class, 'adminComment'])->name('admin.base-comment');
+Route::get('/view/sum/feed/{id}/{val}',[\App\Http\Controllers\Pre\TbResearchController::class,'viewSumFeed']);
+Route::post('/users/add/et1',[\App\Http\Controllers\Pre\TbResearchController::class,'addET'])->name('users.add-et1');
+
+
+
+
+
+
 
 Route::get('/gen/pdf', [\App\Http\Controllers\Pre\PDFController::class, 'generatePDF']);
