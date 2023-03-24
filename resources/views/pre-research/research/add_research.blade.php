@@ -72,7 +72,11 @@
                                                     <button class="btn btn-yellow disabled btn-sm">
                                                         รอตรวจสอบ
                                                     </button>
-                                                @else
+                                                @elseif ($item->research_status == 14)
+                                                    <button class="btn btn-warning btn-sm"
+                                                        onclick="viewCommentAd({{ $item->research_id }})">
+                                                        ไม่ผ่านการตรวจสอบจากแอดมิน
+                                                    </button>
                                                 @endif
                                             </td>
                                             <td>
@@ -639,6 +643,48 @@
         </div>
     </div>
 
+    <!--view feed Modal -->
+    <div class="modal fade" id="view" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="viewLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="viewLabel">รายละเอียดข้อเสนอแนะ</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <strong class="col-md-3">ชื่อโครงร่างงานวิจัยภาษาไทย</strong>
+                        <div class="col-md-9">
+                            <label for="" id="name_th"></label>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <strong class="col-md-3">ชื่อโครงร่างงานวิจัยอังกฤษ</strong>
+                        <div class="col-md-9">
+                            <label for="" id="name_en"></label>
+                        </div>
+                    </div>
+                   
+                    <div class="row mb-3">
+                        <strong class="col-md-3">ผลการประเมิน</strong>
+                        <div class="col-md-9">
+                            <label for="" id="result"></label>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <strong class="col-md-3">ข้อเสนอแนะ</strong>
+                        <div class="col-md-9">
+                            <label for="" id="Assessment_result"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @push('js')
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -976,6 +1022,12 @@
 
                 $("#edit_researcher tbody").append(tr_str);
             }
+        }
+
+        function viewCommentAd(id) {
+            console.log(id);
+
+            $('#view').modal('toggle');
         }
     </script>
 @endpush

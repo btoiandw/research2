@@ -240,14 +240,14 @@ class TbDeliverListController extends Controller
     {
         //
         $num = $request->number - 1;
-        $ls_1 = $request->lesson_1;
+        /* $ls_1 = $request->lesson_1;
         for ($i = 0; $i < sizeof($request->lesson); $i++) {
             if ($request->lesson_2 == null) {
                 for ($j = 0; $j < $num; $j++) {
                     $lt[] = $request->lesson[$j];
                 }
             }
-        }
+        } */
         dd($request->all(),$num);
     }
 

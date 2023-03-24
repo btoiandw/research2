@@ -6,7 +6,7 @@
     }
 </style>
 <nav class="navbar navbar-vertical fixed-left navbar-expand-md navbar-light shadow-box-login min-nav pb-md-5"
-    id="sidenav-main" style="background-color: #8E0505;">
+    id="sidenav-main" style="background-color: #690500;">
     <div class="container-fluid">
         <!-- Toggler -->
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#sidenav-collapse-main"

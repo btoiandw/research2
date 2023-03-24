@@ -69,17 +69,19 @@ Route::post('/admin/store', [\App\Http\Controllers\Pre\TbAdminController::class,
 Route::get('/users/cancel-research/{id}', [\App\Http\Controllers\Pre\TbResearchController::class, 'cancel']);
 
 Route::get('/view/feed/detail/{id}/{u_id}', [\App\Http\Controllers\TbFeedbackController::class, 'FeedDetail']);
-Route::get('/admin/view/source/{id}',[\App\Http\Controllers\Pre\TbSourceController::class,'viewSource']);
-Route::get('/cencel/source/{id}',[\App\Http\Controllers\Pre\TbSourceController::class,'cancelSource']);
-Route::post('/admin/edit/source',[\App\Http\Controllers\Pre\TbSourceController::class,'edit'])->name('admin.edit-source');
-Route::get('/view/source/file/{id}',[\App\Http\Controllers\Pre\TbSourceController::class,'viewFile']);
-Route::post('/admin/source/store',[\App\Http\Controllers\Pre\TbSourceController::class,'store'])->name('admin.source-store');
-Route::post('/admin/list',[\App\Http\Controllers\TbDeliverListController::class,'store'])->name('admin.deliver-store');
-Route::get('/admin/view/list/{id}',[\App\Http\Controllers\TbDeliverListController::class,'view']);
-Route::get('/admin/cancel/list/{id}',[\App\Http\Controllers\TbDeliverListController::class,'cancel']);
-Route::post('/admin/list/edit',[\App\Http\Controllers\TbDeliverListController::class,'update'])->name('admin.list-edit');
-Route::post('/admin/sum/feed',[\App\Http\Controllers\TbFeedbackController::class,'sumFeed'])->name('admin.add-sumFeed');
-Route::post('/admin/approve/contact',[\App\Http\Controllers\Pre\TbAdminController::class,'approve'])->name('admin.approve-contact');
+Route::get('/admin/view/source/{id}', [\App\Http\Controllers\Pre\TbSourceController::class, 'viewSource']);
+Route::get('/cencel/source/{id}', [\App\Http\Controllers\Pre\TbSourceController::class, 'cancelSource']);
+Route::post('/admin/edit/source', [\App\Http\Controllers\Pre\TbSourceController::class, 'edit'])->name('admin.edit-source');
+Route::get('/view/source/file/{id}', [\App\Http\Controllers\Pre\TbSourceController::class, 'viewFile']);
+Route::post('/admin/source/store', [\App\Http\Controllers\Pre\TbSourceController::class, 'store'])->name('admin.source-store');
+Route::post('/admin/list', [\App\Http\Controllers\TbDeliverListController::class, 'store'])->name('admin.deliver-store');
+Route::get('/admin/view/list/{id}', [\App\Http\Controllers\TbDeliverListController::class, 'view']);
+Route::get('/admin/cancel/list/{id}', [\App\Http\Controllers\TbDeliverListController::class, 'cancel']);
+Route::post('/admin/list/edit', [\App\Http\Controllers\TbDeliverListController::class, 'update'])->name('admin.list-edit');
+Route::post('/admin/sum/feed', [\App\Http\Controllers\TbFeedbackController::class, 'sumFeed'])->name('admin.add-sumFeed');
+Route::post('/admin/approve/contact', [\App\Http\Controllers\Pre\TbAdminController::class, 'approve'])->name('admin.approve-contact');
 
+
+Route::post('/admin/comment/base', [\App\Http\Controllers\Pre\TbResearchController::class, 'adminComment'])->name('admin.base-comment');
 
 Route::get('/gen/pdf', [\App\Http\Controllers\Pre\PDFController::class, 'generatePDF']);
