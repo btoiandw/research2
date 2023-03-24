@@ -14,23 +14,17 @@ class CreateTbDeliverListsTable extends Migration
     public function up()
     {
         Schema::create('tb_deliver_lists', function (Blueprint $table) {
-            $table->id('deliver_id');
+            $table->unsignedBigInteger('deliver_id');
+            $table->unsignedBigInteger('num_lesson');
             $table->integer('research_source_id');
             $table->string('Type_research');
             $table->date('Date_start_contract');
             $table->date('Date_end_contract');
             $table->string('status')->default('1');
-            $table->text('lesson1');
-            $table->text('lesson2')->nullable();
-            $table->text('lesson3')->nullable();
-            $table->text('lesson4')->nullable();
-            $table->text('lesson5')->nullable();
-            $table->text('lesson6')->nullable();
-            $table->text('lesson7')->nullable();
-            $table->text('lesson8')->nullable();
-            $table->text('lesson9')->nullable();
-            $table->text('lesson10')->nullable();
+            $table->text('lesson');
             $table->timestamps();
+
+            $table->primary(['deliver_id', 'num_lesson']);
         });
     }
 
