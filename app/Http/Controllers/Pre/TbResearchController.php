@@ -233,6 +233,7 @@ class TbResearchController extends Controller
                             $research->pdf_file_0 = $fileName_p;
                             $research->research_status = $status;
                             $research->year_research = $reYear;
+                            $research->updated =Carbon::now()->format('Y-m-d H:i:m');
                             $research->save();
                             //dd( $research,/*$send*/ );
                             if ($research->save() && $send->save()) {

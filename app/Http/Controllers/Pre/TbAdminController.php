@@ -190,11 +190,15 @@ class TbAdminController extends Controller
     public function deliverPages($id)
     {
         $data = DB::table('users')->where('employee_id', $id)->get();
-        $data_de = DB::table('tb_deliver_lists')
+        $data_de = DB::select('SELECT DISTINCT `deliver_id`,tb_deliver_lists.research_source_id,tb_deliver_lists.Type_research,tb_deliver_lists.status,tb_research_sources.research_sources_id,tb_research_sources.research_source_name FROM `tb_deliver_lists` INNER JOIN tb_research_sources ON tb_deliver_lists.research_source_id = tb_research_sources.research_sources_id WHERE tb_deliver_lists.status = "1" ORDER BY tb_deliver_lists.updated_at DESC');
+        //dd($dt);
+        /* $data_de = DB::table('tb_deliver_lists')
+            ->distinct()
             ->join('tb_research_sources', 'tb_deliver_lists.research_source_id', '=', 'tb_research_sources.research_sources_id')
             ->where('tb_deliver_lists.status', '1')
             ->orderBy('tb_deliver_lists.deliver_id', 'desc')
-            ->get();
+            //->groupBy('tb_deliver_lists.deliver_id')
+            ->get(); */
         $data_so = DB::table('tb_research_sources')->where('status', '1')->get();
         $data_ty = DB::table('tb_research')->get('type_research_id');
 
@@ -248,8 +252,10 @@ class TbAdminController extends Controller
             ->where('employee_id', $id)->get();
         //dd($data[0],$id);
         $data_re = DB::table('tb_research')
+            ->distinct('resesarch_id')
             ->where('research_status', '=', '11')
             ->orWhere('research_status', '=', '15')
+            //->groupBy('deliver_id')
             ->orderBy('updated_at', 'desc')
             ->get();
         $db_cont = DB::table('tb_contracts')

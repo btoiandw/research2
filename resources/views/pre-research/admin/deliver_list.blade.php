@@ -29,7 +29,11 @@
                                         {{ $item->research_source_name }}
                                     </td>
                                     <td>
-                                        {{ $item->Type_research }}
+
+                                        @foreach (explode('_', $item->Type_research) as $ty)
+                                            {{ $ty }} <br />
+                                        @endforeach
+                                        {{-- $item->Type_research --}}
                                     </td>
                                     <td align="center">
                                         <button class="btn btn-info btn-sm" onclick="viewDetail({{ $item->deliver_id }})">
@@ -346,42 +350,7 @@
                                 <strong class="col-sm-2  " id="le_1">งวดที่ <span id="nu">1</span></strong>
                                 <textarea name="lesson_1" id="lesson_i_1" rows="5" class=" form-control col-8 me-2 "></textarea>
                             </div>
-                            <div class="row mb-3 row-lesson mx-2" id="rw_2">
-                                <strong class="col-sm-2  " id="le_2">งวดที่ <span id="nu">2</span></strong>
-                                <textarea name="lesson_2" id="lesson_i_2" rows="5" class=" form-control col-8 me-2 "></textarea>
-                            </div>
-                            <div class="row mb-3 row-lesson mx-2" id="rw_3">
-                                <strong class="col-sm-2  " id="le_3">งวดที่ <span id="nu">3</span></strong>
-                                <textarea name="lesson_3" id="lesson_i_3" rows="5" class=" form-control col-8 me-2 "></textarea>
-                            </div>
-                            <div class="row mb-3 row-lesson mx-2" id="rw_4">
-                                <strong class="col-sm-2  " id="le_4">งวดที่ <span id="nu">4</span></strong>
-                                <textarea name="lesson_4" id="lesson_i_4" rows="5" class=" form-control col-8 me-2 "></textarea>
-                            </div>
-                            <div class="row mb-3 row-lesson mx-2" id="rw_5">
-                                <strong class="col-sm-2  " id="le_5">งวดที่ <span id="nu">5</span></strong>
-                                <textarea name="lesson_5" id="lesson_i_5" rows="5" class=" form-control col-8 me-2 "></textarea>
-                            </div>
-                            <div class="row mb-3 row-lesson mx-2" id="rw_6">
-                                <strong class="col-sm-2  " id="le_6">งวดที่ <span id="nu">6</span></strong>
-                                <textarea name="lesson_6" id="lesson_i_6" rows="5" class=" form-control col-8 me-2 "></textarea>
-                            </div>
-                            <div class="row mb-3 row-lesson mx-2" id="rw_7">
-                                <strong class="col-sm-2  " id="le_7">งวดที่ <span id="nu">7</span></strong>
-                                <textarea name="lesson_7" id="lesson_i_7" rows="5" class=" form-control col-8 me-2 "></textarea>
-                            </div>
-                            <div class="row mb-3 row-lesson mx-2" id="rw_8">
-                                <strong class="col-sm-2  " id="le_8">งวดที่ <span id="nu">8</span></strong>
-                                <textarea name="lesson_8" id="lesson_i_8" rows="5" class=" form-control col-8 me-2 "></textarea>
-                            </div>
-                            <div class="row mb-3 row-lesson mx-2" id="rw_9">
-                                <strong class="col-sm-2  " id="le_9">งวดที่ <span id="nu">9</span></strong>
-                                <textarea name="lesson_9" id="lesson_i_9" rows="5" class=" form-control col-8 me-2 "></textarea>
-                            </div>
-                            <div class="row mb-3 row-lesson mx-2" id="rw_10">
-                                <strong class="col-sm-2  " id="le_l_10">งวดที่ <span id="nu">10</span></strong>
-                                <textarea name="lesson_10" id="lesson_i_10" rows="5" class=" form-control col-8 me-2 "></textarea>
-                            </div>
+
                         </div>
 
                     </div>

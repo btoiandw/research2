@@ -65,142 +65,36 @@ class TbDeliverListController extends Controller
             $allType = $type[0] . "_" . $type[1] . "_" . $type[2];
         } elseif (count($type) == 3 && $type[2] == null) {
             $allType = $type[0] . "_" . $type[1];
+        } elseif (count($type) == 2) {
+            $allType = $type[0] . "_" . $type[1];
         } else {
             $allType = $type[0];
         }
-        //
-        if (sizeof($request->lesson) == 1) {
-            $lesson1 = $request->lesson[0];
-            $lesson2 = null;
-            $lesson3 = null;
-            $lesson4 = null;
-            $lesson5 = null;
-            $lesson6 = null;
-            $lesson7 = null;
-            $lesson8 = null;
-            $lesson9 = null;
-            $lesson10 = null;
-        } elseif (sizeof($request->lesson) == 2) {
-            $lesson1 = $request->lesson[0];
-            $lesson2 = $request->lesson[1];
-            $lesson3 = null;
-            $lesson4 = null;
-            $lesson5 = null;
-            $lesson6 = null;
-            $lesson7 = null;
-            $lesson8 = null;
-            $lesson9 = null;
-            $lesson10 = null;
-        } elseif (sizeof($request->lesson) == 3) {
-            $lesson1 = $request->lesson[0];
-            $lesson2 = $request->lesson[1];
-            $lesson3 = $request->lesson[2];
-            $lesson4 = null;
-            $lesson5 = null;
-            $lesson6 = null;
-            $lesson7 = null;
-            $lesson8 = null;
-            $lesson9 = null;
-            $lesson10 = null;
-        } elseif (sizeof($request->lesson) == 4) {
-            $lesson1 = $request->lesson[0];
-            $lesson2 = $request->lesson[1];
-            $lesson3 = $request->lesson[2];
-            $lesson4 = $request->lesson[3];
-            $lesson5 = null;
-            $lesson6 = null;
-            $lesson7 = null;
-            $lesson8 = null;
-            $lesson9 = null;
-            $lesson10 = null;
-        } elseif (sizeof($request->lesson) == 5) {
-            $lesson1 = $request->lesson[0];
-            $lesson2 = $request->lesson[1];
-            $lesson3 = $request->lesson[2];
-            $lesson4 = $request->lesson[3];
-            $lesson5 = $request->lesson[4];
-            $lesson6 = null;
-            $lesson7 = null;
-            $lesson8 = null;
-            $lesson9 = null;
-            $lesson10 = null;
-        } elseif (sizeof($request->lesson) == 6) {
-            $lesson1 = $request->lesson[0];
-            $lesson2 = $request->lesson[1];
-            $lesson3 = $request->lesson[2];
-            $lesson4 = $request->lesson[3];
-            $lesson5 = $request->lesson[4];
-            $lesson6 = $request->lesson[5];
-            $lesson7 = null;
-            $lesson8 = null;
-            $lesson9 = null;
-            $lesson10 = null;
-        } elseif (sizeof($request->lesson) == 7) {
-            $lesson1 = $request->lesson[0];
-            $lesson2 = $request->lesson[1];
-            $lesson3 = $request->lesson[2];
-            $lesson4 = $request->lesson[3];
-            $lesson5 = $request->lesson[4];
-            $lesson6 = $request->lesson[5];
-            $lesson7 = $request->lesson[6];
-            $lesson8 = null;
-            $lesson9 = null;
-            $lesson10 = null;
-        } elseif (sizeof($request->lesson) == 8) {
-            $lesson1 = $request->lesson[0];
-            $lesson2 = $request->lesson[1];
-            $lesson3 = $request->lesson[2];
-            $lesson4 = $request->lesson[3];
-            $lesson5 = $request->lesson[4];
-            $lesson6 = $request->lesson[5];
-            $lesson7 = $request->lesson[6];
-            $lesson8 = $request->lesson[7];
-            $lesson9 = null;
-            $lesson10 = null;
-        } elseif (sizeof($request->lesson) == 9) {
-            $lesson1 = $request->lesson[0];
-            $lesson2 = $request->lesson[1];
-            $lesson3 = $request->lesson[2];
-            $lesson4 = $request->lesson[3];
-            $lesson5 = $request->lesson[4];
-            $lesson6 = $request->lesson[5];
-            $lesson7 = $request->lesson[6];
-            $lesson8 = $request->lesson[7];
-            $lesson9 = $request->lesson[8];
-            $lesson10 = null;
+
+        $c_list = DB::table('tb_deliver_lists')->latest('deliver_id')->first();
+        if ($c_list == null) {
+            $d_id = 1;
         } else {
-            $lesson1 = $request->lesson[0];
-            $lesson2 = $request->lesson[1];
-            $lesson3 = $request->lesson[2];
-            $lesson4 = $request->lesson[3];
-            $lesson5 = $request->lesson[4];
-            $lesson6 = $request->lesson[5];
-            $lesson7 = $request->lesson[6];
-            $lesson8 = $request->lesson[7];
-            $lesson9 = $request->lesson[8];
-            $lesson10 = $request->lesson[9];
+            $d_id = $c_list->deliver_id + 1;
         }
+        // dd($c_list, $d_id);
+        //dd($request->all(), Carbon::now()->format('Y-m-d H:i:m'), $request->lesson, $nowDate, $allType, $type);
 
-        //dd($request->all(), sizeof($request->lesson), $nowDate, $allType, $type);
-        $deliver = new TbDeliverList();
-        $deliver->research_source_id = $request->source_id;
-        $deliver->Type_research = $allType;
-        $deliver->Date_start_contract = $request->contact_start;
-        $deliver->Date_end_contract = $request->contact_end;
-        $deliver->status = '1';
-        $deliver->lesson1 = $lesson1;
-        $deliver->lesson2 = $lesson2;
-        $deliver->lesson3 = $lesson3;
-        $deliver->lesson4 = $lesson4;
-        $deliver->lesson5 = $lesson5;
-        $deliver->lesson6 = $lesson6;
-        $deliver->lesson7 = $lesson7;
-        $deliver->lesson8 = $lesson8;
-        $deliver->lesson9 = $lesson9;
-        $deliver->lesson10 = $lesson10;
-
-        //dd($deliver);
-        $deliver->save();
+        for ($i = 0; $i < sizeof($request->lesson); $i++) {
+            $deliver = new TbDeliverList();
+            $deliver->deliver_id = $d_id;
+            $deliver->research_source_id = $request->source_id;
+            $deliver->num_lesson = ($i + 1);
+            $deliver->Type_research = $allType;
+            $deliver->Date_start_contract = $request->contact_start;
+            $deliver->Date_end_contract = $request->contact_end;
+            $deliver->status = '1';
+            $deliver->lesson = $request->lesson[$i];
+            $deliver->updated_at = $nowDate;
+            // dd($deliver);
+            $deliver->save();
+        }
+        // return $deliver;
         Alert::success('เพิ่มข้อมูลรายการส่งมอบสำเร็จ');
         return redirect()->back();
 
@@ -248,7 +142,7 @@ class TbDeliverListController extends Controller
                 }
             }
         } */
-        dd($request->all(),$num);
+        dd($request->all(), $num);
     }
 
     /**
