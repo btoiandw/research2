@@ -127,6 +127,9 @@ class TbAdminController extends Controller
             ->where('research_status', '!=', '4')
             ->where('research_status', '!=', '7')
             ->where('research_status', '!=', '10')
+            ->where('research_status', '!=', '11')
+            ->where('research_status', '!=', '15')
+            ->orderBy('updated_at', 'desc')
             ->get();
         $data = DB::table('users')->where('employee_id', $id)->get();
         $data_d = DB::table('tb_directors')->where('work_status', '=', '1')->get();
@@ -234,5 +237,26 @@ class TbAdminController extends Controller
             ]
         );
         dd($request->all());
+    }
+
+
+    public function contractPage($id)
+    {
+        $data = DB::table('users')
+            ->join('tb_majors', 'users.major_id', '=', 'tb_majors.major_id')
+            ->join('tb_faculties', 'tb_majors.organization_id', '=', 'tb_faculties.organization_id')
+            ->where('employee_id', $id)->get();
+        //dd($data[0],$id);
+        $data_re = DB::table('tb_research')
+            ->where('research_status', '=', '11')
+            ->orWhere('research_status', '=', '15')
+            ->orderBy('updated_at', 'desc')
+            ->get();
+        $db_cont = DB::table('tb_contracts')
+            ->join('tb_research', 'tb_contracts.research_id', '=', 'tb_research.research_id')
+            ->get();
+        $db_de_list = DB::table('tb_deliver_lists')->where('status', '=', '1')->get();
+        dd($data_re, $db_cont, $db_de_list);
+        return view('pre-research.admin.research_contract')->with(['data' => $data[0], 'id' => $id, 'data_re' => $data_re]);
     }
 }

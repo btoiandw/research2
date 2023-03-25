@@ -57,8 +57,8 @@
                     </a>
                 </li>
                 <li
-                    class="{{ request()->is('admin/request/*') || request()->is('admin/send-director/*') || request()->is('admin/manage-source/*') || request()->is('admin/deliver-list/*') || request()->is('admin/report/cbg/*') || request()->is('admin/report/cresearch/*') ? 'nav-item active-nav ' : 'nav-item ' }}">
-                    <a class="{{ request()->is('admin/request/*') || request()->is('admin/send-director/*') || request()->is('admin/manage-source/*') || request()->is('admin/deliver-list/*') || request()->is('admin/report/cbg/*') || request()->is('admin/report/cresearch/*') ? 'nav-link text-darker' : 'nav-link ' }}"
+                    class="{{ request()->is('admin/request/*') || request()->is('admin/send-director/*') || request()->is('admin/manage-source/*') || request()->is('admin/deliver-list/*') || request()->is('admin/report/cbg/*') || request()->is('admin/report/cresearch/*') || request()->is('admin/contract-research/*') ? 'nav-item active-nav ' : 'nav-item ' }}">
+                    <a class="{{ request()->is('admin/request/*') || request()->is('admin/send-director/*') || request()->is('admin/manage-source/*') || request()->is('admin/deliver-list/*') || request()->is('admin/report/cbg/*') || request()->is('admin/report/cresearch/*') || request()->is('admin/contract-research/*') ? 'nav-link text-darker' : 'nav-link ' }}"
                         style="font-weight: 600;font-size:1rem" href="{{ route('admin.request', ['id' => $id]) }}">
                         {{ __('โครงร่างงานวิจัย') }} </a>
                     <ul class="sub-menu py-2 ">
@@ -79,7 +79,15 @@
 
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="{{ request()->is('admin/contract-research/*') ? 'nav-link-sub text-darker' : 'nav-link-sub ' }}"
+                                style="font-weight: 600;font-size:0.9rem"
+                                href="{{ route('admin.contract-research', ['id' => $id]) }}">
+                                <i class="fa-solid fa-minus"style="font-size: 50%"></i>
+                                {{ __('สัญญาทุน') }}
 
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a class="{{ request()->is('admin/manage-source/*') ? 'nav-link-sub text-darker' : 'nav-link-sub ' }}"
                                 style="font-weight: 600;font-size:0.9rem"

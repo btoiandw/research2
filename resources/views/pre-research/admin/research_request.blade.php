@@ -15,6 +15,7 @@
     @endif
     <div class="row mb-3 mt-3">
         <div class="col-xl-12">
+            <h3 style="font-weight: 800">โครงร่างงานวิจัยที่เสนอ</h3>
             <div class="bg-white rounded shadow-xl m-dash p-2">
                 <div class="table-responsive">
                     <table class="table fw-bold w-100" id="research_table">
@@ -23,7 +24,7 @@
                                 <th class="fw-bolder" style="font-size: 15px">ลำดับ</th>
                                 <th class="fw-bolder" style="font-size: 15px">ชื่อโครงร่างงานวิจัยภาษาไทย</th>
                                 <th class="fw-bolder" style="font-size: 15px">รายละเอียด</th>
-                                <th class="fw-bolder" style="font-size: 15px">สถานะ</th>
+                                <th class="fw-bolder" style="font-size: 15px;width:150px">สถานะ</th>
                                 <th class="fw-bolder" style="font-size: 15px">สรุปผล/ข้อเสนอแนะ</th>
                                 <th class="fw-bolder" style="font-size: 15px">เพิ่มกรรมการ</th>
                                 <th class="fw-bolder" style="font-size: 15px">จัดการ</th>
@@ -35,64 +36,113 @@
                                 $i = 1;
                             @endphp
                             @foreach ($data_re as $item)
-                                <tr>
-                                    <td align="center">{{ $i++ }}</td>
-                                    <td>
-                                        {!! Str::limit("$item->research_th", 50, ' ...') !!}
-                                    </td>
-                                    <td align="center">
-                                        <button class=" btn btn-info btn-sm" onclick="viewDetail({{ $item->research_id }})">
-                                            <i class="fa-solid fa-eye"></i>
-                                        </button>
-                                    </td>
-                                    <td align="center">
-                                        @if ($item->research_status == 0)
-                                            <button class="btn btn-yellow disabled btn-sm">
-                                                รอตรวจสอบ
+                                @if ($item->research_status != 12)
+                                    <tr>
+                                        <td align="center">{{ $i++ }}</td>
+                                        <td>
+                                            {!! Str::limit("$item->research_th", 50, ' ...') !!}
+                                        </td>
+                                        <td align="center">
+                                            <button class=" btn btn-info btn-sm"
+                                                onclick="viewDetail({{ $item->research_id }})">
+                                                <i class="fa-solid fa-eye"></i>
                                             </button>
-                                        @else
-                                        @endif
-                                    </td>
-                                    <td align="center">
-                                        @if (
-                                            $item->research_status == 0 ||
-                                                $item->research_status == 3 ||
-                                                $item->research_status == 6 ||
-                                                $item->research_status == 9)
-                                            <button class="btn btn-sm btn-default"
-                                                onclick="addSumFeed({{ $item->research_id }})">
-                                                <i class="fa-solid fa-plus"></i><span>ข้อเสนอแนะ</span>
-                                            </button>
-                                        @endif
+                                        </td>
+                                        <td>
+                                            @if ($item->research_summary_feedback_0 != null || $item->summary_feedback_file_0 != null)
+                                                <button class="btn btn-warning btn-sm"
+                                                    onclick="editNot_1({{ $item->research_id }})">
+                                                    ไม่ผ่าน/ปรับแก้คั้งที่ 1
+                                                </button>
+                                            @endif
+                                            @if ($item->research_summary_feedback_1 != null || $item->summary_feedback_file_1 != null)
+                                                <button class="btn btn-warning btn-sm">
+                                                    ไม่ผ่าน/ปรับแก้คั้งที่ 1
+                                                </button>
+                                            @endif
+                                            @if ($item->research_summary_feedback_2 != null || $item->summary_feedback_file_2 != null)
+                                                <button class="btn btn-warning btn-sm">
+                                                    ไม่ผ่าน/ปรับแก้คั้งที่ 2
+                                                </button>
+                                            @endif
+                                            @if ($item->research_summary_feedback_3 != null || $item->summary_feedback_file_3 != null)
+                                                <button class="btn btn-warning btn-sm">
+                                                    ไม่ผ่าน/ปรับแก้คั้งที่ 3
+                                                </button>
+                                            @endif
+                                            @if (
+                                                $item->research_status == 0 ||
+                                                    $item->research_status == 3 ||
+                                                    $item->research_status == 6 ||
+                                                    $item->research_status == 9)
+                                                <button class="btn btn-yellow disabled btn-sm">
+                                                    รอตรวจสอบ
+                                                </button>
+                                            @elseif (
+                                                $item->research_status == 1 ||
+                                                    $item->research_status == 4 ||
+                                                    $item->research_status == 7 ||
+                                                    $item->research_status == 10)
+                                                <button class="btn btn-yellow disabled btn-sm">
+                                                    รอตรวจสอบจากกรรมการ
+                                                </button>
+                                            @elseif ($item->research_status == 14)
+                                                <button class="btn btn-warning disabled btn-sm"
+                                                    onclick="viewCommentAd({{ $item->research_id }})">
+                                                    ไม่ผ่านการตรวจสอบจากแอดมิน
+                                                </button>
+                                            @elseif ($item->research_status == 12)
+                                                <button class="btn btn-danger disabled btn-sm">
+                                                    ยกเลิก
+                                                </button>
+                                            @elseif ($item->research_status == 13)
+                                                <button class="btn btn-danger disabled btn-sm">
+                                                    ไม่ผ่าน
+                                                </button>
+                                            @elseif ($item->research_status == 15)
+                                                <button class="btn btn-success disabled btn-sm">
+                                                    รอการอนุมัติสัญญา
+                                                </button>
+                                            @elseif ($item->research_status == 11)
+                                                <button class="btn btn-success disabled btn-sm">
+                                                    อนุมัติสัญญา
+                                                </button>
+                                            @endif
+                                        </td>
+                                        <td align="center">
+                                            @if (
+                                                $item->research_status == 0 ||
+                                                    $item->research_status == 3 ||
+                                                    $item->research_status == 6 ||
+                                                    $item->research_status == 9)
+                                                <button class="btn btn-sm btn-default"
+                                                    onclick="addSumFeed({{ $item->research_id }})">
+                                                    <i class="fa-solid fa-plus"></i><span>ข้อเสนอแนะ</span>
+                                                </button>
+                                            @endif
 
-                                    </td>
-                                    <td align="center">
-                                        @if (
-                                            $item->research_status == 0 ||
-                                                $item->research_status == 3 ||
-                                                $item->research_status == 6 ||
-                                                $item->research_status == 9)
-                                            <button class="btn btn-default btn-sm"
-                                                onclick="addDirector({{ $item->research_id }})">
-                                                <i class="fa-solid fa-user-plus"></i>
-                                            </button>
-                                        @endif
+                                        </td>
+                                        <td align="center">
+                                            @if (
+                                                $item->research_status == 0 ||
+                                                    $item->research_status == 3 ||
+                                                    $item->research_status == 6 ||
+                                                    $item->research_status == 9)
+                                                <button class="btn btn-default btn-sm"
+                                                    onclick="addDirector({{ $item->research_id }})">
+                                                    <i class="fa-solid fa-user-plus"></i>
+                                                </button>
+                                            @endif
 
-                                    </td>
-                                    <td align="center">
-                                        @if ($item->research_status == 15)
-                                            <button class="btn btn-sm" style="background-color: #2ec4b6;color:#fff"
-                                                onclick="approve({{ $item->research_id }})">
-                                                <i class="fa-solid fa-file-invoice"></i> อนุมัติสัญญา
-                                            </button>
-                                        @else
+                                        </td>
+                                        <td align="center">
                                             <button class="btn btn-danger btn-sm">
                                                 <i class="fa-solid fa-xmark"></i><span>ยกเลิก</span>
                                             </button>
-                                        @endif
 
-                                    </td>
-                                </tr>
+                                        </td>
+                                    </tr>
+                                @endif
                             @endforeach
                         </tbody>
                     </table>
@@ -100,7 +150,80 @@
             </div>
         </div>
     </div>
+    <div class="row mb-3 mt-5">
+        <div class="col-xl-12">
+            <h3 style="font-weight: 800">โครงร่างงานวิจัยที่ยกเลิก</h3>
+            <div class="bg-white rounded shadow-xl m-dash p-2">
+                <div class="table-responsive">
+                    <table class="table fw-bold w-100" id="research_all_table">
+                        <thead class="table-dark table-hover table align-middle">
+                            <tr align="center">
+                                <th class="fw-bolder" style="font-size: 15px">ลำดับ</th>
+                                <th class="fw-bolder" style="font-size: 15px">ชื่อโครงร่างงานวิจัยภาษาไทย</th>
+                                <th class="fw-bolder" style="font-size: 15px">รายละเอียด</th>
+                                <th class="fw-bolder" style="font-size: 15px">สถานะ</th>
 
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @php
+                                $i = 1;
+                            @endphp
+                            @foreach ($data_re as $item)
+                                @if ($item->research_status == 12 || $item->research_status == 13)
+                                    <tr>
+                                        <td align="center">{{ $i++ }}</td>
+                                        <td>
+                                            {!! Str::limit("$item->research_th", 50, ' ...') !!}
+                                        </td>
+                                        <td align="center">
+                                            <button class=" btn btn-info btn-sm"
+                                                onclick="viewDetail({{ $item->research_id }})">
+                                                <i class="fa-solid fa-eye"></i>
+                                            </button>
+                                        </td>
+                                        <td>
+                                            @if ($item->research_summary_feedback_0 != null || $item->summary_feedback_file_0 != null)
+                                                <button class="btn btn-warning btn-sm"
+                                                    onclick="editNot_1({{ $item->research_id }})">
+                                                    ไม่ผ่าน/ปรับแก้คั้งที่ 1
+                                                </button>
+                                            @endif
+                                            @if ($item->research_summary_feedback_1 != null || $item->summary_feedback_file_1 != null)
+                                                <button class="btn btn-warning btn-sm">
+                                                    ไม่ผ่าน/ปรับแก้คั้งที่ 1
+                                                </button>
+                                            @endif
+                                            @if ($item->research_summary_feedback_2 != null || $item->summary_feedback_file_2 != null)
+                                                <button class="btn btn-warning btn-sm">
+                                                    ไม่ผ่าน/ปรับแก้คั้งที่ 2
+                                                </button>
+                                            @endif
+                                            @if ($item->research_summary_feedback_3 != null || $item->summary_feedback_file_3 != null)
+                                                <button class="btn btn-warning btn-sm">
+                                                    ไม่ผ่าน/ปรับแก้คั้งที่ 3
+                                                </button>
+                                            @endif
+                                            @if ($item->research_status == 12)
+                                                <button class="btn btn-danger disabled btn-sm">
+                                                    ยกเลิก
+                                                </button>
+                                            @elseif ($item->research_status == 13)
+                                                <button class="btn btn-danger disabled btn-sm">
+                                                    ไม่ผ่าน
+                                                </button>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endif
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
     {{-- modal view detail --}}
     <div class="modal fade" id="viewdetail" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="viewdetailLabel" aria-hidden="true">
@@ -108,7 +231,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="viewdetailLabel">รายละเอียดโครงร่างงานวิจัย</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close"onclick="location.reload()" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row mb-3">
@@ -223,7 +346,7 @@
                 </div>
                 <div class="modal-footer">
 
-                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default" onclick="location.reload()">Close</button>
                 </div>
             </div>
         </div>
@@ -396,71 +519,7 @@
         </div>
     </div>
 
-    <!--approve Modal -->
-    <div class="modal fade" id="approve" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="approveLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="approveLabel">อนุมัติสัญญาทุน</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form action="{{ route('admin.approve-contact') }}" method="post">
-                    @csrf
-                    <div class="modal-body">
-                        <input type="hidden" name="id_re" id="id_re">
-                        <div class="row mb-3">
-                            <strong class="col-3">ชื่อโครงร่างงานวิจัยภาษาไทย</strong>
-                            <div class="col-9">
-                                <input type="text" name="" id="n_th" value=""
-                                    class=" form-control" readonly>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <strong class="col-3">ชื่อโครงร่างงานวิจัยภาษาอังกฤษ</strong>
-                            <div class="col-9">
-                                <input type="text" name="" id="n_en" value=""
-                                    class=" form-control" readonly>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <strong class="col-3">ชื่อแหล่งทุนงานวิจัย</strong>
-                            <div class="col-9">
-                                <input type="text" name="" id="s_re" value=""
-                                    class=" form-control" readonly>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <strong class="col-3">ประเภทงานวิจัย</strong>
-                            <div class="col-9">
-                                <input type="text" name="" id="t_re" value=""
-                                    class=" form-control" readonly>
-                            </div>
-                        </div>
 
-                        <div class="row">
-                            <strong class="col-sm-3 col-form-label">รายการส่งมอบ</strong>
-                            <div class="col-sm-9">
-                                <select class="form-select" id="list_app" name="list_app">
-                                    <option value="">-- เลือกรายการส่งมอบ --</option>
-                                    @foreach ($data_list as $row)
-                                        <option value="{{ $row->deliver_id }}">
-                                            {{ $row->research_source_name }} {{ $row->Type_research }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-primary" type="submit">ยืนยัน</button>
-                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">ปิด</button>
-                    </div>
-                </form>
-
-            </div>
-        </div>
-    </div>
 @endsection
 
 @push('js')
@@ -502,7 +561,36 @@
                         targets: 5
                     },
                 ],
-                lengthMenu: [10, 20, 50, 100, ],
+                lengthMenu: [5, 15, 25, 50, 100, ],
+                language: {
+                    lengthMenu: "แสดง _MENU_ รายการ",
+                    search: "ค้นหาข้อมูลในตาราง",
+                    info: "แสดงข้อมูล _END_ จากทั้งหมด _TOTAL_ รายการ",
+                    paginate: {
+                        previous: "ก่อนหน้า",
+                        next: "ถัดไป",
+
+                    },
+                },
+
+            });
+
+            $('#research_all_table').DataTable({
+                rowReorder: {
+                    selector: 'td:nth-child(2)'
+                },
+                responsive: true,
+                columnDefs: [{
+                        responsivePriority: 1,
+                        targets: 0
+                    },
+                    {
+                        responsivePriority: 2,
+                        targets: 3
+                    },
+
+                ],
+                lengthMenu: [5, 15, 25, 50, 100, ],
                 language: {
                     lengthMenu: "แสดง _MENU_ รายการ",
                     search: "ค้นหาข้อมูลในตาราง",
@@ -724,39 +812,6 @@
                 bs.style.display = "";
                 sugges();
             }
-        }
-
-        function approve(id) {
-            console.log(id);
-            $.ajax({
-                type: 'GET',
-                url: '/view/research/' + id,
-                dataType: 'JSON',
-                success: function(res) {
-                    moment.locale('th');
-                    console.log(res.data_re);
-                    var data = res.data_re;
-                    //$('#n_th').val(data.)
-                    var type_re = data[0].type_research_id;
-                    var type = type_re.split('_');
-                    //console.log(type);
-                    var ty = '';
-                    console.log('len:' + type.length);
-                    if (type.length == 3) {
-                        ty = type[0] + ', ' + type[1] + ', ' + type[2];
-                    } else if (type.length == 2) {
-                        ty = type[0] + ', ' + type[1];
-                    } else {
-                        ty = data[0].type_research_id;
-                    }
-                    $('#id_re').val(data[0].research_id);
-                    $('#n_th').val(data[0].research_th);
-                    $('#n_en').val(data[0].research_en);
-                    $('#s_re').val(data[0].research_source_name);
-                    $('#t_re').val(ty);
-                }
-            })
-            $('#approve').modal('toggle');
         }
     </script>
 @endpush

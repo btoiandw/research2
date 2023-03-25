@@ -38,7 +38,7 @@ Route::post('/research/store', [\App\Http\Controllers\Pre\TbResearchController::
 Route::get('/view/research/{id}', [\App\Http\Controllers\Pre\TbResearchController::class, 'show']);
 Route::get('autocomplete', [\App\Http\Controllers\Pre\TbResearchController::class, 'autocomplete'])->name('autocomplete');
 
-
+Route::get('admin/contract-research/{id}',[\App\Http\Controllers\Pre\TbAdminController::class,'contractPage'])->name('admin.contract-research');
 Route::get('/admin/request/{id}', [\App\Http\Controllers\Pre\TbAdminController::class, 'rePages'])->name('admin.request');
 Route::get('/admin/manage/users/{id}', [\App\Http\Controllers\Pre\TbAdminController::class, 'manaUser'])->name('admin.manage-user');
 Route::get('/admin/send-director/{id}', [\App\Http\Controllers\Pre\TbAdminController::class, 'ResearchDirector'])->name('admin.send-research-director');

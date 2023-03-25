@@ -533,7 +533,7 @@ class TbResearchController extends Controller
     public function cancel($id)
     {
         DB::table('tb_research')->where('research_id', $id)->update([
-            'research_status' => '11',
+            'research_status' => '12',
             'updated_at' => Carbon::now()->format('Y-m-d H:i:m'),
         ]);
         return response()->json(['status' => true]);

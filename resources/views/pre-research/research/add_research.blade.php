@@ -42,7 +42,7 @@
                                     <th class="fw-bolder" style="font-size: 15px">ชื่อโครงร่างงานวิจัยภาษาไทย</th>
                                     <th class="fw-bolder" style="font-size: 15px">ชื่อโครงร่างงานวิจัยภาษาอังกฤษ</th>
                                     <th class="fw-bolder" style="font-size: 15px">รายละเอียด</th>
-                                    <th class="fw-bolder" style="font-size: 15px">สถานะ</th>
+                                    <th class="fw-bolder" style="font-size: 15px;width:150px">สถานะ</th>
                                     <th class="fw-bolder" style="font-size: 15px">จัดการ</th>
                                 </tr>
                             </thead>
