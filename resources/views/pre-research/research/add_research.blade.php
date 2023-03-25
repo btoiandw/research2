@@ -400,7 +400,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="viewdetailLabel">รายละเอียดโครงร่างงานวิจัย</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" {{-- data-bs-dismiss="modal" --}}onclick="location.reload()"
+                        aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row mb-3">
@@ -512,7 +513,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default" {{-- data-bs-dismiss="modal" --}}
+                        onclick="location.reload()">Close</button>
                 </div>
             </div>
         </div>
@@ -918,8 +920,10 @@
                 dataType: 'JSON',
                 success: function(res) {
                     moment.locale('th');
-                    console.log(res.data_re);
+                    //console.log(res.data_re);
                     var data = res.data_re;
+                    console.log(data);
+                    console.log('re_id:' + data[0].research_id);
                     createRows(res);
                     $('#viewdetail').modal('toggle');
                     //console.log(html);
@@ -951,17 +955,18 @@
                     $('#start').html(start);
                     $('#end').html(end);
                     $('#bud').html(data[0].budage_research + '.00 บาท');
-                    $('#view_pdf').click(function() {
+                    var url = '';
+                    $('#view_pdf').on('click', function() {
                         //console.log(data[0].research_id);
-                        var id = data[0].research_id;
-                        var url = '/view-pdf/' + id;
-                        //console.log(url);
+                        //var id_re = data[0].research_id;
+                        url = '/view-pdf/' + id;
+                        console.log(url);
                         window.open(url, "_blank");
                     });
-                    $('#view_word').click(function() {
+                    $('#view_word').on('click', function() {
                         //console.log(data[0].research_id);
-                        var id = data[0].research_id;
-                        var url = '/view-word/' + id;
+                        var id_re = data[0].research_id;
+                        var url = '/view-word/' + id_re;
                         //console.log(url);
                         window.open(url, "_blank");
                     });

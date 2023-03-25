@@ -312,19 +312,73 @@ class TbResearchController extends Controller
         //$research[0]->save();
         if ($request->file('f_pdf') || $request->file('f_word')) {
             $path = 'uploads/research/' . $research->year_research . '/' . $request->id;
-            $file_word = $path . '/' . $research->word_file;
-            $file_pdf = $path . '/' . $research->pdf_file;
+
+            if ($research->word_file_3 != null) {
+                $file_name_word = $research->word_file_3;
+            } elseif ($research->word_file_2 != null) {
+                $file_name_word = $research->word_file_2;
+            } elseif ($research->word_file_1 != null) {
+                $file_name_word = $research->word_file_1;
+            } else {
+                $file_name_word = $research->word_file_0;
+            }
+
+            if ($research->pdf_file_3 != null) {
+                $file_name_pdf = $research->pdf_file_3;
+            } elseif ($research->pdf_file_2 != null) {
+                $file_name_pdf = $research->pdf_file_2;
+            } elseif ($research->pdf_file_1 != null) {
+                $file_name_pdf = $research->pdf_file_1;
+            } else {
+                $file_name_pdf = $research->pdf_file_0;
+            }
+            $file_word = $path . '/' . $file_name_word;
+            $file_pdf = $path . '/' . $file_name_pdf;
+            $status = '';
+            if ($research->research_status == 0 || $research->research_status == 2) {
+                $status = '0';
+            } elseif ($research->research_status == 3 || $research->research_status == 5) {
+                $status = '3';
+            } elseif ($research->research_status == 6 || $research->research_status == 8) {
+                $status = '6';
+            } elseif ($research->research_status == 9) {
+                $status = '9';
+            }
+            //dd($status, $research->research_status, $file_name_pdf, $file_name_word, $file_word, $file_pdf);
             if ($file_p = $request->file('f_pdf')) {
                 File::delete(public_path($file_pdf));
                 $namep = $file_p->getClientOriginalName();
                 $eNamep = explode('.', $namep);
                 $infop = end($eNamep);
-                $fileName_p = $research->research_id . "_0." . $infop;
+                $fileName_p = $research->research_id . "_" . $status . "." . $infop;
                 $file_p->move($path, $fileName_p);
-                DB::table('tb_research')->where('research_id', $request->id)->update([
-                    'pdf_file' => $fileName_p,
-                    'updated_at' => Carbon::now()->format('Y-m-d H:i:m'),
-                ]);
+
+                if ($status == '0') {
+                    DB::table('tb_research')->where('research_id', $request->id)->update([
+                        'pdf_file_0' => $fileName_p,
+                        'date_upload_file_0' => Carbon::now()->format('Y-m-d H:i:m'),
+                        'updated_at' => Carbon::now()->format('Y-m-d H:i:m'),
+                    ]);
+                } elseif ($status == '3') {
+                    DB::table('tb_research')->where('research_id', $request->id)->update([
+                        'pdf_file_1' => $fileName_p,
+                        'date_upload_file_1' => Carbon::now()->format('Y-m-d H:i:m'),
+                        'updated_at' => Carbon::now()->format('Y-m-d H:i:m'),
+                    ]);
+                } elseif ($status == '6') {
+                    DB::table('tb_research')->where('research_id', $request->id)->update([
+                        'pdf_file_2' => $fileName_p,
+                        'date_upload_file_2' => Carbon::now()->format('Y-m-d H:i:m'),
+                        'updated_at' => Carbon::now()->format('Y-m-d H:i:m'),
+                    ]);
+                } elseif ($status == '9') {
+                    DB::table('tb_research')->where('research_id', $request->id)->update([
+                        'pdf_file_3' => $fileName_p,
+                        'date_upload_file_3' => Carbon::now()->format('Y-m-d H:i:m'),
+                        'updated_at' => Carbon::now()->format('Y-m-d H:i:m'),
+                    ]);
+                } else {
+                }
             }
 
             if ($file_w = $request->file('f_word')) {
@@ -332,14 +386,36 @@ class TbResearchController extends Controller
                 $namew = $file_w->getClientOriginalName();
                 $eNamew = explode('.', $namew);
                 $infow = end($eNamew);
-                $fileName_w = $research->research_id . "_0." . $infow;
+                $fileName_w = $research->research_id . "_" . $status . "." . $infow;
 
                 $file_w->move($path, $fileName_w);
 
-                DB::table('tb_research')->where('research_id', $request->id)->update([
-                    'word_file' => $fileName_w,
-                    'updated_at' => Carbon::now()->format('Y-m-d H:i:m'),
-                ]);
+                if ($status == '0') {
+                    DB::table('tb_research')->where('research_id', $request->id)->update([
+                        'word_file_0' => $fileName_w,
+                        'date_upload_file_0' => Carbon::now()->format('Y-m-d H:i:m'),
+                        'updated_at' => Carbon::now()->format('Y-m-d H:i:m'),
+                    ]);
+                } elseif ($status == '3') {
+                    DB::table('tb_research')->where('research_id', $request->id)->update([
+                        'word_file_1' => $fileName_w,
+                        'date_upload_file_1' => Carbon::now()->format('Y-m-d H:i:m'),
+                        'updated_at' => Carbon::now()->format('Y-m-d H:i:m'),
+                    ]);
+                } elseif ($status == '6') {
+                    DB::table('tb_research')->where('research_id', $request->id)->update([
+                        'word_file_2' => $fileName_w,
+                        'date_upload_file_2' => Carbon::now()->format('Y-m-d H:i:m'),
+                        'updated_at' => Carbon::now()->format('Y-m-d H:i:m'),
+                    ]);
+                } elseif ($status == '9') {
+                    DB::table('tb_research')->where('research_id', $request->id)->update([
+                        'word_file_3' => $fileName_w,
+                        'date_upload_file_3' => Carbon::now()->format('Y-m-d H:i:m'),
+                        'updated_at' => Carbon::now()->format('Y-m-d H:i:m'),
+                    ]);
+                } else {
+                }
             }
             //return redirect()->back()->with('success_edit');
         }
@@ -382,7 +458,7 @@ class TbResearchController extends Controller
         ]);
 
         // $research->save();
-
+        Alert::success('แก้ไขข้อมูลโครงร่างงานวิจัยสำเร็จ!');
         return redirect()->back()->with('success_edit');
     }
 
@@ -412,28 +488,45 @@ class TbResearchController extends Controller
 
     public function viewFile($id)
     {
-        $p = DB::table('tb_research')->select('*')->where('research_id', '=', $id)->get();
+        $p = DB::table('tb_research')->select('*')->where('research_id', '=', $id)->first();
 
-        $path = 'uploads/research/' . $p[0]->year_research . '/' . $p[0]->research_id;
+
+        $path = 'uploads/research/' . $p->year_research . '/' . $p->research_id;
         //$u = Auth::user()->id;
+        if ($p->word_file_3 != null) {
+            $file_name = $p->word_file_3;
+        } elseif ($p->word_file_2 != null) {
+            $file_name = $p->word_file_2;
+        } elseif ($p->word_file_1 != null) {
+            $file_name = $p->word_file_1;
+        } else {
+            $file_name = $p->word_file_0;
+        }
 
-        $file_name = $p[0]->word_file;
         //dd($d);
         $file = $path . '/' . $file_name;
-        //dd($p,$path,$file_name,$file,$p[0]->word_file);
+        //dd($p,$path,$file_name,$file);
         return response()->file($file);
     }
     public function viewFilePDF($id)
     {
-        $p = DB::table('tb_research')->select('*')->where('research_id', '=', $id)->get();
+        $p = DB::table('tb_research')->where('research_id', '=', $id)->first();
 
-        $path = 'uploads/research/' . $p[0]->year_research . '/' . $p[0]->research_id;
+        $path = 'uploads/research/' . $p->year_research . '/' . $p->research_id;
         //$u = Auth::user()->id;
-
-        $file_name = $p[0]->pdf_file;
+       // dd($path, $p);
+        if ($p->pdf_file_3 != null) {
+            $file_name = $p->pdf_file_3;
+        } elseif ($p->pdf_file_2 != null) {
+            $file_name = $p->pdf_file_2;
+        } elseif ($p->pdf_file_1 != null) {
+            $file_name = $p->pdf_file_1;
+        } else {
+            $file_name = $p->pdf_file_0;
+        }
         //dd($d);
         $file = $path . '/' . $file_name;
-        //dd($file_name,$file);
+        //dd($file_name, $file, $p);
         return response()->file($file);
     }
 
