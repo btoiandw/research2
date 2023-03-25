@@ -258,11 +258,13 @@ class TbAdminController extends Controller
             //->groupBy('deliver_id')
             ->orderBy('updated_at', 'desc')
             ->get();
+
+          //  $data_de = DB::select('SELECT DISTINCT `deliver_id`,tb_deliver_lists.research_source_id,tb_deliver_lists.Type_research,tb_deliver_lists.status,tb_research_sources.research_sources_id,tb_research_sources.research_source_name FROM `tb_deliver_lists` INNER JOIN tb_research_sources ON tb_deliver_lists.research_source_id = tb_research_sources.research_sources_id WHERE tb_deliver_lists.status = "1" ORDER BY tb_deliver_lists.updated_at DESC');
         $db_cont = DB::table('tb_contracts')
             ->join('tb_research', 'tb_contracts.research_id', '=', 'tb_research.research_id')
             ->get();
         $db_de_list = DB::table('tb_deliver_lists')->where('status', '=', '1')->get();
-        dd($data_re, $db_cont, $db_de_list);
+        //dd($data_re, $db_cont, $db_de_list);
         return view('pre-research.admin.research_contract')->with(['data' => $data[0], 'id' => $id, 'data_re' => $data_re]);
     }
 }

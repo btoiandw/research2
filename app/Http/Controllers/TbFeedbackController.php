@@ -137,6 +137,17 @@ class TbFeedbackController extends Controller
         } else {
             $feedResult = null;
         }
+        $status = '';
+        if ($data[0]->research_status == 1) {
+            $status = '0';
+        } elseif ($data[0]->research_status == 4) {
+            $status = '3';
+        } elseif ($data[0]->research_status == 7) {
+            $status = '6';
+        } elseif ($data[0]->research_status == 10) {
+            $status = '9';
+        }
+
 
         if ($filefeed != '') {
             $reYear = $data[0]->year_research;
@@ -144,14 +155,14 @@ class TbFeedbackController extends Controller
             $eNamep = explode('.', $file_name);
             $infop = end($eNamep);
 
-            $file = $research_id . "_0_" . $direc_id . "_Feedback." . $infop;
+            $file = $research_id . "_" . $status . "_" . $direc_id . "_Feedback." . $infop;
             $path = 'uploads/research/' . $reYear . '/' . $research_id; //path save file
 
             $filefeed->move($path, $file);
         } else {
             $file = null;
         }
-        // dd($request->all(), $data, $file, $suggestion, $submit);
+        //dd($request->all(), $status, $data, $file, $suggestion, $submit);
 
         /* if radio ผ่าน/ไม่ผ่าน */
         if ($request->AssessmentResults == 'ไม่ผ่าน') {
@@ -163,7 +174,7 @@ class TbFeedbackController extends Controller
                 return redirect()->back();
 
                 //DB::update();
-            } elseif ($submit == "ยืนยัน") {
+            } elseif ($submit == "ส่งการประเมิน") {
                 /// DB::update();
                 DB::table('tb_feedback')
                     ->where('employee_referees_id', $direc_id)
@@ -184,7 +195,7 @@ class TbFeedbackController extends Controller
                 ->where('employee_referees_id', $direc_id)
                 ->where('research_id', $research_id)
                 ->update([
-                    'status' => 'ตรวจสอบแล้ว',
+                    'status' => '1',
                     'feedback' => $feedResult,
                     'Assessment_result' => $request->AssessmentResults,
                     'suggestionFile' => $file,
@@ -387,5 +398,19 @@ class TbFeedbackController extends Controller
                 ]);
             return redirect()->back();
         }
+    }
+
+    public function viewFileFeed($id, $val)
+    {
+        $re = DB::table('tb_research')->where('research_id', $id)->get();
+
+        $year = $re[0]->year_research;
+        $re_id = $re[0]->research_id;
+        $path = 'uploads/research/' . $year . '/' . $re_id;
+
+        $file = $path . '/' . $val;
+        return response()->file($file);
+
+        //dd($id, $val, $file, $year, $re, $re_id, $path);
     }
 }

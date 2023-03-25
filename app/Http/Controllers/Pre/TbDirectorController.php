@@ -91,20 +91,21 @@ class TbDirectorController extends Controller
         if ($roles == 4) {
             $data = DB::table('tb_directors')->where('employee_id', $id)->get();
             //dd($data[0]->employee_referees_id);
-            $re = DB::table('tb_feedback')
+            /*  $re = DB::table('tb_feedback')
                 ->join('tb_directors', 'tb_feedback.employee_referees_id', '=', 'tb_directors.employee_referees_id')
                 ->join('tb_research', 'tb_feedback.research_id', '=', 'tb_research.research_id')
                 ->where('tb_feedback.employee_referees_id', '=', $data[0]->employee_referees_id)
-                ->get();
+                ->get(); */
         } else {
             $data = DB::table('tb_directors')->where('employee_referees_id', $id)->get();
-            $re = DB::table('tb_feedback')
-                ->join('tb_directors', 'tb_feedback.employee_referees_id', '=', 'tb_directors.employee_referees_id')
-                ->join('tb_research', 'tb_feedback.research_id', '=', 'tb_research.research_id')
-                ->where('tb_feedback.employee_referees_id', '=', $id)
-                ->get();
         }
-       // dd($id, $roles, $data, $re);
+        $re = DB::table('tb_feedback')
+            ->join('tb_directors', 'tb_feedback.employee_referees_id', '=', 'tb_directors.employee_referees_id')
+            ->join('tb_research', 'tb_feedback.research_id', '=', 'tb_research.research_id')
+            ->where('tb_feedback.employee_referees_id', '=', $id)
+            ->whereIn('tb_research.research_status', ['1', '4', '7', '10'])
+            ->get();
+        //dd($id, $roles, $re);
         return view('pre-research.director.feedback_research')->with(['id' => $id, 'roles' => $roles, 'data' => $data, 're' => $re]);
     }
 }

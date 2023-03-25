@@ -152,7 +152,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="viewdetailLabel">รายละเอียดโครงร่างงานวิจัย</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" onclick="location.reload()" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row mb-3">
@@ -267,7 +267,7 @@
                 </div>
                 <div class="modal-footer">
 
-                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default" onclick="location.reload()">Close</button>
                 </div>
             </div>
         </div>
@@ -280,7 +280,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="viewFeedLabel">รายละเอียด</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" onclick="location.reload()" aria-label="Close"></button>
                 </div>
                 <form action="" method="post" enctype="multipart/form-data">
                     @csrf
@@ -313,13 +313,13 @@
                                     <label readonly class=" form-control-plaintext" name="suggestion"
                                         id="sg_cm"></label>
 
-                                    <button class="btn btn-warning" name="suggestionFile" id="sg_F">ดูไฟล์</button>
+                                    <button type="button" class="btn btn-warning" name="suggestionFile" id="sg_F">ดูไฟล์</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">ปิด</button>
+                        <button type="button" class="btn btn-danger" onclick="location.reload()">ปิด</button>
                     </div>
                 </form>
             </div>
@@ -585,8 +585,9 @@
                         $('#sg_F').css('display', 'none');
                         $('#sg_cm').html(cm);
                     } else if (data.suggestionFile != null) {
+                        cm = data.suggestionFile;
                         $('#sg_cm').css('display', 'none');
-
+                        $('#sg_F').html(cm);
                     } else {
 
                     }
@@ -594,6 +595,13 @@
                         $('#div_cm').css('display', 'none');
 
                     }
+                    $('#sg_F').on('click', function() {
+                        var id = data.research_id;
+                        var val = data.suggestionFile;
+                        var url = '/director/view-file/feed/' + id + '/' + val;
+                        console.log(url);
+                        window.open(url, "_blank");
+                    })
                     $('#viewFeed').modal('toggle');
                     $('#th').html(data.research_th);
                     $('#en').html(data.research_en);
