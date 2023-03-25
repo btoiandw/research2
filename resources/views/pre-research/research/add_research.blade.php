@@ -75,17 +75,20 @@
                                                     </button>
                                                 @endif
                                                 @if ($item->research_summary_feedback_1 != null || $item->summary_feedback_file_1 != null)
-                                                    <button class="btn btn-warning btn-sm">
+                                                    <button class="btn btn-warning btn-sm"
+                                                        onclick="editNot_2({{ $item->research_id }})">
                                                         ไม่ผ่าน/ปรับแก้คั้งที่ 1
                                                     </button>
                                                 @endif
                                                 @if ($item->research_summary_feedback_2 != null || $item->summary_feedback_file_2 != null)
-                                                    <button class="btn btn-warning btn-sm">
+                                                    <button class="btn btn-warning btn-sm"
+                                                        onclick="editNot_3({{ $item->research_id }})">
                                                         ไม่ผ่าน/ปรับแก้คั้งที่ 2
                                                     </button>
                                                 @endif
                                                 @if ($item->research_summary_feedback_3 != null || $item->summary_feedback_file_3 != null)
-                                                    <button class="btn btn-warning btn-sm">
+                                                    <button class="btn btn-warning btn-sm"
+                                                        onclick="editNot_4({{ $item->research_id }})">
                                                         ไม่ผ่าน/ปรับแก้คั้งที่ 3
                                                     </button>
                                                 @endif
@@ -165,7 +168,8 @@
 
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="add_research" method="POST" enctype="multipart/form-data" action="{{ route('research.store') }}">
+                <form id="add_research" method="POST" enctype="multipart/form-data"
+                    action="{{ route('research.store') }}">
                     @csrf
                     <div class="modal-body">
                         <div class="d-flex justify-content-end align-content-end">
@@ -514,7 +518,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" {{-- data-bs-dismiss="modal" --}}
-                        onclick="location.reload()">Close</button>
+                        onclick="location.reload()">ปิด</button>
                 </div>
             </div>
         </div>
@@ -702,49 +706,6 @@
         </div>
     </div>
 
-    <!--view feed Modal -->
-    <div class="modal fade" id="view" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="viewLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="viewLabel">รายละเอียดข้อเสนอแนะ</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row mb-3">
-                        <strong class="col-md-3">ชื่อโครงร่างงานวิจัยภาษาไทย</strong>
-                        <div class="col-md-9">
-                            <label for="" id="name_th"></label>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <strong class="col-md-3">ชื่อโครงร่างงานวิจัยอังกฤษ</strong>
-                        <div class="col-md-9">
-                            <label for="" id="name_en"></label>
-                        </div>
-                    </div>
-
-                    <div class="row mb-3">
-                        <strong class="col-md-3">ผลการประเมิน</strong>
-                        <div class="col-md-9">
-                            <label for="" id="result"></label>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <strong class="col-md-3">ข้อเสนอแนะ</strong>
-                        <div class="col-md-9">
-                            <label for="" id="Assessment_result"></label>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!--edit Not Modal -->
     <div class="modal fade" id="edit_1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="edit_1Label" aria-hidden="true">
@@ -752,7 +713,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="edit_1Label">ปรับแก้ตามข้อเสนอแนะ</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" onclick="location.reload()" aria-label="Close"></button>
                 </div>
                 <form action="{{ route('users.add-et1') }}" method="post" enctype="multipart/form-data">
                     @csrf
@@ -778,17 +739,25 @@
                                 <button class="btn btn-warning" name="suggestionFile" id="sg_F">ดูไฟล์</button>
                             </div>
                         </div>
-                        <div class="row mb-3">
-                            <strong class="col-sm-2">ไฟล์ Word</strong>
-                            <div class=" col-sm-10">
-                                <input type="file" name="word" id="e1_word" class=" form-control" required>
-                                <span class="text-danger">*ไฟล์ .doc และ .docx เท่านั้น</span>
 
+                        <div class="row" id="file_et">
+                            <strong class=" col-sm-3 col-form-label ">ไฟล์การปรับแก้</strong>
+                            <div class="col-sm-9">
+                                <button class="btn btn-default me-2" type="button" id="w_file">WORD FILE</button>
+                                <button class="btn btn-default" type="button" id="p_file">PDF FILE</button>
                             </div>
                         </div>
 
-                        <div class="row">
-                            <strong class="col-sm-2">ไฟล์ PDF</strong>
+                        <div class="row mb-3" id="add_et_word">
+                            <strong class="col-sm-2 col-form-label ">ไฟล์ Word</strong>
+                            <div class=" col-sm-10">
+                                <input type="file" name="word" id="e1_word" class=" form-control" required>
+                                <span class="text-danger">*ไฟล์ .doc และ .docx เท่านั้น</span>
+                            </div>
+                        </div>
+
+                        <div class="row" id="add_et_pdf">
+                            <strong class="col-sm-2 col-form-label ">ไฟล์ PDF</strong>
                             <div class=" col-sm-10">
                                 <input type="file" name="pdf" id="e1_pdf" class=" form-control" required>
                                 <span class="text-danger">*ไฟล์ .pdf เท่านั้น</span>
@@ -798,7 +767,7 @@
                     </div>
                     <div class="modal-footer">
                         <input type="submit" class="btn btn-primary" name="submit" value="ยืนยัน" />
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">ยกเลิก</button>
+                        <button type="button" class="btn btn-danger" onclick="location.reload()">ยกเลิก</button>
                     </div>
                 </form>
 
@@ -1147,12 +1116,6 @@
             }
         }
 
-        function viewCommentAd(id) {
-            console.log(id);
-
-            $('#view').modal('toggle');
-        }
-
         function editNot_1(id) {
             console.log(id);
             $.ajax({
@@ -1173,23 +1136,251 @@
                     } else if (data[0].summary_feedback_file_0 != null) {
                         cm = data[0].summary_feedback_file_0;
                         $('#sg_cm').css('display', 'none');
-                        $('#sg_F').html(cm);
+                        //$('#sg_F').html(cm);
                     } else {
 
                     }
+
+                    if (data[0].word_file_1 != null) {
+                        $('#file_et').css('display', 'block');
+                        $('#add_et_pdf').css('display', 'none');
+                        $('#add_et_word').css('display', 'none');
+                    } else if (data[0].word_file_1 == null) {
+                        $('#file_et').css('display', 'none');
+                        $('#add_et_pdf').css('display', 'block');
+                        $('#add_et_word').css('display', 'block');
+                    }
+
                     $('#e1_id').val(data[0].research_id);
                     $('#e1_th').val(data[0].research_th);
                     $('#e1_en').val(data[0].research_en);
                     // $('#feed_de').html(comment);
                     $('#edit_1').modal('toggle');
 
+                    $('#w_file').on('click', function() {
+                        //console.log(data[0].research_id);
+                        var id_re = data[0].research_id;
+                        var url = '/view-word/' + id_re;
+                        //console.log(url);
+                        window.open(url, "_blank");
+                    });
+                    $('#p_file').on('click', function() {
+                        //console.log(data[0].research_id);
+                        var id_re = data[0].research_id;
+                        var url = '/view-pdf/' + id_re;
+                        //console.log(url);
+                        window.open(url, "_blank");
+                    });
                     $('#sg_F').on('click', function() {
                         var id = data[0].research_id;
                         var val = data[0].summary_feedback_file_0;
                         var url = '/view/sum/feed/' + id + '/' + val;
                         //console.log(url);
                         window.open(url, "_blank");
-                    })
+                    });
+                }
+            })
+
+        }
+
+        function editNot_2(id) {
+            console.log(id);
+            $.ajax({
+                type: 'GET',
+                url: '/view/research/' + id,
+                dataType: 'JSON',
+                success: function(res) {
+                    moment.locale('th');
+                    // console.log(res.data_re);
+                    var data = res.data_re;
+                    console.log(data);
+                    var cm = '';
+
+                    if (data[0].research_summary_feedback_1 != null) {
+                        cm = data[0].research_summary_feedback_1;
+                        $('#sg_F').css('display', 'none');
+                        $('#sg_cm').html(cm);
+                    } else if (data[0].summary_feedback_file_1 != null) {
+                        cm = data[0].summary_feedback_file_1;
+                        $('#sg_cm').css('display', 'none');
+                        //$('#sg_F').html(cm);
+                    } else {
+
+                    }
+
+                    if (data[0].word_file_2 != null) {
+                        $('#file_et').css('display', 'block');
+                        $('#add_et_pdf').css('display', 'none');
+                        $('#add_et_word').css('display', 'none');
+                    } else if (data[0].word_file_2 == null) {
+                        $('#file_et').css('display', 'none');
+                        $('#add_et_pdf').css('display', 'block');
+                        $('#add_et_word').css('display', 'block');
+                    }
+
+                    $('#e1_id').val(data[0].research_id);
+                    $('#e1_th').val(data[0].research_th);
+                    $('#e1_en').val(data[0].research_en);
+                    // $('#feed_de').html(comment);
+                    $('#edit_1').modal('toggle');
+
+                    $('#w_file').on('click', function() {
+                        //console.log(data[0].research_id);
+                        var id_re = data[0].research_id;
+                        var url = '/view-word/' + id_re;
+                        //console.log(url);
+                        window.open(url, "_blank");
+                    });
+                    $('#p_file').on('click', function() {
+                        //console.log(data[0].research_id);
+                        var id_re = data[0].research_id;
+                        var url = '/view-pdf/' + id_re;
+                        //console.log(url);
+                        window.open(url, "_blank");
+                    });
+                    $('#sg_F').on('click', function() {
+                        var id = data[0].research_id;
+                        var val = data[0].summary_feedback_file_1;
+                        var url = '/view/sum/feed/' + id + '/' + val;
+                        //console.log(url);
+                        window.open(url, "_blank");
+                    });
+                }
+            })
+
+        }
+
+        function editNot_3(id) {
+            console.log(id);
+            $.ajax({
+                type: 'GET',
+                url: '/view/research/' + id,
+                dataType: 'JSON',
+                success: function(res) {
+                    moment.locale('th');
+                    // console.log(res.data_re);
+                    var data = res.data_re;
+                    console.log(data);
+                    var cm = '';
+
+                    if (data[0].research_summary_feedback_2 != null) {
+                        cm = data[0].research_summary_feedback_2;
+                        $('#sg_F').css('display', 'none');
+                        $('#sg_cm').html(cm);
+                    } else if (data[0].summary_feedback_file_2 != null) {
+                        cm = data[0].summary_feedback_file_2;
+                        $('#sg_cm').css('display', 'none');
+                        //$('#sg_F').html(cm);
+                    } else {
+
+                    }
+
+                    if (data[0].word_file_3 != null) {
+                        $('#file_et').css('display', 'block');
+                        $('#add_et_pdf').css('display', 'none');
+                        $('#add_et_word').css('display', 'none');
+                    } else if (data[0].word_file_3 == null) {
+                        $('#file_et').css('display', 'none');
+                        $('#add_et_pdf').css('display', 'block');
+                        $('#add_et_word').css('display', 'block');
+                    }
+
+                    $('#e1_id').val(data[0].research_id);
+                    $('#e1_th').val(data[0].research_th);
+                    $('#e1_en').val(data[0].research_en);
+                    // $('#feed_de').html(comment);
+                    $('#edit_1').modal('toggle');
+
+                    $('#w_file').on('click', function() {
+                        //console.log(data[0].research_id);
+                        var id_re = data[0].research_id;
+                        var url = '/view-word/' + id_re;
+                        //console.log(url);
+                        window.open(url, "_blank");
+                    });
+                    $('#p_file').on('click', function() {
+                        //console.log(data[0].research_id);
+                        var id_re = data[0].research_id;
+                        var url = '/view-pdf/' + id_re;
+                        //console.log(url);
+                        window.open(url, "_blank");
+                    });
+                    $('#sg_F').on('click', function() {
+                        var id = data[0].research_id;
+                        var val = data[0].summary_feedback_file_2;
+                        var url = '/view/sum/feed/' + id + '/' + val;
+                        //console.log(url);
+                        window.open(url, "_blank");
+                    });
+                }
+            })
+
+        }
+
+        function editNot_4(id) {
+            console.log(id);
+            $.ajax({
+                type: 'GET',
+                url: '/view/research/' + id,
+                dataType: 'JSON',
+                success: function(res) {
+                    moment.locale('th');
+                    // console.log(res.data_re);
+                    var data = res.data_re;
+                    console.log(data);
+                    var cm = '';
+
+                    if (data[0].research_summary_feedback_3 != null) {
+                        cm = data[0].research_summary_feedback_3;
+                        $('#sg_F').css('display', 'none');
+                        $('#sg_cm').html(cm);
+                    } else if (data[0].summary_feedback_file_3 != null) {
+                        cm = data[0].summary_feedback_file_3;
+                        $('#sg_cm').css('display', 'none');
+                        //$('#sg_F').html(cm);
+                    } else {
+                        $('#sg_F').css('display', 'none');
+                        $('#sg_cm').css(['display', 'block'], ['color', 'red']);
+                        $('#sg_cm').html('ไม่ผ่าน')
+                    }
+
+                    if (data[0].word_file_1 != null) {
+                        $('#file_et').css('display', 'block');
+                        $('#add_et_pdf').css('display', 'none');
+                        $('#add_et_word').css('display', 'none');
+                    } else if (data[0].word_file_1 == null) {
+                        $('#file_et').css('display', 'none');
+                        $('#add_et_pdf').css('display', 'block');
+                        $('#add_et_word').css('display', 'block');
+                    }
+
+                    $('#e1_id').val(data[0].research_id);
+                    $('#e1_th').val(data[0].research_th);
+                    $('#e1_en').val(data[0].research_en);
+                    // $('#feed_de').html(comment);
+                    $('#edit_1').modal('toggle');
+
+                    $('#w_file').on('click', function() {
+                        //console.log(data[0].research_id);
+                        var id_re = data[0].research_id;
+                        var url = '/view-word/' + id_re;
+                        //console.log(url);
+                        window.open(url, "_blank");
+                    });
+                    $('#p_file').on('click', function() {
+                        //console.log(data[0].research_id);
+                        var id_re = data[0].research_id;
+                        var url = '/view-pdf/' + id_re;
+                        //console.log(url);
+                        window.open(url, "_blank");
+                    });
+                    $('#sg_F').on('click', function() {
+                        var id = data[0].research_id;
+                        var val = data[0].summary_feedback_file_0;
+                        var url = '/view/sum/feed/' + id + '/' + val;
+                        //console.log(url);
+                        window.open(url, "_blank");
+                    });
                 }
             })
 
