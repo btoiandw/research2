@@ -190,7 +190,7 @@ class TbAdminController extends Controller
         if (count($data_re) == 0) {
             Alert::error('ไม่พบข้อมูลโครงร่างงานวิจัยที่เสนอพิจารณาแก่กรรมการ');
             return redirect()->back()->with(['id' => $id, 'data' => $data[0]]);
-        } else{
+        } else {
             # code...
             $dr = DB::table('tb_feedback')
                 ->join('tb_research', 'tb_feedback.research_id', '=', 'tb_research.research_id')
@@ -227,9 +227,12 @@ class TbAdminController extends Controller
             ->get(); */
         $data_so = DB::table('tb_research_sources')->where('status', '1')->get();
         $data_ty = DB::table('tb_research')->get('type_research_id');
+        $da = DB::table('tb_research')->get('type_research_id');
 
+
+        //dd($da, $result);
         //dd($data, $data_de, $data_so, $data_ty);
-        return view('pre-research.admin.deliver_list')->with(['data' => $data[0], 'id' => $id, 'data_de' => $data_de, 'data_so' => $data_so, 'data_ty' => $data_ty]);
+        return view('pre-research.admin.deliver_list')->with(['da' => $da, 'data' => $data[0], 'id' => $id, 'data_de' => $data_de, 'data_so' => $data_so, 'data_ty' => $data_ty]);
     }
     public function cbgPages($id)
     {

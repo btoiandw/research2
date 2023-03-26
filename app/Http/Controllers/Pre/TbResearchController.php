@@ -315,38 +315,46 @@ class TbResearchController extends Controller
         //$research[0]->save();
         if ($request->file('f_pdf') || $request->file('f_word')) {
             $path = 'uploads/research/' . $research->year_research . '/' . $request->id;
-
+            $status = '';
+            if ($research->research_status == 0 || $research->research_status == 2 && $research->word_file_0 != null) {
+                $status = '0';
+            } elseif ($research->research_status == 3 || $research->research_status == 5 && $research->word_file_1 != null) {
+                $status = '3';
+            } elseif ($research->research_status == 6 || $research->research_status == 8 && $research->word_file_2 != null) {
+                $status = '6';
+            } elseif ($research->research_status == 9 || $research->word_file_3 != null) {
+                $status = '9';
+            }
             if ($research->word_file_3 != null) {
                 $file_name_word = $research->word_file_3;
+                $status = '9';
             } elseif ($research->word_file_2 != null) {
+                $status = '6';
                 $file_name_word = $research->word_file_2;
             } elseif ($research->word_file_1 != null) {
+                $status = '3';
                 $file_name_word = $research->word_file_1;
             } else {
+                $status = '0';
                 $file_name_word = $research->word_file_0;
             }
 
             if ($research->pdf_file_3 != null) {
+                $status = '9';
                 $file_name_pdf = $research->pdf_file_3;
             } elseif ($research->pdf_file_2 != null) {
+                $status = '6';
                 $file_name_pdf = $research->pdf_file_2;
             } elseif ($research->pdf_file_1 != null) {
+                $status = '3';
                 $file_name_pdf = $research->pdf_file_1;
             } else {
+                $status = '0';
                 $file_name_pdf = $research->pdf_file_0;
             }
             $file_word = $path . '/' . $file_name_word;
             $file_pdf = $path . '/' . $file_name_pdf;
-            $status = '';
-            if ($research->research_status == 0 || $research->research_status == 2) {
-                $status = '0';
-            } elseif ($research->research_status == 3 || $research->research_status == 5) {
-                $status = '3';
-            } elseif ($research->research_status == 6 || $research->research_status == 8) {
-                $status = '6';
-            } elseif ($research->research_status == 9) {
-                $status = '9';
-            }
+
             //dd($status, $research->research_status, $file_name_pdf, $file_name_word, $file_word, $file_pdf);
             if ($file_p = $request->file('f_pdf')) {
                 File::delete(public_path($file_pdf));
@@ -453,6 +461,7 @@ class TbResearchController extends Controller
             'research_th' => $request->TH,
             'research_en' => $request->EN,
             'keyword' => $request->keyword,
+            'research_status'=>$status,
             'research_area' => $area,
             'date_research_start' => $request->sdate,
             'date_research_end' => $request->edate,
@@ -731,7 +740,7 @@ class TbResearchController extends Controller
         $year = $p[0]->year_research;
         $id_r = $p[0]->research_id;
         $path = 'uploads/research/' . $year . '/' . $id_r;
-        $file = $path."/".$val;
+        $file = $path . "/" . $val;
         // dd($id, $val, $p, $year,$path,$file);
         return response()->file($file);
     }

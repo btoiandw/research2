@@ -141,7 +141,8 @@
 
                                         </td>
                                         <td align="center">
-                                            <button class="btn btn-danger btn-sm">
+                                            <button class="btn btn-danger btn-sm"
+                                                onclick="cancel_resesrch({{ $item->research_id }})">
                                                 <i class="fa-solid fa-xmark"></i><span>ยกเลิก</span>
                                             </button>
 
@@ -177,6 +178,85 @@
                             @endphp
                             @foreach ($data_re as $item)
                                 @if ($item->research_status == 12 || $item->research_status == 13)
+                                    <tr>
+                                        <td align="center">{{ $i++ }}</td>
+                                        <td>
+                                            {!! Str::limit("$item->research_th", 50, ' ...') !!}
+                                        </td>
+                                        <td align="center">
+                                            <button class=" btn btn-info btn-sm"
+                                                onclick="viewDetail({{ $item->research_id }})">
+                                                <i class="fa-solid fa-eye"></i>
+                                            </button>
+                                        </td>
+                                        <td>
+                                            @if ($item->research_summary_feedback_0 != null || $item->summary_feedback_file_0 != null)
+                                                <button class="btn btn-warning btn-sm"
+                                                    onclick="editNot_1({{ $item->research_id }})">
+                                                    ไม่ผ่าน/ปรับแก้ครั้งที่ 1
+                                                </button>
+                                                <br><br>
+                                            @endif
+                                            @if ($item->research_summary_feedback_1 != null || $item->summary_feedback_file_1 != null)
+                                                <button class="btn btn-warning btn-sm"
+                                                    onclick="editNot_2({{ $item->research_id }})">
+                                                    ไม่ผ่าน/ปรับแก้ครั้งที่ 2
+                                                </button>
+                                                <br><br>
+                                            @endif
+                                            @if ($item->research_summary_feedback_2 != null || $item->summary_feedback_file_2 != null)
+                                                <button class="btn btn-warning btn-sm"
+                                                    onclick="editNot_3({{ $item->research_id }})">
+                                                    ไม่ผ่าน/ปรับแก้ครั้งที่ 3
+                                                </button>
+                                                <br><br>
+                                            @endif
+                                            {{-- @if ($item->research_summary_feedback_3 != null || $item->summary_feedback_file_3 != null)
+                                            <button class="btn btn-warning btn-sm">
+                                                ไม่ผ่าน/ปรับแก้คั้งที่ 3
+                                            </button>
+                                        @endif --}}
+                                            @if (
+                                                $item->research_status == 0 ||
+                                                    $item->research_status == 3 ||
+                                                    $item->research_status == 6 ||
+                                                    $item->research_status == 9)
+                                                <button class="btn btn-yellow disabled btn-sm">
+                                                    รอตรวจสอบ
+                                                </button>
+                                            @elseif (
+                                                $item->research_status == 1 ||
+                                                    $item->research_status == 4 ||
+                                                    $item->research_status == 7 ||
+                                                    $item->research_status == 10)
+                                                <button class="btn btn-yellow disabled btn-sm">
+                                                    รอตรวจสอบจากกรรมการ
+                                                </button>
+                                            @elseif ($item->research_status == 14)
+                                                <button class="btn btn-warning disabled btn-sm">
+                                                    {{-- onclick="viewCommentAd({{ $item->research_id }})" --}}
+                                                    ไม่ผ่านการตรวจสอบจากแอดมิน
+                                                </button>
+                                            @elseif ($item->research_status == 12)
+                                                <button class="btn btn-danger disabled btn-sm">
+                                                    ยกเลิก
+                                                </button>
+                                            @elseif ($item->research_status == 13)
+                                                <button class="btn btn-danger disabled btn-sm">
+                                                    ไม่ผ่าน
+                                                </button>
+                                            @elseif ($item->research_status == 15)
+                                                <button class="btn btn-success disabled btn-sm">
+                                                    รอการอนุมัติสัญญา
+                                                </button>
+                                            @elseif ($item->research_status == 11)
+                                                <button class="btn btn-success disabled btn-sm">
+                                                    อนุมัติสัญญา
+                                                </button>
+                                            @endif
+                                        </td>
+                                     
+                                    </tr>
                                 @endif
                             @endforeach
                         </tbody>
@@ -1094,6 +1174,56 @@
                         //console.log(url);
                         window.open(url, "_blank");
                     });
+                }
+            })
+
+        }
+
+        function cancel_resesrch(id) {
+            $.ajax({
+                method: 'GET',
+                dataType: 'JSON',
+                url: '/view/research/' + id,
+                success: function(res) {
+                    var data = res.data_re;
+                    Swal.fire({
+                        title: 'คุณต้องการยกเลิกโครงร่างงานวิจัย?',
+                        text: 'ชื่อโครงร่างงานวิจัย : ' + data[0].research_th,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'ยืนยัน',
+                        cancelButtonText: 'ยกเลิก'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                method: 'GET',
+                                dataType: 'JSON',
+                                url: '/users/cancel-research/' + id,
+                                success: function(respo) {
+                                    console.log(respo);
+                                    if (respo.status == true) {
+                                        Swal.fire({
+                                            text: 'ยกเลิกสำเร็จ!',
+                                            icon: 'success'
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                location.reload();
+                                            }
+                                        });
+                                    } else {
+                                        Swal.fire({
+                                            text: 'ยกเลิกไม่สำเร็จ!',
+
+                                            icon: 'error'
+                                        });
+                                    }
+                                }
+                            })
+
+                        }
+                    })
                 }
             })
 

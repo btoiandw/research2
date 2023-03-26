@@ -60,6 +60,7 @@ class TbDeliverListController extends Controller
         $nowDate = Carbon::now()->format('Y-m-d H:i:m');
         $type = $request->type;
         //$cType = count($type);
+        dd($request->all());
         $allType = array();
         if (count($request->type) == 3 && $type[2] != null) {
             $allType = $type[0] . "_" . $type[1] . "_" . $type[2];
@@ -78,7 +79,7 @@ class TbDeliverListController extends Controller
             $d_id = $c_list->deliver_id + 1;
         }
         // dd($c_list, $d_id);
-        //dd($request->all(), Carbon::now()->format('Y-m-d H:i:m'), $request->lesson, $nowDate, $allType, $type);
+        dd($request->all(), Carbon::now()->format('Y-m-d H:i:m'), $request->lesson, $nowDate, $allType, $type);
 
         for ($i = 0; $i < sizeof($request->lesson); $i++) {
             $deliver = new TbDeliverList();
@@ -150,7 +151,7 @@ class TbDeliverListController extends Controller
             $dt->num_lesson = ($i + 1);
             $dt->updated_at = $now;
             $dt->research_source_id = $request->s;
-            $dt->Type_research =$request->t;
+            $dt->Type_research = $request->t;
 
             $dt->save();
             // ->update([
@@ -188,7 +189,7 @@ class TbDeliverListController extends Controller
 
     public function cancel($id)
     {
-        $dt = DB::table('tb_deliver_lists')->where('deliver_id',$id)->get();
+        $dt = DB::table('tb_deliver_lists')->where('deliver_id', $id)->get();
         //dd($dt);
         $data = DB::update('update tb_deliver_lists set status = 0 where deliver_id = ?', [$id]);
         return response()->json(['status' => true, 'data' => $data]);

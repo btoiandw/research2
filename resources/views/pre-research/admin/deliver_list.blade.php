@@ -63,7 +63,7 @@
                     <button type="button" class="btn-close" {{-- data-bs-dismiss="modal"  --}}aria-label="Close"
                         onclick="location.reload()"></button>
                 </div>
-                <form action="{{ route('admin.deliver-store') }}" method="post">
+                <form action="{{ route('admin.deliver-store') }}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <div class="row mb-3">
@@ -82,21 +82,14 @@
                         <div class="row mb-3">
                             <strong class="col-sm-3">ประเภทงานวิจัย</strong>
                             <div class="col-sm-9">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="type[]" id="type"
-                                        value="ชุมชนท้องถิ่น">
-                                    <label class="form-check-label" for="type">
-                                        ชุมชนท้องถิ่น
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="type[]" id="type"
-                                        value="ศิลปวัฒนธรรม">
-                                    <label class="form-check-label" for="gridRadios2">
-                                        ศิลปวัฒนธรรม
-                                    </label>
-                                </div>
-
+                                <select class="form-select" id="source_id" name="source_id">
+                                    <option value="">-- เลือกประเภทงานวิจัยการให้ทุน --</option>
+                                    @foreach ($da as $row)
+                                        <option value="{{ $row->type_research_id }}">
+                                            {{ $row->type_research_id }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="row mb-3">

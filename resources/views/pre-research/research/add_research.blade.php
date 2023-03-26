@@ -108,8 +108,9 @@
                                                         รอตรวจสอบจากกรรมการ
                                                     </button>
                                                 @elseif ($item->research_status == 14)
-                                                    <button class="btn btn-warning btn-sm"
-                                                        onclick="viewCommentAd({{ $item->research_id }})">
+                                                    <button class="btn btn-warning btn-sm" id="bs_f"
+                                                    onclick="bs_f({{ $item->research_id }}, '{{ $item->base_feed_file }}')"
+                                                    >
                                                         ไม่ผ่านการตรวจสอบจากแอดมิน
                                                     </button>
                                                 @elseif ($item->research_status == 12)
@@ -150,6 +151,116 @@
                                     @endif
                                 @endforeach
 
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3 mt-5">
+            <div class="col-xl-12">
+                <h3 style="font-weight: 800">โครงร่างงานวิจัยที่ยกเลิก</h3>
+                <div class="bg-white rounded shadow-xl m-dash p-2">
+                    <div class="table-responsive">
+                        <table class="table fw-bold w-100" id="research_all_table">
+                            <thead class="table-dark table-hover table align-middle">
+                                <tr align="center">
+                                    <th class="fw-bolder" style="font-size: 15px">ลำดับ</th>
+                                    <th class="fw-bolder" style="font-size: 15px">ชื่อโครงร่างงานวิจัยภาษาไทย</th>
+                                    <th class="fw-bolder" style="font-size: 15px">รายละเอียด</th>
+                                    <th class="fw-bolder" style="font-size: 15px">สถานะ</th>
+
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @php
+                                    $i = 1;
+                                @endphp
+                                @foreach ($data_research as $item)
+                                    @if ($item->research_status == 12 || $item->research_status == 13)
+                                        <tr>
+                                            <td align="center">{{ $i++ }}</td>
+                                            <td>
+                                                {!! Str::limit("$item->research_th", 50, ' ...') !!}
+                                            </td>
+                                            <td align="center">
+                                                <button class=" btn btn-info btn-sm"
+                                                    onclick="viewDetail({{ $item->research_id }})">
+                                                    <i class="fa-solid fa-eye"></i>
+                                                </button>
+                                            </td>
+                                            <td>
+                                                @if ($item->research_summary_feedback_0 != null || $item->summary_feedback_file_0 != null)
+                                                    <button class="btn btn-warning btn-sm"
+                                                        onclick="editNot_1({{ $item->research_id }})">
+                                                        ไม่ผ่าน/ปรับแก้ครั้งที่ 1
+                                                    </button>
+                                                    <br><br>
+                                                @endif
+                                                @if ($item->research_summary_feedback_1 != null || $item->summary_feedback_file_1 != null)
+                                                    <button class="btn btn-warning btn-sm"
+                                                        onclick="editNot_2({{ $item->research_id }})">
+                                                        ไม่ผ่าน/ปรับแก้ครั้งที่ 2
+                                                    </button>
+                                                    <br><br>
+                                                @endif
+                                                @if ($item->research_summary_feedback_2 != null || $item->summary_feedback_file_2 != null)
+                                                    <button class="btn btn-warning btn-sm"
+                                                        onclick="editNot_3({{ $item->research_id }})">
+                                                        ไม่ผ่าน/ปรับแก้ครั้งที่ 3
+                                                    </button>
+                                                    <br><br>
+                                                @endif
+                                                {{-- @if ($item->research_summary_feedback_3 != null || $item->summary_feedback_file_3 != null)
+                                                <button class="btn btn-warning btn-sm">
+                                                    ไม่ผ่าน/ปรับแก้คั้งที่ 3
+                                                </button>
+                                            @endif --}}
+                                                @if (
+                                                    $item->research_status == 0 ||
+                                                        $item->research_status == 3 ||
+                                                        $item->research_status == 6 ||
+                                                        $item->research_status == 9)
+                                                    <button class="btn btn-yellow disabled btn-sm">
+                                                        รอตรวจสอบ
+                                                    </button>
+                                                @elseif (
+                                                    $item->research_status == 1 ||
+                                                        $item->research_status == 4 ||
+                                                        $item->research_status == 7 ||
+                                                        $item->research_status == 10)
+                                                    <button class="btn btn-yellow disabled btn-sm">
+                                                        รอตรวจสอบจากกรรมการ
+                                                    </button>
+                                                @elseif ($item->research_status == 14)
+                                                    <button class="btn btn-warning disabled btn-sm">
+                                                        {{-- onclick="viewCommentAd({{ $item->research_id }})" --}}
+                                                        ไม่ผ่านการตรวจสอบจากแอดมิน
+                                                    </button>
+                                                @elseif ($item->research_status == 12)
+                                                    <button class="btn btn-danger disabled btn-sm">
+                                                        ยกเลิก
+                                                    </button>
+                                                @elseif ($item->research_status == 13)
+                                                    <button class="btn btn-danger disabled btn-sm">
+                                                        ไม่ผ่าน
+                                                    </button>
+                                                @elseif ($item->research_status == 15)
+                                                    <button class="btn btn-success disabled btn-sm">
+                                                        รอการอนุมัติสัญญา
+                                                    </button>
+                                                @elseif ($item->research_status == 11)
+                                                    <button class="btn btn-success disabled btn-sm">
+                                                        อนุมัติสัญญา
+                                                    </button>
+                                                @endif
+                                            </td>
+
+                                        </tr>
+                                    @endif
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -774,204 +885,13 @@
         </div>
     </div>
 
-    <!--viewCommentAd Modal -->
-    <div class="modal fade" id="viewCommentAd" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="viewCommentAdLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="viewCommentAdLabel">แก้ไขตามคำแนะนำแอดมิน</h1>
-                    <button type="button" class="btn-close" onclick="location.reload()" aria-label="Close"></button>
-                </div>
-                <form action="" method="post" enctype="multipart/form-data">
-                    @csrf
-                    <div class="modal-body">
-                        <div class="modal-body">
-                            <div class="d-flex justify-content-end align-content-end">
-                                <label style="font-size: 10px">
-                                    @php
-                                        echo thaidate('วันlที่ j F พ.ศ.Y เวลา H:i:s');
-                                    @endphp
-                                </label>
-
-                            </div>
-                            <div class="row mb-3">
-                                <strong class="col-3">ข้อเสนอแนะ</strong>
-                                <div class="col-sm-9">
-                                    <label readonly class=" form-control-plaintext" name="suggestion"
-                                        id="bs_text"></label>
-
-                                    <button class="btn btn-warning" name="suggestionFile" id="bs_f">ดูไฟล์</button>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <input type="hidden" name="id" id="id_e" value="" />
-                                <label for="year_research" class="col-sm-2 col-form-label"
-                                    align="right">ปีงบประมาณ</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class=" form-control disabled" readonly id="y_e">
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <label for="research_nameTH" class="col-sm-2 col-form-label "
-                                    align="right">{{-- &emsp;&emsp; --}}ชื่อโครงร่างงานวิจัยภาษาไทย</label>
-                                <div class=" col-sm-10">
-                                    <textarea class="form-control" id="TH_e" name="TH" required></textarea>
-
-                                </div>
-
-                            </div>
-                            <div class="row mb-3">
-                                <label for="research_nameEN" class="col-sm-2 col-form-label"
-                                    align="right">{{-- &emsp;&emsp; --}}ชื่อโครงร่างงานวิจัยภาษาอังกฤษ</label>
-                                <div class=" col-sm-10">
-                                    <textarea class="form-control" id="EN_e" name="EN" required></textarea>
-
-                                </div>
-
-                            </div>
-                            <div class="mb-3">
-                                <label
-                                    for="message-text"style="text-align:left;font-weight:600;font-size:18px;background:#fff;border:none"
-                                    class="pt-3 py-0 card-header">รายชื่อนักวิจัย</label>
-                                <div class="card-body pt-0">
-                                    <table class="table table-responsive" id="edit_researcher" name="tableTap">
-                                        <thead align="center">
-                                            <tr>
-                                                <th style="font-size: 14px">ลำดับ</th>
-                                                <th width="600px" style="font-size: 14px">ชื่อ-นามสกุล</th>
-                                                {{-- <th width="600px" style="font-size: 14px">สังกัด/คณะ</th>
-                                            <th width="300px" style="font-size: 14px">บทบาทในการวิจัย</th> --}}
-                                                <th width="300px" style="font-size: 14px">ร้อยละบทบาทในการวิจัย</th>
-                                                <th width="">
-                                                    <button type="button" name="addBtnED" class="btn btn-info btn-sm"
-                                                        id="addBtnED"><i class="fa fa-plus"></i></button>
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody align="center" id="ed_research">
-
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <label for="message-text" class="col-sm-2 col-form-label"
-                                    align="right">แหล่งทุนวิจัย</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class=" form-control disabled" readonly id="soc_e">
-
-                                </div>
-
-                            </div>
-                            <div class="row mb-3">
-                                <label class="col-form-label col-sm-2 pt-0" align="right">ประเภทงานวิจัย</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class=" form-control disabled" readonly id="ty_e">
-
-                                </div>
-
-                            </div>
-
-                            <div class="row mb-3">
-                                <label for="inputEmail3" class="col-sm-2 col-form-label" align="right">คำสำคัญ</label>
-                                <div class="col-sm-10">
-                                    <textarea name="keyword" id="ky_e" placeholder="คำสำคัญในการวิจัย" class="form-control" required></textarea>
-                                    <span class="text-danger">โปรดใช้เครื่องหมาย , ในการคั่นคำ</span>
-                                </div>
-
-                            </div>
-
-                            <div class="row mb-3">
-                                <label for="inputEmail3" class="col-sm-2 col-form-label"
-                                    align="right">พื้นที่ในการวิจัย</label>
-                                <div class="row col-sm-10">
-                                    <div class="col-sm-7">
-                                        <input type="text" class="form-control" placeholder="ที่อยู่" name="ad"
-                                            id="ad_e" required aria-label="ที่อยู่">
-
-                                    </div>
-                                    <div class="col-sm">
-                                        <input type="text" class="form-control" placeholder="จังหวัด" name="ct"
-                                            id="ct_e" aria-label="จังหวัด" required>
-
-                                    </div>
-                                    <div class="col-sm">
-                                        <input type="text" class="form-control" placeholder="รหัสไปรษณีย์"
-                                            name="zp_e" id="zp" aria-label="รหัสไปรษณีย์" required>
-
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <label for="inputEmail3" class="col-sm-2 col-form-label"
-                                    align="right">วันที่เริ่มต้นการวิจัย</label>
-                                <div class="row col-sm-10">
-                                    <div class="col-sm">
-                                        <input class="form-control" id="s_e" name="sdate"
-                                            placeholder="MM/DD/YYY" type="date" required />
-
-                                    </div>
-                                    <label for="inputEmail3" class="col-sm-2 col-form-label "
-                                        align="right">วันที่สิ้นสุดการวิจัย</label>
-                                    <div class="col-sm">
-                                        <div class="col-sm">
-                                            <input class="form-control" id="e_e" name="edate"
-                                                placeholder="MM/DD/YYY" type="date" required />
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <label for="inputEmail3" class="col-sm-2 col-form-label"
-                                    align="right">งบประมาณการวิจัย</label>
-                                <div class="col-sm-10">
-                                    <input name="budage" id="bd_e" type="number" placeholder="0.00"
-                                        class="form-control" required>
-
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <label class="col-sm-2 col-form-label " align="right">ไฟล์ Word</label>
-                                <div class=" col-sm-10">
-                                    <input type="file" name="f_word" id="f_word_e" class=" form-control">
-                                    <span class="text-danger">*ไฟล์ .doc และ .docx เท่านั้น</span>
-
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <label class="col-sm-2 col-form-label" align="right">ไฟล์ PDF</label>
-                                <div class=" col-sm-10">
-                                    <input type="file" name="f_pdf" id="f_pdf_e" class=" form-control">
-                                    <span class="text-danger">*ไฟล์ .pdf เท่านั้น</span>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <input type="submit" class="btn btn-primary" name="submit" value="ยืนยัน">
-                        <button type="button" class="btn btn-danger" onclick="location.reload()">ยกเลิก</button>
-                    </div>
-                </form>
-
-            </div>
-        </div>
-    </div>
 @endsection
 @push('js')
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.datatables.net/rowreorder/1.3.1/js/dataTables.rowReorder.min.js"></script>
 
     <script>
@@ -1008,7 +928,35 @@
                         targets: 5
                     },
                 ],
-                lengthMenu: [10, 20, 50, 100, ],
+                lengthMenu: [5, 15, 25, 50, 100, ],
+                language: {
+                    lengthMenu: "แสดง _MENU_ รายการ",
+                    search: "ค้นหาข้อมูลในตาราง",
+                    info: "แสดงข้อมูล _END_ จากทั้งหมด _TOTAL_ รายการ",
+                    paginate: {
+                        previous: "ก่อนหน้า",
+                        next: "ถัดไป",
+
+                    },
+                },
+
+            });
+            $('#research_all_table').DataTable({
+                rowReorder: {
+                    selector: 'td:nth-child(2)'
+                },
+                responsive: true,
+                columnDefs: [{
+                        responsivePriority: 1,
+                        targets: 0
+                    },
+                    {
+                        responsivePriority: 2,
+                        targets: 3
+                    },
+
+                ],
+                lengthMenu: [5, 15, 25, 50, 100, ],
                 language: {
                     lengthMenu: "แสดง _MENU_ รายการ",
                     search: "ค้นหาข้อมูลในตาราง",
@@ -1066,7 +1014,20 @@
                     $('#inty').hide();
                 }
             });
+            /* $('#bs_f').on('click', function() {
+                var val = data[0].base_feed_file;
+                var id_rt = data[0].research_id;
+                var url = '/view/base-comment/' + id_rt + '/' + val;
+
+                window.open(url, '_black');
+            }) */
         });
+
+        function bs_f(id, val) {
+            var url = '/view/base-comment/' + id + '/' + val;
+
+            window.open(url, '_black');
+        }
 
         function AddModal() {
             $('#addResearch').modal('toggle');
@@ -1248,6 +1209,7 @@
                     $('#bd').val(data[0].budage_research);
                     $('#f_word').val(data[0].word_file);
                     $('#f_pdf').val(data[0].pdf_file);
+
                 }
             })
         }
@@ -1572,58 +1534,6 @@
                         //console.log(url);
                         window.open(url, "_blank");
                     });
-                }
-            })
-
-        }
-
-        function viewCommentAd(id) {
-
-            $.ajax({
-                method: 'GET',
-                url: '/view/research/' + id,
-                dataType: 'JSON',
-                success: function(res) {
-                    var data = res.data_re;
-                    console.log(data[0]);
-                    var address = data[0].research_area;
-                    //console.log(address);
-                    var add = address.split('_');
-                    console.log(add);
-                    createRowsEdit(res);
-                    $('#viewCommentAd').modal('toggle');
-                    // console.log(data[0].year_research);
-                    cm = '';
-                    if (data[0].base_feed_text != null) {
-                        cm = data[0].base_feed_text;
-                        $('#bs_text').html(cm);
-                        $('#bs_f').css('display', 'none');
-                    } else {
-                        $('#bs_taxt').css('display', 'none');
-                        $('#bs_f').css('display', 'block');
-                    }
-                    $('#bs_f').on('click', function() {
-                        var val = data[0].base_feed_file;
-                        var id_rt = data[0].research_id;
-                        var url = '/view/base-comment/' + id_rt + '/' + val;
-
-                        window.open(url, '_black');
-                    })
-                    $('#id_e').val(data[0].research_id);
-                    $('#y_e').val(data[0].year_research);
-                    $('#TH_e').val(data[0].research_th);
-                    $('#EN_e').val(data[0].research_en);
-                    $('#soc_e').val(data[0].full_name_source);
-                    $('#ty_e').val(data[0].type_research_id);
-                    $('#ky_e').val(data[0].keyword);
-                    $('#ad_e').val(add[0]);
-                    $('#ct_e').val(add[1]);
-                    $('#zp_e').val(add[2]);
-                    $('#s_e').val(data[0].date_research_start);
-                    $('#e_e').val(data[0].date_research_end);
-                    $('#bd_e').val(data[0].budage_research);
-                    $('#f_word_e').val(data[0].word_file);
-                    $('#f_pdf_e').val(data[0].pdf_file);
                 }
             })
 

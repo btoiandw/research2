@@ -88,7 +88,7 @@ Route::post('/users/add/et1',[\App\Http\Controllers\Pre\TbResearchController::cl
 Route::get('/director/view-file/feed/{id}/{val}',[\App\Http\Controllers\TbFeedbackController::class,'viewFileFeed']);
 Route::get('/admin/view-file/feed/director/{id}/{val}',[\App\Http\Controllers\TbFeedbackController::class,'viewFile']);
 Route::get('/view/base-comment/{id}/{val}',[\App\Http\Controllers\Pre\TbResearchController::class,'viewBase']);
-
+Route::post('edit-for-base',[\App\Http\Controllers\Pre\TbResearchController::class,'editForBase'])->name('users.edit-for-base');
 
 
 
