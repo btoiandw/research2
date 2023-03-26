@@ -590,7 +590,7 @@ class TbResearchController extends Controller
         } else {
             $file = null;
         }
-        dd($request->all(), $data,$status, $file, $suggestion, $submit);
+        dd($request->all(), $data, $status, $file, $path, $suggestion, $submit);
 
         /* if radio ผ่าน/ไม่ผ่าน */
         if ($request->AssessmentResults == 'ไม่ผ่าน') {

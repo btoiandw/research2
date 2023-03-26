@@ -509,7 +509,7 @@
                     $('#year').val(data[0].year_research);
                     $('#nameTH').html(data[0].research_th);
                     $('#nameEN').html(data[0].research_en);
-                    $('#source').html(data[0].research_source_name);
+                    $('#source').html(data[0].full_name_source);
                     $('#type_re').html(type[0] + ', ' + type[1]);
                     $('#key').html(data[0].keyword);
                     $('#area').html(area[0] + ' ' + area[1] + ' ' + area[2]);

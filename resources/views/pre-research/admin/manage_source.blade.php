@@ -48,7 +48,7 @@
                             @foreach ($data_s as $item)
                                 <tr>
                                     <td align="center">{{ $i++ }}</td>
-                                    <td>{{ $item->research_source_name }}</td>
+                                    <td>{{ $item->full_name_source }}</td>
                                     <td align="center">{{ $item->type_research_source }}</td>
                                     <td align="center">
                                         {{ $item->Year_source }}
@@ -96,12 +96,19 @@
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <strong class="col-3">ชื่อแหล่งทุน</strong>
+                            <strong class="col-3">ชื่อแหล่งทุน(แบบย่อ)</strong>
                             <div class="col-9">
-                                <input type="text" name="name_so" id="name_so" class=" form-control" />
+                                <input type="text" name="name_so" placeholder="สก.สว." id="name_so"
+                                    class=" form-control" />
                             </div>
                         </div>
-
+                        <div class="row mb-3">
+                            <strong class="col-3">ชื่อแหล่งทุน</strong>
+                            <div class="col-9">
+                                <input type="text" name="name_so" placeholder="สำนักงานคณะกรรมการส่งเสริมวิทยาศาสตร์ วิจัยและนวัตกรรม (สก.สว.)" id="name_so"
+                                    class=" form-control" />
+                            </div>
+                        </div>
                         <div class="row mb-3">
                             <strong class="col-form-label col-sm-3 pt-0">ประเภทแหล่งทุน</strong>
                             <div class="col-sm-9">
@@ -262,7 +269,7 @@
                     $('#editSource').modal('toggle');
                     $('#id').val(data.research_sources_id);
                     $('#y').val(data.Year_source);
-                    $('#name').val(data.research_source_name);
+                    $('#name').val(data.full_name_source);
 
                     if (data.type_research_source == 'ภายนอก') {
                         $('#type_out').attr('checked', true);
@@ -286,7 +293,7 @@
                     var data = res.data[0];
                     Swal.fire({
                         title: 'คุณต้องการยกเลิก?',
-                        html: '<h3><strong>ชื่อแหล่งทุน : </strong>' + data.research_source_name +
+                        html: '<h3><strong>ชื่อแหล่งทุน : </strong>' + data.full_name_source +
                             '</h3>',
                         icon: 'warning',
                         showCancelButton: true,

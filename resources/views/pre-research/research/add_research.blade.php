@@ -268,7 +268,7 @@
                                     <option value="">--เลือกแหล่งทุน--</option>
                                     @foreach ($list_source as $row)
                                         <option value="{{ $row->research_sources_id }}">
-                                            {{ $row->research_source_name }}
+                                            {{ $row->full_name_source }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -916,7 +916,7 @@
                     $('#year').val(data[0].year_research);
                     $('#nameTH').html(data[0].research_th);
                     $('#nameEN').html(data[0].research_en);
-                    $('#source').html(data[0].research_source_name);
+                    $('#source').html(data[0].full_name_source);
                     $('#type_re').html(ty);
                     $('#key').html(data[0].keyword);
                     $('#area').html(area[0] + ' ' + area[1] + ' ' + area[2]);
@@ -1045,7 +1045,7 @@
                     $('#y').val(data[0].year_research);
                     $('#TH').val(data[0].research_th);
                     $('#EN').val(data[0].research_en);
-                    $('#soc').val(data[0].research_source_name);
+                    $('#soc').val(data[0].full_name_source);
                     $('#ty').val(data[0].type_research_id);
                     $('#ky').val(data[0].keyword);
                     $('#ad').val(add[0]);

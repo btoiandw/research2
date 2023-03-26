@@ -20,6 +20,7 @@ class ResearchSourceSeeder extends Seeder
             [
 
                 'research_source_name' => 'งบแผ่นดินโครงการยุทธศาสตร์',
+                'full_name_source' => 'งบแผ่นดินโครงการยุทธศาสตร์',
                 'Year_source' => '2565',
                 'type_research_source' => 'ภายใน',
                 'ex_research' => ''
@@ -27,6 +28,7 @@ class ResearchSourceSeeder extends Seeder
             [
 
                 'research_source_name' => 'งบรายได้(บ.กศ.)',
+                'full_name_source' => 'งบรายได้(บ.กศ.).',
                 'Year_source' => '2565',
                 'type_research_source' => 'ภายใน',
                 'ex_research' => ''
@@ -34,6 +36,7 @@ class ResearchSourceSeeder extends Seeder
             [
 
                 'research_source_name' => 'วช.',
+                'full_name_source' => 'สำนักงานการวิจัยแห่งชาติ (วช.)',
                 'Year_source' => '2565',
                 'type_research_source' => 'ภายนอก',
                 'ex_research' => ''
@@ -41,6 +44,7 @@ class ResearchSourceSeeder extends Seeder
             [
 
                 'research_source_name' => 'สก.สว.',
+                'full_name_source' => 'สำนักงานคณะกรรมการส่งเสริมวิทยาศาสตร์ วิจัยและนวัตกรรม (สก.สว.)',
                 'Year_source' => '2565',
                 'type_research_source' => 'ภายนอก',
                 'ex_research' => ''
@@ -48,6 +52,7 @@ class ResearchSourceSeeder extends Seeder
             [
 
                 'research_source_name' => 'PMU',
+                'full_name_source'=>'Program Management Unit (PMU)',
                 'Year_source' => '2565',
                 'type_research_source' => 'ภายนอก',
                 'ex_research' => ''
