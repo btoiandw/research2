@@ -92,8 +92,8 @@
                                                     รอตรวจสอบจากกรรมการ
                                                 </button>
                                             @elseif ($item->research_status == 14)
-                                                <button class="btn btn-warning disabled btn-sm"
-                                                    onclick="viewCommentAd({{ $item->research_id }})">
+                                                <button class="btn btn-warning disabled btn-sm">
+                                                    {{-- onclick="viewCommentAd({{ $item->research_id }})" --}}
                                                     ไม่ผ่านการตรวจสอบจากแอดมิน
                                                 </button>
                                             @elseif ($item->research_status == 12)
@@ -469,8 +469,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <input type="submit" class="btn btn-success" id="save" name="save"
-                            {{-- onclick="saveFeed()" --}} value="บันทึก" />
+                        {{-- <input type="submit" class="btn btn-success" id="save" name="save"
+                            {{-- onclick="saveFeed()" value="บันทึก" /> --}}
                         <input type="submit" class="btn btn-primary" name="save" id="comfirm"
                             value="ส่งการประเมิน" />
                     </div>

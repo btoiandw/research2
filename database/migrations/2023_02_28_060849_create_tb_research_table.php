@@ -49,6 +49,8 @@ class CreateTbResearchTable extends Migration
             $table->text('research_summary_feedback_3')->nullable();
             $table->string('summary_feedback_file_3')->nullable();
 
+            $table->text('base_feed_text')->nullable();
+            $table->string('base_feed_file')->nullable();
             $table->string('research_status')->default('0');
             $table->string('year_research');
             $table->timestamps();
