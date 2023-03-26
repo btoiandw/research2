@@ -199,12 +199,14 @@ class TbResearchController extends Controller
                                     $send->research_id = $id_re;
                                     $send->id = $request->id_users;
                                     $send->pc = $request->pc[0];
+                                    $send->updated_at = Carbon::now()->format('Y-m-d H:i:m');
                                 } elseif ($i == 1) {
                                 } else {
                                     $send = new TbSendResearch();
                                     $send->research_id = $id_re;
                                     $send->id = $request->researcher[$i];
                                     $send->pc = $request->pc[$i];
+                                    $send->updated_at = Carbon::now()->format('Y-m-d H:i:m');
                                 }
 
 
@@ -233,7 +235,7 @@ class TbResearchController extends Controller
                             $research->pdf_file_0 = $fileName_p;
                             $research->research_status = $status;
                             $research->year_research = $reYear;
-                            $research->updated = Carbon::now()->format('Y-m-d H:i:m');
+                            $research->updated_at = Carbon::now()->format('Y-m-d H:i:m');
                             $research->save();
                             //dd( $research,/*$send*/ );
                             if ($research->save() && $send->save()) {
@@ -586,120 +588,28 @@ class TbResearchController extends Controller
             $file = $research_id . "_" . $status . "_adminFeedback." . $infop;
             $path = 'uploads/research/' . $reYear . '/' . $research_id; //path save file
 
-            //$filefeed->move($path, $file);
+            $filefeed->move($path, $file);
         } else {
             $file = null;
         }
-        dd($request->all(), $data, $status, $file, $path, $suggestion, $submit);
+        //dd($request->all(), $data, $status, $file, $path, $suggestion, $submit);
 
         /* if radio ผ่าน/ไม่ผ่าน */
         if ($request->AssessmentResults == 'ไม่ผ่าน') {
-            /* if ($submit == "บันทึก") {
-                if ($status == '0') {
-                    DB::table('tb_research')
-                        //->where('employee_referees_id', $direc_id)
-                        ->where('research_id', $research_id)
-                        ->update([
-                            //'research_status' => '1',
-                            //'feedback' => $feedResult,
-                            'research_summary_feedback_0' => $suggestion,
-                            'summary_feedback_file_0' => $file,
-                            'updated_at' => Carbon::now()->format('Y-m-d H:i:m'),
-                        ]);
-                    return redirect()->back();
-                } elseif ($status == '3') {
-                    DB::table('tb_research')
-                        //->where('employee_referees_id', $direc_id)
-                        ->where('research_id', $research_id)
-                        ->update([
-                            //'research_status' => '1',
-                            //'feedback' => $feedResult,
-                            'research_summary_feedback_1' => $suggestion,
-                            'summary_feedback_file_1' => $file,
-                            'updated_at' => Carbon::now()->format('Y-m-d H:i:m'),
-                        ]);
-                    return redirect()->back();
-                } elseif ($status == '6') {
-                    DB::table('tb_research')
-                        //->where('employee_referees_id', $direc_id)
-                        ->where('research_id', $research_id)
-                        ->update([
-                            //'research_status' => '1',
-                            //'feedback' => $feedResult,
-                            'research_summary_feedback_2' => $suggestion,
-                            'summary_feedback_file_2' => $file,
-                            'updated_at' => Carbon::now()->format('Y-m-d H:i:m'),
-                        ]);
-                    return redirect()->back();
-                } elseif ($status == '9') {
-                    DB::table('tb_research')
-                        //->where('employee_referees_id', $direc_id)
-                        ->where('research_id', $research_id)
-                        ->update([
-                            //'research_status' => '1',
-                            //'feedback' => $feedResult,
-                            'research_summary_feedback_3' => $suggestion,
-                            'summary_feedback_file_3' => $file,
-                            'updated_at' => Carbon::now()->format('Y-m-d H:i:m'),
-                        ]);
-                    return redirect()->back();
-                }
 
-
-
-                //DB::update();
-            } else */
             if ($submit == "ส่งการประเมิน") {
                 /// DB::update();
-                if ($status == '0') {
-                    DB::table('tb_research')
-                        //->where('employee_referees_id', $direc_id)
-                        ->where('research_id', $research_id)
-                        ->update([
-                            'research_status' => '14',
-                            //'feedback' => $feedResult,
-                            'research_summary_feedback_0' => $suggestion,
-                            'summary_feedback_file_0' => $file,
-                            'updated_at' => Carbon::now()->format('Y-m-d H:i:m'),
-                        ]);
-                    return redirect()->back();
-                } elseif ($status == '3') {
-                    DB::table('tb_research')
-                        //->where('employee_referees_id', $direc_id)
-                        ->where('research_id', $research_id)
-                        ->update([
-                            'research_status' => '14',
-                            //'feedback' => $feedResult,
-                            'research_summary_feedback_1' => $suggestion,
-                            'summary_feedback_file_1' => $file,
-                            'updated_at' => Carbon::now()->format('Y-m-d H:i:m'),
-                        ]);
-                    return redirect()->back();
-                } elseif ($status == '6') {
-                    DB::table('tb_research')
-                        //->where('employee_referees_id', $direc_id)
-                        ->where('research_id', $research_id)
-                        ->update([
-                            'research_status' => '14',
-                            //'feedback' => $feedResult,
-                            'research_summary_feedback_2' => $suggestion,
-                            'summary_feedback_file_2' => $file,
-                            'updated_at' => Carbon::now()->format('Y-m-d H:i:m'),
-                        ]);
-                    return redirect()->back();
-                } else {
-                    DB::table('tb_research')
-                        //->where('employee_referees_id', $direc_id)
-                        ->where('research_id', $research_id)
-                        ->update([
-                            'research_status' => '13',
-                            //'feedback' => $feedResult,
-                            'research_summary_feedback_3' => $suggestion,
-                            'summary_feedback_file_3' => $file,
-                            'updated_at' => Carbon::now()->format('Y-m-d H:i:m'),
-                        ]);
-                    return redirect()->back();
-                }
+                DB::table('tb_research')
+                    //->where('employee_referees_id', $direc_id)
+                    ->where('research_id', $research_id)
+                    ->update([
+                        'research_status' => '14',
+                        //'feedback' => $feedResult,
+                        'base_feed_text' => $suggestion,
+                        'base_feed_file' => $file,
+                        'updated_at' => Carbon::now()->format('Y-m-d H:i:m'),
+                    ]);
+                return redirect()->back();
             }
         }
     }
@@ -812,5 +722,17 @@ class TbResearchController extends Controller
 
 
         //dd($request->all(), $data_e[0]->research_status);
+    }
+
+    public function viewBase($id, $val)
+    {
+        $p = DB::table('tb_research')->where('research_id', $id)->get();
+
+        $year = $p[0]->year_research;
+        $id_r = $p[0]->research_id;
+        $path = 'uploads/research/' . $year . '/' . $id_r;
+        $file = $path."/".$val;
+        // dd($id, $val, $p, $year,$path,$file);
+        return response()->file($file);
     }
 }
