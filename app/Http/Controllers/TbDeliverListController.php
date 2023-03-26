@@ -133,16 +133,36 @@ class TbDeliverListController extends Controller
     public function update(Request $request, TbDeliverList $tbDeliverList)
     {
         //
-        $num = $request->number - 1;
-        /* $ls_1 = $request->lesson_1;
+        //$num = $request->number - 1;
+        /* $ls_1 = $request->lesson_1;*/
+        $d = DB::table('tb_deliver_lists')->where('deliver_id', $request->id_dl)->delete();
+
+        //dd($request->all());
+        $now = Carbon::now()->format('Y-m-d H:i:m');
+
         for ($i = 0; $i < sizeof($request->lesson); $i++) {
-            if ($request->lesson_2 == null) {
-                for ($j = 0; $j < $num; $j++) {
-                    $lt[] = $request->lesson[$j];
-                }
-            }
-        } */
-        dd($request->all(), $num);
+
+            $dt = new TbDeliverList();
+            $dt->lesson = $request->lesson[$i];
+            $dt->deliver_id = $request->id_dl;
+            $dt->Date_start_contract = $request->contact_start;
+            $dt->Date_end_contract = $request->contact_end;
+            $dt->num_lesson = ($i + 1);
+            $dt->updated_at = $now;
+            $dt->research_source_id = $request->s;
+            $dt->Type_research =$request->t;
+
+            $dt->save();
+            // ->update([
+            //     '
+            // ]);
+        }
+        //dd($dt);
+        Alert::success('แก้ไขรายการส่งมอบสำเร็จ');
+        return redirect()->back();
+
+
+        //dd($request->all(), sizeof($request->lesson));
     }
 
     /**
@@ -168,6 +188,8 @@ class TbDeliverListController extends Controller
 
     public function cancel($id)
     {
+        $dt = DB::table('tb_deliver_lists')->where('deliver_id',$id)->get();
+        //dd($dt);
         $data = DB::update('update tb_deliver_lists set status = 0 where deliver_id = ?', [$id]);
         return response()->json(['status' => true, 'data' => $data]);
     }

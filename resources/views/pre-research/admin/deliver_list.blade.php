@@ -29,7 +29,6 @@
                                         {{ $item->research_source_name }}
                                     </td>
                                     <td>
-
                                         @foreach (explode('_', $item->Type_research) as $ty)
                                             {{ $ty }} <br />
                                         @endforeach
@@ -203,76 +202,7 @@
                                     </tr>
                                 </thead>
                                 <tbody id="dt_list">
-                                    <tr id="row_1">
-                                        <td align="center" class="fw-bolder"><label
-                                                for=""id="r_1"></label></td>
-                                        <td>
-                                            <textarea class=" form-control-plaintext" readonly for="" id="dl_1"></textarea>
-                                        </td>
-                                    </tr>
-                                    <tr id="row_2">
-                                        <td align="center" class="fw-bolder"><label
-                                                for=""id="r_2"></label></td>
-                                        <td>
-                                            <textarea class=" form-control-plaintext" readonly for="" id="dl_2"></textarea>
-                                        </td>
-                                    </tr>
-                                    <tr id="row_3">
-                                        <td align="center" class="fw-bolder"><label
-                                                for=""id="r_3"></label></td>
-                                        <td>
-                                            <textarea class=" form-control-plaintext" for="" id="dl_3"></textarea>
-                                        </td>
-                                    </tr>
-                                    <tr id="row_4">
-                                        <td align="center" class="fw-bolder"><label
-                                                for=""id="r_4"></label></td>
-                                        <td>
-                                            <textarea class=" form-control-plaintext" for="" id="dl_4"></textarea>
-                                        </td>
-                                    </tr>
-                                    <tr id="row_5">
-                                        <td align="center" class="fw-bolder"><label
-                                                for=""id="r_5"></label></td>
-                                        <td>
-                                            <textarea class=" form-control-plaintext" for="" id="dl_5"></textarea>
-                                        </td>
-                                    </tr>
-                                    <tr id="row_6">
-                                        <td align="center" class="fw-bolder"><label
-                                                for=""id="r_6"></label></td>
-                                        <td>
-                                            <textarea class=" form-control-plaintext" for="" id="dl_6"></textarea>
-                                        </td>
-                                    </tr>
-                                    <tr id="row_7">
-                                        <td align="center" class="fw-bolder"><label
-                                                for=""id="r_7"></label></td>
-                                        <td>
-                                            <textarea class=" form-control-plaintext" for="" id="dl_7"></textarea>
-                                        </td>
-                                    </tr>
-                                    <tr id="row_8">
-                                        <td align="center" class="fw-bolder"><label
-                                                for=""id="r_8"></label></td>
-                                        <td>
-                                            <textarea class=" form-control-plaintext" for="" id="dl_8"></textarea>
-                                        </td>
-                                    </tr>
-                                    <tr id="row_9">
-                                        <td align="center" class="fw-bolder"><label
-                                                for=""id="r_9"></label></td>
-                                        <td>
-                                            <textarea class=" form-control-plaintext" for="" id="dl_9"></textarea>
-                                        </td>
-                                    </tr>
-                                    <tr id="row_10">
-                                        <td align="center" class="fw-bolder"><label
-                                                for=""id="r_10"></label></td>
-                                        <td>
-                                            <textarea class=" form-control-plaintext" for="" id="dl_10"></textarea>
-                                        </td>
-                                    </tr>
+
                                 </tbody>
                             </table>
                         </div>
@@ -300,6 +230,9 @@
                 <form action="{{ route('admin.list-edit') }}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
+                        <input type="hidden" name="id_dl" id="id_dl">
+                        <input type="hidden" name="s" id="s">
+                        <input type="hidden" name="t" id="t">
                         <div class="row mb-3">
                             <strong class=" col-sm-3">แหล่งทุน</strong>
                             <div class="col-sm-9">
@@ -327,30 +260,27 @@
                                     data-date-format="DD MM YYYY" min="" />
                             </div>
                         </div>
+                        <div class="row col-12">
+                            <div class="card-body pt-0">
+                                <table class="table table-responsive" id="edit_list" name="tableTap">
+                                    <thead align="center">
+                                        <tr>
+                                            <th width="300px" style="font-size: 14px">งวดที่</th>
+                                            <th width="800px"style="font-size: 14px">
+                                                รายละเอียด
+                                            </th>
+                                            <th width="100px">
+                                                <button class="btn btn-info btn-sm" id="addBtnED" type="button">
+                                                    <i class="fa-solid fa-plus"></i>
+                                                </button>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody align="center" id="ed_list">
 
-                        <div class="row g-3 align-items-center justify-content-center mb-3">
-                            <div class="col-auto">
-                                <strong for="inputPassword6" class="col-form-label">จำนวนงวด</strong>
+                                    </tbody>
+                                </table>
                             </div>
-                            <div class="col-auto">
-                                <input type="text" name="number" min="1" max="10" id="num"
-                                    class=" form-control disabled" readonly value="" />
-                            </div>
-                            <div class="col-auto">
-                                <span id="passwordHelpInline" class="form-text">
-                                    <button class="btn btn-default btn-sm me-2" type="button" id="addNum">
-                                        <i class="fa-solid fa-plus"></i>
-                                    </button>
-
-                                </span>
-                            </div>
-                        </div>
-                        <div id="box">
-                            <div class="row mb-3 row-lesson mx-2" id="rw_1">
-                                <strong class="col-sm-2  " id="le_1">งวดที่ <span id="nu">1</span></strong>
-                                <textarea name="lesson_1" id="lesson_i_1" rows="5" class=" form-control col-8 me-2 "></textarea>
-                            </div>
-
                         </div>
 
                     </div>
@@ -433,6 +363,9 @@
             var rd = len - 1;
             $('#number').val(rd);
         });
+        $(document).on('click', '#btnDelED', function() {
+            $(this).closest('tr').remove();
+        });
     </script>
 
     <script>
@@ -456,111 +389,31 @@
                 url: '/admin/view/list/' + id,
                 success: function(res) {
                     moment.locale('th');
-                    var data = res.data_dl[0];
+                    var data = res.data_dl;
                     //console.log(data);
                     $('#editModal').modal('toggle');
+                    createRowsEdit(res)
 
-                    $('#source').html(data.research_source_name);
-                    $('#type_d').html(data.Type_research);
-                    $('#contact_st').val(data.Date_start_contract);
-                    $('#contact_en').val(data.Date_end_contract);
-
-                    $('#lesson_i_1').html(data.lesson1);
-                    if (data.lesson2 != null) {
-                        $('#num').val(2);
-                        $('#lesson_i_2').html(data.lesson2);
+                    var type_re = data[0].Type_research;
+                    var type = type_re.split('_');
+                    //console.log(type);
+                    var ty = '';
+                    console.log('len:' + type.length);
+                    if (type.length == 3) {
+                        ty = type[0] + ', ' + type[1] + ', ' + type[2];
+                    } else if (type.length == 2) {
+                        ty = type[0] + ', ' + type[1];
                     } else {
-                        $('#rw_2').css('display', 'none');
+                        ty = data[0].type_research_id;
                     }
+                    $('#id_dl').val(data[0].deliver_id);
+                    $('#s').val(data[0].research_source_id);
+                    $('#t').val(data[0].Type_research);
+                    $('#source').html(data[0].research_source_name);
+                    $('#type_d').html(ty);
+                    $('#contact_st').val(data[0].Date_start_contract);
+                    $('#contact_en').val(data[0].Date_end_contract);
 
-                    if (data.lesson3 != null) {
-                        $('#num').val(3);
-                        $('#lesson_i_3').html(data.lesson3);
-                    } else {
-                        $('#rw_3').css('display', 'none');
-                    }
-
-                    if (data.lesson4 != null) {
-                        $('#num').val(4);
-                        $('#lesson_i_4').html(data.lesson4);
-                    } else {
-                        $('#rw_4').css('display', 'none');
-                    }
-
-                    if (data.lesson5 != null) {
-                        $('#num').val(5);
-                        $('#lesson_i_5').html(data.lesson5);
-                    } else {
-                        $('#rw_5').css('display', 'none');
-                    }
-
-                    if (data.lesson6 != null) {
-                        $('#num').val(6);
-                        $('#lesson_i_6').html(data.lesson6);
-                    } else {
-                        $('#rw_6').css('display', 'none');
-                    }
-
-                    if (data.lesson7 != null) {
-                        $('#r_7').val(7);
-                        $('#lesson_i_7').html(data.lesson7);
-                    } else {
-                        $('#rw_7').css('display', 'none');
-                    }
-
-                    if (data.lesson8 != null) {
-                        $('#num').val(8);
-                        $('#lesson_i_8').html(data.lesson8);
-                    } else {
-                        $('#rw_8').css('display', 'none');
-                    }
-
-                    if (data.lesson9 != null) {
-                        $('#num').val(9);
-                        $('#lesson_i_9').html(data.lesson9);
-                    } else {
-                        $('#rw_9').css('display', 'none');
-                    }
-
-                    if (data.lesson10 != null) {
-                        $('#num').val(10);
-                        $('#lesson_i_10').html(data.lesson10);
-                    } else {
-                        $('#rw_10').css('display', 'none');
-                    }
-
-
-                    var c_num = $('#num').val();
-                    console.log(c_num);
-
-                    $('#addNum').on('click', function() {
-                        c_num++;
-                        // $('#nu').html(i);
-                        if (c_num > 10) {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                text: 'จำนวนงวดต้องไม่เกิน 10 งวด',
-                            })
-                        } else {
-
-                            $('#num').val(c_num);
-                            console.log(c_num);
-                            tr = '<div class="row mb-3 mx-2"  id="row' + c_num + '">' +
-                                '<strong class="col-sm-2 " id="le">งวดที่ <span id="nu">' + c_num +
-                                '</span></strong>' +
-                                // '<div class="col-sm-10">' +
-                                '<textarea name="lesson[]" id="lesson' + c_num +
-                                '" rows="5" class=" form-control col-8 me-2 "></textarea>' +
-                                '<button class="btn btn-danger btn-sm col-auto" type="button" id="btnDel">' +
-                                '<i class="fa-solid fa-minus"></i>' +
-                                '</button>' +
-                                // '</div>' +
-                                '</div>';
-
-                            $('#box').append(tr);
-                        }
-                    });
                 }
             })
 
@@ -574,13 +427,14 @@
                 success: function(res) {
                     //console.log(res.data_dl[0]);
                     moment.locale('th');
-                    var data = res.data_dl[0];
+                    var data = res.data_dl;
+
                     console.log(data);
                     var start = moment(data.Date_start_contract).add(543, 'year').format(
                         'วันที่ Do เดือนMMMM พ.ศ.YYYY');
                     var end = moment(data.Date_end_contract).add(543, 'year').format(
                         'วันที่ Do เดือนMMMM พ.ศ.YYYY');
-                    var type_re = data.Type_research;
+                    var type_re = data[0].Type_research;
                     var type = type_re.split('_');
                     //console.log(type);
                     var ty = '';
@@ -590,87 +444,105 @@
                     } else if (type.length == 2) {
                         ty = type[0] + ', ' + type[1];
                     } else {
-                        ty = data.Type_research;
+                        ty = data[0].Type_research;
                     }
-
+                    createRows(res);
                     $('#viewModal').modal('toggle');
-                    $('#so').html(data.research_source_name);
+                    $('#so').html(data[0].research_source_name);
                     $('#ty').html(ty);
                     $('#start').html(start);
                     $('#end').html(end);
 
-                    if (data.lesson1 != null) {
-                        $('#r_1').html('1');
-                        $('#dl_1').html(data.lesson1);
-                    } else {
-                        $('#row_1').css('display', 'none');
-                    }
-
-                    if (data.lesson2 != null) {
-                        $('#r_2').html('2');
-                        $('#dl_2').html(data.lesson2);
-                    } else {
-                        $('#row_2').css('display', 'none');
-                    }
-
-                    if (data.lesson3 != null) {
-                        $('#r_3').html('3');
-                        $('#dl_3').html(data.lesson3);
-                    } else {
-                        $('#row_3').css('display', 'none');
-                    }
-
-                    if (data.lesson4 != null) {
-                        $('#r_4').html('4');
-                        $('#dl_4').html(data.lesson4);
-                    } else {
-                        $('#row_4').css('display', 'none');
-                    }
-
-                    if (data.lesson5 != null) {
-                        $('#r_5').html('5');
-                        $('#dl_5').html(data.lesson5);
-                    } else {
-                        $('#row_5').css('display', 'none');
-                    }
-
-                    if (data.lesson6 != null) {
-                        $('#r_6').html('6');
-                        $('#dl_6').html(data.lesson6);
-                    } else {
-                        $('#row_6').css('display', 'none');
-                    }
-
-                    if (data.lesson7 != null) {
-                        $('#r_7').html('7');
-                        $('#dl_7').html(data.lesson7);
-                    } else {
-                        $('#row_7').css('display', 'none');
-                    }
-
-                    if (data.lesson8 != null) {
-                        $('#r_8').html('8');
-                        $('#dl_8').html(data.lesson8);
-                    } else {
-                        $('#row_8').css('display', 'none');
-                    }
-
-                    if (data.lesson9 != null) {
-                        $('#r_9').html('9');
-                        $('#dl_9').html(data.lesson9);
-                    } else {
-                        $('#row_9').css('display', 'none');
-                    }
-
-                    if (data.lesson10 != null) {
-                        $('#r_10').html('10');
-                        $('#dl_10').html(data.lesson10);
-                    } else {
-                        $('#row_10').css('display', 'none');
-                    }
                 }
             })
 
+        }
+
+        function createRows(res) {
+            var len = 0;
+            $('#detail_list tbody').empty(); // Empty <tbody>
+            if (res['data_dl'] != null) {
+                len = res['data_dl'].length;
+
+            }
+            console.log('len: ' + len);
+            if (len > 0) {
+                for (var i = 0; i < len; i++) {
+                    //var id = response['data_re'][i].full_name_th;
+                    var detail = res['data_dl'][i].lesson;
+                    //var major = res['data_dl'][i].major;
+                    // var pc = res['data_dl'][i].pc;
+                    console.log(detail);
+                    var tr_str = "<tr>" +
+                        "<td align='center'>" + (i + 1) + "</td>" +
+                        "<td><textarea rows='5' class=' form-control-plaintext' readonly>" + detail + "</textarea></td>" +
+                        "</tr>";
+
+                    $("#detail_list tbody").append(tr_str);
+                }
+            } else {
+                var tr_str = "<tr>" +
+                    "<td align='center' colspan='2'>No record found.</td>" +
+                    "</tr>";
+
+                $("#detail_list tbody").append(tr_str);
+            }
+        }
+
+        function createRowsEdit(res) {
+            var len = 0;
+            $('#edit_list tbody').empty(); // Empty <tbody>
+            if (res['data_dl'] != null) {
+                len = res['data_dl'].length;
+
+            }
+            console.log('len: ' + len);
+            if (len > 0) {
+                for (var i = 0; i < len; i++) {
+                    //var id = response['data_re'][i].full_name_th;
+                    var detail = res['data_dl'][i].lesson;
+                    //var major = res['data_dl'][i].major;
+                    // var pc = res['data_dl'][i].pc;
+                    console.log(detail);
+                    var tr_str = "<tr id='row" + i + "'>" +
+                        "<td align='center'>" + (i + 1) + "</td>" +
+                        "<td><textarea rows='5' class=' form-control'name='lesson[" + i + "]' id='ls" + i + "'>" + detail +
+                        "</textarea></td>" +
+                        "<td align='center'><button type='button' class='btn btn-danger btn-sm' id='btnDelED" + i +
+                        "'><i class='fa-solid fa-minus'></i></button></td>" +
+                        "</tr>";
+
+                    $("#edit_list tbody").append(tr_str);
+                }
+                $('#addBtnED').click(function() {
+                    // var row = i;
+                    // len = len + 1;
+                    var tr = '<tr id="row_ed' + len + '">' +
+                        '<td align="center">' + (len + 1) + '</td>' +
+                        '<td><textarea class="form-control" name="lesson[' + len +
+                        ']" id="ls' + len +
+                        '"></textarea></td>' +
+                        '<td><button type="button" id="btnDelED" class="btn btn-danger btn-sm" ><i class="fa fa-minus"></i></button></td>' +
+                        '</tr>';
+                    $('#ed_list').append(tr);
+                    console.log('LEN:' + len);
+
+                    if (len > 10) {
+                        Swal.fire({
+                            icon: 'error',
+                            //title: 'Oops...',
+                            text: 'จำนวนงวดต้องไม่เกิน 10 งวด!',
+                            // footer: '<a href="">Why do I have this issue?</a>'
+                        })
+                    }
+                });
+            } else {
+                var tr_str = "<tr>" +
+                    "<td align='center' colspan='3'>No record found.</td>" +
+                    "</tr>";
+
+                $("#edit_list tbody").append(tr_str);
+            }
         }
 
         function cancel(id) {

@@ -241,7 +241,7 @@ class TbFeedbackController extends Controller
         } elseif ($status_re == 10) {
             $status = '9';
         }
-        // dd($request->all(),$status, $status_re, $data);
+        //dd($request->all(),$status, $status_re, $data);
         //dd($u,$filefeed);
         if ($suggestion != '') {
             $feedResult = $suggestion;
@@ -412,5 +412,18 @@ class TbFeedbackController extends Controller
         return response()->file($file);
 
         //dd($id, $val, $file, $year, $re, $re_id, $path);
+    }
+
+    public function viewFile($id, $val)
+    {
+        $re = DB::table('tb_research')->where('research_id', $id)->get();
+
+        $year = $re[0]->year_research;
+        $re_id = $re[0]->research_id;
+        $path = 'uploads/research/' . $year . '/' . $re_id;
+
+        $file = $path . '/' . $val;
+        //dd($id, $val, $file, $year, $re, $re_id, $path);
+        return response()->file($file);
     }
 }

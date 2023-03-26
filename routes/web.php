@@ -86,7 +86,7 @@ Route::post('/admin/comment/base', [\App\Http\Controllers\Pre\TbResearchControll
 Route::get('/view/sum/feed/{id}/{val}',[\App\Http\Controllers\Pre\TbResearchController::class,'viewSumFeed']);
 Route::post('/users/add/et1',[\App\Http\Controllers\Pre\TbResearchController::class,'addET'])->name('users.add-et1');
 Route::get('/director/view-file/feed/{id}/{val}',[\App\Http\Controllers\TbFeedbackController::class,'viewFileFeed']);
-
+Route::get('/admin/view-file/feed/director/{id}/{val}',[\App\Http\Controllers\TbFeedbackController::class,'viewFile']);
 
 
 

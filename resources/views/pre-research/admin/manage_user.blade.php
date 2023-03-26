@@ -17,6 +17,7 @@
                             <tr align="center">
                                 <th class="fw-bolder" style="font-size: 15px">ลำดับ</th>
                                 <th class="fw-bolder" style="font-size: 15px">ชื่อ-สกุล</th>
+                                <th class="fw-bolder" style="font-size: 15px">สถานะ</th>
                                 <th class="fw-bolder" style="font-size: 15px">จัดการ</th>
                             </tr>
                         </thead>
@@ -29,6 +30,12 @@
                                 <tr>
                                     <td align="center">{{ $i++ }}</td>
                                     <td>{{ $item->pname }} {{ $item->full_name_th }}</td>
+                                    <td align="center">
+                                        @if ($item->status_workadmin == 1)
+                                            <button class="btn btn-success btn-sm disabled">ACTIVE</button>
+                                        @else
+                                        @endif
+                                    </td>
                                     <td align="center">
                                         <!--button class="btn btn-sm btn-yellow">แก้ไข</button-->
                                         <button class="btn btn-sm btn-danger"

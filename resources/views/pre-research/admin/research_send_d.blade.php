@@ -2,56 +2,87 @@
 @section('content')
     <div class="row mb-3 mt-3">
         <div class="col-xl-12">
-            <div class="bg-white rounded shadow-xl m-dash p-2">
-                <div class="table-responsive pt-3">
-                    <table class="table fw-bold w-100" id="admin_table">
-                        <thead class="table-dark table-hover table align-middle">
-                            <tr align="center">
-                                <th class="fw-bolder" style="font-size: 15px">ลำดับ</th>
-                                <th class="fw-bolder" style="font-size: 15px">ชื่อโครงร่างงานวิจัย</th>
-                                <th class=" fw-bolder" style="font-size: 15px">กรรมการคนที่ 1</th>
-                                <th class=" fw-bolder" style="font-size: 15px">กรรมการคนที่ 2</th>
-                                <th class=" fw-bolder" style="font-size: 15px">กรรมการคนที่ 3</th>
-                                <th class=" fw-bolder" style="font-size: 15px">สรุปผล</th>
+            @if (!$data_re->isEmpty())
+                <div class="bg-white rounded shadow-xl m-dash p-2">
+                    <div class="table-responsive pt-3">
+                        <table class="table fw-bold w-100" id="admin_table">
+                            <thead class="table-dark table-hover table align-middle">
+                                <tr align="center">
+                                    <th class="fw-bolder" style="font-size: 15px">ลำดับ</th>
+                                    <th class="fw-bolder" style="font-size: 15px">ชื่อโครงร่างงานวิจัย</th>
+                                    <th class=" fw-bolder" style="font-size: 15px">กรรมการคนที่ 1</th>
+                                    <th class=" fw-bolder" style="font-size: 15px">กรรมการคนที่ 2</th>
+                                    <th class=" fw-bolder" style="font-size: 15px">กรรมการคนที่ 3</th>
+                                    <th class=" fw-bolder" style="font-size: 15px">สรุปผล</th>
 
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            @php
-                                $i = 1;
-                            @endphp
-                            @foreach ($data_re as $item)
-                                <tr>
-                                    <td align="center">{{ $i++ }}</td>
-                                    <td>{{ $item->research_th }}</td>
-                                    <td align="center">
-                                        <button class="btn btn-sm btn-info" onclick="view1({{ $item->research_id }})">
-                                            <i class="fa-solid fa-eye"></i>
-                                        </button>
-                                    </td>
-                                    <td align="center">
-                                        <button class="btn btn-sm btn-info" onclick="view2({{ $item->research_id }})">
-                                            <i class="fa-solid fa-eye"></i>
-                                        </button>
-                                    </td>
-                                    <td align="center">
-                                        <button class="btn btn-sm btn-info" onclick="view3({{ $item->research_id }})">
-                                            <i class="fa-solid fa-eye"></i>
-                                        </button>
-                                    </td>
-                                    <td align="center">
-
-                                        <button class="btn btn-sm btn-default"
-                                            onclick="addSumfeed({{ $item->research_id }})">สรุปข้อเสนอแนะ</button>
-                                    </td>
                                 </tr>
-                            @endforeach
+                            </thead>
 
-                        </tbody>
-                    </table>
+                            <tbody>
+                                @php
+                                    $i = 1;
+                                @endphp
+
+                                @foreach ($data_re as $item)
+                                    <tr>
+                                        <td align="center">{{ $i++ }}</td>
+                                        <td>{{ $item->research_th }}</td>
+                                        <td align="center">
+                                            @if ($dr[0]->status == '1')
+                                                <button class="btn btn-sm btn-success"
+                                                    onclick="view1({{ $item->research_id }})">
+                                                    <i class="fa-solid fa-eye"></i>
+                                                </button>
+                                            @else
+                                                <button class="btn btn-info btn-sm"
+                                                    onclick="view1({{ $item->research_id }})">
+                                                    <i class="fa-solid fa-eye"></i>
+                                                </button>
+                                            @endif
+                                        </td>
+                                        <td align="center">
+                                            @if ($dr[1]->status == '1')
+                                                <button class="btn btn-sm btn-success"
+                                                    onclick="view2({{ $item->research_id }})">
+                                                    <i class="fa-solid fa-eye"></i>
+                                                </button>
+                                            @else
+                                                <button class="btn btn-info btn-sm"
+                                                    onclick="view2({{ $item->research_id }})">
+                                                    <i class="fa-solid fa-eye"></i>
+                                                </button>
+                                            @endif
+                                        </td>
+                                        <td align="center">
+                                            @if ($dr[2]->status == '1')
+                                                <button class="btn btn-sm btn-success"
+                                                    onclick="view3({{ $item->research_id }})">
+                                                    <i class="fa-solid fa-eye"></i>
+                                                </button>
+                                            @else
+                                                <button class="btn btn-info btn-sm"
+                                                    onclick="view3({{ $item->research_id }})">
+                                                    <i class="fa-solid fa-eye"></i>
+                                                </button>
+                                            @endif
+
+                                        </td>
+                                        <td align="center">
+                                            @if ($c_df == 3)
+                                                <button class="btn btn-sm btn-default"
+                                                    onclick="addSumfeed({{ $item->research_id }})">สรุปข้อเสนอแนะ</button>
+                                            @else
+                                                <button class="btn btn-sm btn-default disabled">สรุปข้อเสนอแนะ</button>
+                                            @endif
+
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
+            @endif
         </div>
     </div>
 
@@ -62,7 +93,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="viewLabel">รายละเอียดข้อเสนอแนะ</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" onclick="location.reload()" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row mb-3">
@@ -89,15 +120,17 @@
                             <label for="" id="result"></label>
                         </div>
                     </div>
-                    <div class="row mb-3">
-                        <strong class="col-md-3">ข้อเสนอแนะ</strong>
-                        <div class="col-md-9">
-                            <label for="" id="Assessment_result"></label>
+                    <div class="mb-3 row " id="div_cm">
+                        <strong class="col-sm-3 col-form-label fw-bold">ข้อเสนอแนะ</strong>
+                        <div class="col-sm-9">
+                            <label class="col-form-label" id="sg_cm"></label>
+
+                            <button class="btn btn-warning" type="button" id="sg_F">ดูไฟล์</button>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default" onclick="location.reload()">Close</button>
                 </div>
             </div>
         </div>
@@ -229,24 +262,35 @@
                     console.log(data);
                     var result = '';
                     var comment = '';
-                    if (data.feedback == null) {
+                    if (data.status == '0') {
                         result = '-';
+                        $('#sg_cm').html(result);
+                        $('#sg_F').css('display', 'none');
                     } else {
-                        result = data.feedback;
+                        result = data.Assessment_result;
+
+                        if (data.feedback != null && data.suggestionFile == null) {
+                            $('#sg_cm').html(data.feedback);
+                            $('#sg_F').css('display', 'none');
+                        } else {
+                            $('#sg_cm').css('display', 'none');
+                        }
                     }
-                    if (data.Assessment_result == null && data.suggestionFile == null) {
-                        comment = '-';
-                    } else if (data.Assessment_result != null && data.suggestionFile == null) {
-                        comment = data.Assessment_result;
-                    } else {
-                        comment = data.suggestionFile;
-                    }
+
+                    $('#result').html(result);
                     $('#view').modal('toggle');
                     $('#name_th').html(data.research_th);
                     $('#name_en').html(data.research_en);
                     $('#name_director').html(data.pname + ' ' + data.full_name_th);
-                    $('#result').html(result);
-                    $('#Assessment_result').html(comment);
+
+                    $('#sg_F').on('click', function() {
+                        //console.log(data[0].research_id);
+                        var id_re = data.research_id;
+                        var id_di = data.employee_referees_id;
+                        var url = '/admin/view-file/feed/director/' + id_re + '/' + id_di;
+                        console.log(url);
+                        window.open(url, "_blank");
+                    });
                 }
             })
 
@@ -264,24 +308,35 @@
                     console.log(data);
                     var result = '';
                     var comment = '';
-                    if (data.feedback == null) {
+                    if (data.status == '0') {
                         result = '-';
+                        $('#sg_cm').html(result);
+                        $('#sg_F').css('display', 'none');
                     } else {
-                        result = data.feedback;
+                        result = data.Assessment_result;
+
+                        if (data.feedback != null && data.suggestionFile == null) {
+                            $('#sg_cm').html(data.feedback);
+                            $('#sg_F').css('display', 'none');
+                        } else {
+                            $('#sg_cm').css('display', 'none');
+                        }
                     }
-                    if (data.Assessment_result == null && data.suggestionFile == null) {
-                        comment = '-';
-                    } else if (data.Assessment_result != null && data.suggestionFile == null) {
-                        comment = data.Assessment_result;
-                    } else {
-                        comment = data.suggestionFile;
-                    }
+
+                    $('#result').html(result);
                     $('#view').modal('toggle');
                     $('#name_th').html(data.research_th);
                     $('#name_en').html(data.research_en);
                     $('#name_director').html(data.pname + ' ' + data.full_name_th);
-                    $('#result').html(result);
-                    $('#Assessment_result').html(comment);
+
+                    $('#sg_F').on('click', function() {
+                        //console.log(data[0].research_id);
+                        var id_re = data.research_id;
+                        var id_di = data.suggestionFile;
+                        var url = '/admin/view-file/feed/director/' + id_re + '/' + id_di;
+                        console.log(url);
+                        window.open(url, "_blank");
+                    });
                 }
             })
 
@@ -299,24 +354,35 @@
                     console.log(data);
                     var result = '';
                     var comment = '';
-                    if (data.feedback == null) {
+                    if (data.status == '0') {
                         result = '-';
+                        $('#sg_cm').html(result);
+                        $('#sg_F').css('display', 'none');
                     } else {
-                        result = data.feedback;
+                        result = data.Assessment_result;
+
+                        if (data.feedback != null && data.suggestionFile == null) {
+                            $('#sg_cm').html(data.feedback);
+                            $('#sg_F').css('display', 'none');
+                        } else {
+                            $('#sg_cm').css('display', 'none');
+                        }
                     }
-                    if (data.Assessment_result == null && data.suggestionFile == null) {
-                        comment = '-';
-                    } else if (data.Assessment_result != null && data.suggestionFile == null) {
-                        comment = data.Assessment_result;
-                    } else {
-                        comment = data.suggestionFile;
-                    }
+
+                    $('#result').html(result);
                     $('#view').modal('toggle');
                     $('#name_th').html(data.research_th);
                     $('#name_en').html(data.research_en);
                     $('#name_director').html(data.pname + ' ' + data.full_name_th);
-                    $('#result').html(result);
-                    $('#Assessment_result').html(comment);
+
+                    $('#sg_F').on('click', function() {
+                        //console.log(data[0].research_id);
+                        var id_re = data.research_id;
+                        var id_di = data.suggestionFile;
+                        var url = '/admin/view-file/feed/director/' + id_re + '/' + id_di;
+                        console.log(url);
+                        window.open(url, "_blank");
+                    });
                 }
             })
 

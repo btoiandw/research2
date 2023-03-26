@@ -44,7 +44,7 @@
                                     </button>
                                 </td>
                                 <td>
-                                    
+
                                     <button class="btn btn-sm" style="background-color: #2ec4b6;color:#fff"
                                         onclick="approve({{ $item->research_id }})">
                                         <i class="fa-solid fa-file-invoice"></i> อนุมัติสัญญา
@@ -105,11 +105,11 @@
                             <div class="col-sm-9">
                                 <select class="form-select" id="list_app" name="list_app">
                                     <option value="">-- เลือกรายการส่งมอบ --</option>
-                                    {{-- @foreach ($data_list as $row)
+                                    @foreach ($db_de_list as $row)
                                      <option value="{{ $row->deliver_id }}">
                                          {{ $row->research_source_name }} {{ $row->Type_research }}
                                      </option>
-                                 @endforeach --}}
+                                 @endforeach
                                 </select>
                             </div>
                         </div>

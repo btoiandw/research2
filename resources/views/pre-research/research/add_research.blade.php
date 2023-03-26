@@ -42,7 +42,7 @@
                                     <th class="fw-bolder" style="font-size: 15px">ชื่อโครงร่างงานวิจัยภาษาไทย</th>
                                     <th class="fw-bolder" style="font-size: 15px">ชื่อโครงร่างงานวิจัยภาษาอังกฤษ</th>
                                     <th class="fw-bolder" style="font-size: 15px">รายละเอียด</th>
-                                    <th class="fw-bolder" style="font-size: 15px;width:150px">สถานะ</th>
+                                    <th class="fw-bolder" style="font-size: 15px;width:300px">สถานะ</th>
                                     <th class="fw-bolder" style="font-size: 15px">จัดการ</th>
                                 </tr>
                             </thead>
@@ -71,26 +71,25 @@
                                                 @if ($item->research_summary_feedback_0 != null || $item->summary_feedback_file_0 != null)
                                                     <button class="btn btn-warning btn-sm"
                                                         onclick="editNot_1({{ $item->research_id }})">
-                                                        ไม่ผ่าน/ปรับแก้คั้งที่ 1
+                                                        ไม่ผ่าน/ปรับแก้ครั้งที่ 1
                                                     </button>
+                                                    <br><br>
                                                 @endif
+
                                                 @if ($item->research_summary_feedback_1 != null || $item->summary_feedback_file_1 != null)
                                                     <button class="btn btn-warning btn-sm"
                                                         onclick="editNot_2({{ $item->research_id }})">
-                                                        ไม่ผ่าน/ปรับแก้คั้งที่ 1
+                                                        ไม่ผ่าน/ปรับแก้ครั้งที่ 2
                                                     </button>
+                                                    <br><br>
                                                 @endif
+
                                                 @if ($item->research_summary_feedback_2 != null || $item->summary_feedback_file_2 != null)
                                                     <button class="btn btn-warning btn-sm"
                                                         onclick="editNot_3({{ $item->research_id }})">
-                                                        ไม่ผ่าน/ปรับแก้คั้งที่ 2
+                                                        ไม่ผ่าน/ปรับแก้ครั้งที่ 3
                                                     </button>
-                                                @endif
-                                                @if ($item->research_summary_feedback_3 != null || $item->summary_feedback_file_3 != null)
-                                                    <button class="btn btn-warning btn-sm"
-                                                        onclick="editNot_4({{ $item->research_id }})">
-                                                        ไม่ผ่าน/ปรับแก้คั้งที่ 3
-                                                    </button>
+                                                    <br><br>
                                                 @endif
                                                 @if (
                                                     $item->research_status == 0 ||
@@ -1344,11 +1343,11 @@
                         $('#sg_cm').html('ไม่ผ่าน')
                     }
 
-                    if (data[0].word_file_1 != null) {
+                    if (data[0].word_file_3 != null) {
                         $('#file_et').css('display', 'block');
                         $('#add_et_pdf').css('display', 'none');
                         $('#add_et_word').css('display', 'none');
-                    } else if (data[0].word_file_1 == null) {
+                    } else if (data[0].word_file_3 == null) {
                         $('#file_et').css('display', 'none');
                         $('#add_et_pdf').css('display', 'block');
                         $('#add_et_word').css('display', 'block');
