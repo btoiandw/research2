@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Pre;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TbContractController extends Controller
 {
@@ -81,5 +82,14 @@ class TbContractController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function view($id)
+    {
+        $db = DB::table('tb_contracts')
+            ->join('tb_research', 'tb_contracts.research_id', '=', 'tb_research.research_id')
+            ->where('contract_id', $id)
+            ->get();
+        return response()->json(['db'=>$db]);
     }
 }

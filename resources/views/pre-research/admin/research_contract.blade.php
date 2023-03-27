@@ -24,6 +24,7 @@
                                 <th class="fw-bolder" style="font-size: 15px">ลำดับ</th>
                                 <th class="fw-bolder" style="font-size: 15px">ชื่อโครงร่างงานวิจัยภาษาไทย</th>
                                 <th class="fw-bolder" style="font-size: 15px">รายละเอียด</th>
+                                <th class="fw-bolder" style="font-size: 15px">สถานะ</th>
                                 <th class="fw-bolder" style="font-size: 15px">จัดการ</th>
                             </tr>
                         </thead>
@@ -33,23 +34,46 @@
                                 $i = 1;
                             @endphp
                             @foreach ($data_re as $item)
-                                <td align="center">{{ $i++ }}</td>
-                                <td>
-                                    {!! Str::limit("$item->research_th", 50, ' ...') !!}
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-info btn-sm"
-                                        onclick="viewDetail({{ $item->research_id }})">
-                                        <i class="fa-solid fa-eye"></i>
-                                    </button>
-                                </td>
-                                <td>
-
-                                    <button class="btn btn-sm" style="background-color: #2ec4b6;color:#fff"
-                                        onclick="approve({{ $item->research_id }})">
-                                        <i class="fa-solid fa-file-invoice"></i> อนุมัติสัญญา
-                                    </button>
-                                </td>
+                                @if ($item->research_status == 11 || $item->research_status == 15)
+                                    <tr>
+                                        <td align="center">{{ $i++ }}</td>
+                                        <td>
+                                            {!! Str::limit("$item->research_th", 50, ' ...') !!}
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-info btn-sm"
+                                                onclick="viewDetail({{ $item->research_id }})">
+                                                <i class="fa-solid fa-eye"></i>
+                                            </button>
+                                        </td>
+                                        <td align="center">
+                                            <button class="btn btn-warning btn-sm">
+                                                {{ $item->contract_status }}
+                                            </button>
+                                        </td>
+                                        <td>
+                                            @if ($item->contract_status == 'เพิ่มไฟล์สัญญาแล้ว')
+                                                <button class="btn btn-info btn-sm"
+                                                    onclick="viewFileCon({{ $item->contract_id }})">
+                                                    ดูไฟล์
+                                                </button>
+                                            @else
+                                                @if ($item->research_status == 15)
+                                                    <button class="btn btn-sm" style="background-color: #2ec4b6;color:#fff"
+                                                        onclick="approve({{ $item->research_id }})">
+                                                        <i class="fa-solid fa-file-invoice"></i> อนุมัติสัญญา
+                                                    </button>
+                                                @endif
+                                                @if ($item->research_status == 11)
+                                                    <button class="btn btn-sm btn-primary"
+                                                        onclick="addFile({{ $item->contract_id }})">
+                                                        <i class="fa-solid fa-file-invoice"></i> เพิ่มไฟล์
+                                                    </button>
+                                                @endif
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endif
                             @endforeach
                         </tbody>
                     </table>
@@ -100,17 +124,23 @@
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div class="row mb-3">
                             <strong class="col-sm-3 col-form-label">รายการส่งมอบ</strong>
                             <div class="col-sm-9">
                                 <select class="form-select" id="list_app" name="list_app">
                                     <option value="">-- เลือกรายการส่งมอบ --</option>
                                     @foreach ($db_de_list as $row)
-                                     <option value="{{ $row->deliver_id }}">
-                                         {{ $row->research_source_name }} {{ $row->Type_research }}
-                                     </option>
-                                 @endforeach
+                                        <option value="{{ $row->deliver_id }}">
+                                            {{ $row->research_source_name }} {{ $row->Type_research }}
+                                        </option>
+                                    @endforeach
                                 </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <strong class="col-3">จำนวนเงินที่อนุมัติ</strong>
+                            <div class="col-9">
+                                <input type="number" name="bug" id="bug" class=" form-control" required>
                             </div>
                         </div>
                     </div>
@@ -251,6 +281,50 @@
         </div>
     </div>
 
+    <!--approve Modal -->
+    <div class="modal fade" id="addFile" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="addFileLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="addFileLabel">เพิ่มไฟล์สัญญาทุน</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="" method="post" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        <input type="hidden" name="id_con" id="id_con">
+                        <div class="row mb-3">
+                            <strong class="col-3">ชื่อโครงร่างงานวิจัยภาษาไทย</strong>
+                            <div class="col-9">
+                                <input type="text" name="" id="t" value=""
+                                    class=" form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <strong class="col-3">ชื่อโครงร่างงานวิจัยภาษาอังกฤษ</strong>
+                            <div class="col-9">
+                                <input type="text" name="" id="e" value=""
+                                    class=" form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="row" id="add_f">
+                            <strong class="col-3">เพิ่มไฟล์สัญญาทุน</strong>
+                            <div class="col-9">
+                                <input type="file" name="con_f" id="con_f" class=" form-control">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" type="submit">ยืนยัน</button>
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">ปิด</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
 @endsection
 @push('js')
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -430,6 +504,26 @@
 
                 $("#detail_researcher tbody").append(tr_str);
             }
+        }
+
+        function addFile(id) {
+            console.log(id);
+            $.ajax({
+                method: 'GET',
+                dataType: 'JSON',
+                url: '/view-f/add-contract/' + id,
+                success: function(res) {
+                    console.log(res);
+                    var db = res.db[0];
+                    $('#t').val(db.research_th);
+                    $('#e').val(db.research_en);
+                    $('#addFile').modal('toggle');
+                }
+            })
+        }
+
+        function viewFileCon(id){
+            console.log(id);
         }
     </script>
 @endpush

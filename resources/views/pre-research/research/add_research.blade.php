@@ -52,7 +52,7 @@
                                     $i = 1;
                                 @endphp
                                 @foreach ($data_research as $item)
-                                    @if ($item->research_status != '11' && $item->research_status != '12')
+                                    @if ($item->research_status != '13' && $item->research_status != '12')
                                         <tr>
                                             <td align="center">{{ $i++ }}</td>
                                             <td>
@@ -140,7 +140,17 @@
                                                             $item->research_status == 1 ||
                                                                 $item->research_status == 4 ||
                                                                 $item->research_status == 7 ||
-                                                                $item->research_status == 10)
+                                                                $item->research_status == 10 ||
+                                                                $item->research_status == 11 ||
+                                                                $item->research_status == 15)
+                                                            @if ($item->research_status == 11)
+                                                                <button type="button"
+                                                                    onclick="addCon({{ $item->research_id }})"
+                                                                    class="btn btn-success btn-sm">
+                                                                    <i class="fa-solid fa-file-pdf"></i>
+                                                                    พิมพ์เอกสารสัญญาทุน
+                                                                </button>
+                                                            @endif
                                                         @else
                                                             <button class="btn btn-yellow me-md-2 btn-sm" type="button"
                                                                 onclick="edit({{ $item->research_id }})">แก้ไข</button>
@@ -185,7 +195,7 @@
                                     $i = 1;
                                 @endphp
                                 @foreach ($data_research as $item)
-                                    @if ($item->research_status == 12)
+                                    @if ($item->research_status == 12 || $item->research_status == 13)
                                         <tr>
                                             <td align="center">{{ $i++ }}</td>
                                             <td>
@@ -890,6 +900,122 @@
         </div>
     </div>
 
+    <!--edit Not Modal -->
+    <div class="modal fade" id="addCon" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="addConLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="addConLabel">สัญญาทุน</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="" method="post" id="fr-con" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        <input type="hidden" name="rid" id="rid">
+                        <div class="row mb-3">
+                            <strong class="col-3">ชื่อโครงร่างภาษาไทย</strong>
+                            <div class="col-9">
+                                <label for="" id="nt"></label>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <strong class="col-3">ชื่อโครงร่างภาษาอังกฤษ</strong>
+                            <div class="col-9">
+                                <label for="" id="ne"></label>
+                            </div>
+                        </div>
+                        <div class="row mb-3" id="">
+                            <div class="card" style="background-color: #ced4da">
+                                <strong>สัญญาทุน</strong>
+                                <div class="card-body">
+                                    <div class="row mb-3">
+                                        <strong class="col-3">หลักประกัน</strong>
+                                        <div class="col-9">
+                                            <input type="text" name="guarantee" id="guarantee" class=" form-control">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <strong class="col-3">หัวหน้าส่วนงานหรือผู้ที่หัวหน้าส่วนงานมอบหมาย</strong>
+                                        <div class="col-9">
+                                            <input type="text" name="h_name" id="h_name" class=" form-control">
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <strong class="col-3">คู่สมรส</strong>
+                                        <div class="col-9">
+                                            <input type="text" name="n_marry" id="n_marry" class=" form-control">
+                                            <span class=" text-danger">*หากไม่มีคู่สมรสโปรดใส่เครื่องหมาย -</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <strong class="col-3">พยาน 1</strong>
+                                        <div class="col-9">
+                                            <input type="text" name="witness_1" id="witness_1" class=" form-control">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <strong class="col-3">พยาน 2</strong>
+                                        <div class="col-9">
+                                            <input type="text" name="witness_2" id="witness_2" class=" form-control">
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="card" style="background-color: #ced4da">
+                                <strong>สัญญาค้ำประกัน</strong>
+                                <div class="card-body">
+                                    <div class="row mb-3">
+                                        <strong class="col-3">ผู้ค้ำประกัน</strong>
+                                        <div class="col-9">
+                                            <input type="text" name="h_name_c" id="h_name_c" class=" form-control">
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <strong class="col-3">คู่สมรสผู้ค้ำประกัน</strong>
+                                        <div class="col-9">
+                                            <input type="text" name="n_marry_c" id="n_marry_c" class=" form-control">
+                                            <span class=" text-danger">*หากไม่มีคู่สมรสโปรดใส่เครื่องหมาย -</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-check form-check-inline mb-3">
+                                        <input class="form-check-input" type="checkbox" id="same" value="">
+                                        <label class="form-check-label"
+                                            for="inlineCheckbox1">พยานสัญญาทุนและสัญญาค้ำประกันเป็นบุคคลเดียวกัน</label>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <strong class="col-3">พยาน 3</strong>
+                                        <div class="col-9">
+                                            <input type="text" name="witness_3" id="witness_3" class=" form-control">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <strong class="col-3">พยาน 4</strong>
+                                        <div class="col-9">
+                                            <input type="text" name="witness_4" id="witness_4" class=" form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="gen_con" name="submit" value="ยืนยัน">ยืนยัน</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">ยกเลิก</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
 @endsection
 @push('js')
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -994,6 +1120,32 @@
 
         });
 
+        $(document).on('click','#gen_con',function(){
+            var frm = $('#fr-con').serialize();
+            console.log(frm);
+
+            $.ajax({
+                method:'POST',
+                url:'/gen/pdf',
+                dataType:'JSON',
+                data:frm,
+                success:function(res){
+                    console.log(res);
+                }
+            });
+        });
+
+        document.querySelector('#same').addEventListener('click', function() {
+            // เช็คว่า checkbox ถูกติ๊กหรือไม่
+            if (this.checked) {
+                // เอาค่าจาก textbox ก่อนหน้ามาแสดง
+                var textboxValue = document.querySelector('#witness_1').value;
+                var textboxValue2 = document.querySelector('#witness_2').value;
+                $('#witness_3').val(textboxValue);
+                $('#witness_4').val(textboxValue2);
+                // alert(textboxValue);
+            }
+        });
         $(document).on('click', '#btnDel', function() {
             $(this).closest('tr').remove();
         });
@@ -1554,6 +1706,12 @@
                     console.log(res);
                 }
             });
+        }
+
+        function addCon(id) {
+            console.log(id);
+            $('#addCon').modal('toggle');
+            $('#rid').val(id);
         }
     </script>
 @endpush

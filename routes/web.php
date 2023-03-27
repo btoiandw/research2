@@ -38,7 +38,7 @@ Route::post('/research/store', [\App\Http\Controllers\Pre\TbResearchController::
 Route::get('/view/research/{id}', [\App\Http\Controllers\Pre\TbResearchController::class, 'show']);
 Route::get('autocomplete', [\App\Http\Controllers\Pre\TbResearchController::class, 'autocomplete'])->name('autocomplete');
 
-Route::get('admin/contract-research/{id}',[\App\Http\Controllers\Pre\TbAdminController::class,'contractPage'])->name('admin.contract-research');
+Route::get('admin/contract-research/{id}', [\App\Http\Controllers\Pre\TbAdminController::class, 'contractPage'])->name('admin.contract-research');
 Route::get('/admin/request/{id}', [\App\Http\Controllers\Pre\TbAdminController::class, 'rePages'])->name('admin.request');
 Route::get('/admin/manage/users/{id}', [\App\Http\Controllers\Pre\TbAdminController::class, 'manaUser'])->name('admin.manage-user');
 Route::get('/admin/send-director/{id}', [\App\Http\Controllers\Pre\TbAdminController::class, 'ResearchDirector'])->name('admin.send-research-director');
@@ -83,13 +83,13 @@ Route::post('/admin/approve/contact', [\App\Http\Controllers\Pre\TbAdminControll
 
 
 Route::post('/admin/comment/base', [\App\Http\Controllers\Pre\TbResearchController::class, 'adminComment'])->name('admin.base-comment');
-Route::get('/view/sum/feed/{id}/{val}',[\App\Http\Controllers\Pre\TbResearchController::class,'viewSumFeed']);
-Route::post('/users/add/et1',[\App\Http\Controllers\Pre\TbResearchController::class,'addET'])->name('users.add-et1');
-Route::get('/director/view-file/feed/{id}/{val}',[\App\Http\Controllers\TbFeedbackController::class,'viewFileFeed']);
-Route::get('/admin/view-file/feed/director/{id}/{val}',[\App\Http\Controllers\TbFeedbackController::class,'viewFile']);
-Route::get('/view/base-comment/{id}/{val}',[\App\Http\Controllers\Pre\TbResearchController::class,'viewBase']);
-Route::post('edit-for-base',[\App\Http\Controllers\Pre\TbResearchController::class,'editForBase'])->name('users.edit-for-base');
-Route::get('/view/cancel-comment/{id}',[\App\Http\Controllers\TbFeedbackController::class,'viewcComment']);
+Route::get('/view/sum/feed/{id}/{val}', [\App\Http\Controllers\Pre\TbResearchController::class, 'viewSumFeed']);
+Route::post('/users/add/et1', [\App\Http\Controllers\Pre\TbResearchController::class, 'addET'])->name('users.add-et1');
+Route::get('/director/view-file/feed/{id}/{val}', [\App\Http\Controllers\TbFeedbackController::class, 'viewFileFeed']);
+Route::get('/admin/view-file/feed/director/{id}/{val}', [\App\Http\Controllers\TbFeedbackController::class, 'viewFile']);
+Route::get('/view/base-comment/{id}/{val}', [\App\Http\Controllers\Pre\TbResearchController::class, 'viewBase']);
+Route::post('edit-for-base', [\App\Http\Controllers\Pre\TbResearchController::class, 'editForBase'])->name('users.edit-for-base');
+Route::get('/view/cancel-comment/{id}', [\App\Http\Controllers\TbFeedbackController::class, 'viewcComment']);
+Route::get('/view-f/add-contract/{id}', [\App\Http\Controllers\Pre\TbContractController::class, 'view']);
 
-
-Route::get('/gen/pdf', [\App\Http\Controllers\Pre\PDFController::class, 'generatePDF']);
+Route::post('/gen/pdf', [\App\Http\Controllers\Pre\PDFController::class, 'generatePDF']);

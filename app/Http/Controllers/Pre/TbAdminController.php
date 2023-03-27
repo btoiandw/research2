@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Pre;
 
 use App\Http\Controllers\Controller;
+use App\Models\TbContract;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
@@ -273,7 +274,32 @@ class TbAdminController extends Controller
                 'list_app.required' => 'โปรดระบุรายการส่งมอบในการทำสัญญา'
             ]
         );
-        dd($request->all());
+        $db_de = DB::table('tb_deliver_lists')->where('deliver_id', $request->list_app)->get();
+        $c_db = DB::table('tb_contracts')->count();
+        if ($c_db > 0) {
+            $id_con = $c_db + 1;
+        } else {
+            $id_con = 1;
+        }
+
+        $con = new TbContract();
+        $con->contract_id = $id_con;
+        $con->research_id = $request->id_re;
+        $con->date_start_cont = $db_de[0]->Date_start_contract;
+        $con->date_end_cont = $db_de[0]->Date_end_contract;
+        $con->money_cont = $request->bug;
+        $con->deliver_id = $request->list_app;
+        $con->contract_status = 'กำลังดำเนินการ';
+        $con->updated_at = Carbon::now()->format('Y-m-d H:i:m');
+        $con->save();
+
+        DB::table('tb_research')->where('research_id', $request->id_re)->update([
+            'research_status' => '11',
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:m'),
+        ]);
+        Alert::success('เพิ่มข้อมูลสัญญาทุนโครงร่างงานวิจัยสำเร็จ');
+        return redirect()->back();
+        //dd($request->all(),$db_de,$c_db,$id_con);
     }
 
 
@@ -285,11 +311,12 @@ class TbAdminController extends Controller
             ->where('employee_id', $id)->get();
         //dd($data[0],$id);
         $data_re = DB::table('tb_research')
-            ->distinct('resesarch_id')
-            ->where('research_status', '=', '11')
-            ->orWhere('research_status', '=', '15')
+            ->join('tb_contracts','tb_research.research_id','=','tb_contracts.research_id')
+            ->distinct('tb_research.resesarch_id')
+            ->where('tb_research.research_status', '=', '11')
+            ->orWhere('tb_research.research_status', '=', '15')
             //->groupBy('deliver_id')
-            ->orderBy('updated_at', 'desc')
+            ->orderBy('tb_research.updated_at', 'desc')
             ->get();
 
         //  $data_de = DB::select('SELECT DISTINCT `deliver_id`,tb_deliver_lists.research_source_id,tb_deliver_lists.Type_research,tb_deliver_lists.status,tb_research_sources.research_sources_id,tb_research_sources.research_source_name FROM `tb_deliver_lists` INNER JOIN tb_research_sources ON tb_deliver_lists.research_source_id = tb_research_sources.research_sources_id WHERE tb_deliver_lists.status = "1" ORDER BY tb_deliver_lists.updated_at DESC');
@@ -298,11 +325,13 @@ class TbAdminController extends Controller
             ->get();
         // $db_de_list = DB::table('tb_deliver_lists')->distinct('tb_deliver_lists.deliver_id')->join('tb_research_sources', 'tb_deliver_lists.research_source_id', '=', 'tb_research_sources.research_sources_id')->where('tb_deliver_lists.status', '=', '1')->select('tb_deliver_lists.*','tb_research_sources.research_source_name')->get();
         //dd($data_re, $db_cont, $db_de_list);
-        $db_de_list = DB::table('tb_research_sources')
-            ->join('tb_deliver_lists', 'tb_research_sources.research_sources_id', '=', 'tb_deliver_lists.research_source_id')
-            ->select('tb_research_sources.*', 'tb_deliver_lists.*')
-            ->distinct()
+        // $db_de_list = DB::select('SELECT tb_deliver_lists.research_source_id,tb_deliver_lists.Type_research, tb_research_sources.research_sources_id,tb_research_sources.research_source_name FROM tb_deliver_lists LEFT JOIN tb_research_sources ON tb_deliver_lists.research_source_id = tb_research_sources.research_sources_id GROUP BY tb_deliver_lists.deliver_id,tb_deliver_lists.Type_research');
+        $db_de_list = DB::table('tb_deliver_lists')
+            ->join('tb_research_sources', 'tb_deliver_lists.research_source_id', '=', 'tb_research_sources.research_sources_id')
+            ->select('tb_deliver_lists.deliver_id', 'tb_deliver_lists.research_source_id', 'tb_deliver_lists.Type_research', 'tb_research_sources.research_sources_id', 'tb_research_sources.research_source_name')
+            //->groupBy('tb_deliver_lists.deliver_id', 'tb_deliver_lists.Type_research','tb_research_sources.research_sources_id')
             ->get();
+
         return view('pre-research.admin.research_contract')->with(['data' => $data[0], 'id' => $id, 'data_re' => $data_re, 'db_de_list' => $db_de_list]);
     }
 }
