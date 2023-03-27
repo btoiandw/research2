@@ -47,7 +47,7 @@ Route::get('/admin/manage-source/{id}', [\App\Http\Controllers\Pre\TbSourceContr
 Route::get('/admin/research/director/{id}', [\App\Http\Controllers\Pre\TbResearchController::class, 'addDirector']);
 Route::post('/admin/add-director', [\App\Http\Controllers\TbFeedbackController::class, 'store'])->name('admin.add-director');
 
-Route::get('/admin/view-feed/director/{id}', [\App\Http\Controllers\TbFeedbackController::class, 'viewFeed'])->name('admin.view-feed-director');
+Route::get('/admin/view-feed/director/{id}/{val}', [\App\Http\Controllers\TbFeedbackController::class, 'viewFeed'])->name('admin.view-feed-director');
 
 Route::get('director/feedback/{id}/{roles}', [\App\Http\Controllers\Pre\TbDirectorController::class, 'feedPages'])->name('director.feedPages');
 Route::post('/director/addfeed', [\App\Http\Controllers\TbFeedbackController::class, 'addFeed'])->name('director.add-feed');
@@ -89,7 +89,7 @@ Route::get('/director/view-file/feed/{id}/{val}',[\App\Http\Controllers\TbFeedba
 Route::get('/admin/view-file/feed/director/{id}/{val}',[\App\Http\Controllers\TbFeedbackController::class,'viewFile']);
 Route::get('/view/base-comment/{id}/{val}',[\App\Http\Controllers\Pre\TbResearchController::class,'viewBase']);
 Route::post('edit-for-base',[\App\Http\Controllers\Pre\TbResearchController::class,'editForBase'])->name('users.edit-for-base');
-
+Route::get('/view/cancel-comment/{id}',[\App\Http\Controllers\TbFeedbackController::class,'viewcComment']);
 
 
 Route::get('/gen/pdf', [\App\Http\Controllers\Pre\PDFController::class, 'generatePDF']);

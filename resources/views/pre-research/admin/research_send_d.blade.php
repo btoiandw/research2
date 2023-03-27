@@ -30,12 +30,12 @@
                                         <td align="center">
                                             @if ($dr[0]->status == '1')
                                                 <button class="btn btn-sm btn-success"
-                                                    onclick="view1({{ $item->research_id }})">
+                                                    onclick="view1('{{ $item->research_id }}', '{{ $dr[0]->employee_referees_id }}')">
                                                     <i class="fa-solid fa-eye"></i>
                                                 </button>
                                             @else
                                                 <button class="btn btn-info btn-sm"
-                                                    onclick="view1({{ $item->research_id }})">
+                                                    onclick="view1('{{ $item->research_id }}', '{{ $dr[0]->employee_referees_id }}')">
                                                     <i class="fa-solid fa-eye"></i>
                                                 </button>
                                             @endif
@@ -43,12 +43,12 @@
                                         <td align="center">
                                             @if ($dr[1]->status == '1')
                                                 <button class="btn btn-sm btn-success"
-                                                    onclick="view2({{ $item->research_id }})">
+                                                    onclick="view2('{{ $item->research_id }}', '{{ $dr[1]->employee_referees_id }}')">
                                                     <i class="fa-solid fa-eye"></i>
                                                 </button>
                                             @else
                                                 <button class="btn btn-info btn-sm"
-                                                    onclick="view2({{ $item->research_id }})">
+                                                    onclick="view2('{{ $item->research_id }}', '{{ $dr[1]->employee_referees_id }}')">
                                                     <i class="fa-solid fa-eye"></i>
                                                 </button>
                                             @endif
@@ -56,12 +56,12 @@
                                         <td align="center">
                                             @if ($dr[2]->status == '1')
                                                 <button class="btn btn-sm btn-success"
-                                                    onclick="view3({{ $item->research_id }})">
+                                                    onclick="view3('{{ $item->research_id }}', '{{ $dr[2]->employee_referees_id }}')">
                                                     <i class="fa-solid fa-eye"></i>
                                                 </button>
                                             @else
                                                 <button class="btn btn-info btn-sm"
-                                                    onclick="view3({{ $item->research_id }})">
+                                                    onclick="view3('{{ $item->research_id }}', '{{ $dr[2]->employee_referees_id }}')">
                                                     <i class="fa-solid fa-eye"></i>
                                                 </button>
                                             @endif
@@ -148,6 +148,7 @@
                 <form action="{{ route('admin.add-sumFeed') }}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
+                        <input type="hidden" name="u_id" value="{{ $id }}" />
                         <input type="hidden" name="id" id="id_r">
                         <div class="row mb-3">
                             <strong class="col-md-3">ชื่อโครงร่างงานวิจัยภาษาไทย</strong>
@@ -250,14 +251,14 @@
             });
         })
 
-        function view1(id) {
-            console.log(id);
+        function view1(id, d_id) {
+            console.log(id,d_id);
             $.ajax({
                 type: 'GET',
-                url: '/admin/view-feed/director/' + id,
+                url: '/admin/view-feed/director/' + id + '/' + d_id,
                 dataType: 'JSON',
                 success: function(res) {
-                    //console.log(res.data_fe);
+                    console.log(res.data_fe);
                     var data = res.data_fe[0];
                     console.log(data);
                     var result = '';
@@ -296,11 +297,11 @@
 
         }
 
-        function view2(id) {
-            console.log(id);
+        function view2(id,d_id) {
+            console.log(id,d_id);
             $.ajax({
                 type: 'GET',
-                url: '/admin/view-feed/director/' + id,
+                url: '/admin/view-feed/director/' + id + '/' + d_id,
                 dataType: 'JSON',
                 success: function(res) {
                     //console.log(res.data_fe);
@@ -342,11 +343,11 @@
 
         }
 
-        function view3(id) {
-            console.log(id);
+        function view3(id,d_id) {
+            console.log(id,d_id);
             $.ajax({
                 type: 'GET',
-                url: '/admin/view-feed/director/' + id,
+                url: '/admin/view-feed/director/' + id + '/' + d_id,
                 dataType: 'JSON',
                 success: function(res) {
                     //console.log(res.data_fe);

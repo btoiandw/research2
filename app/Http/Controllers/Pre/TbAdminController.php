@@ -159,6 +159,7 @@ class TbAdminController extends Controller
             ->distinct('tb_research.research_id')
             //->join('tb_feedback', 'tb_research.research_id', '=', 'tb_feedback.research_id')
             // ->where('tb_feedback.status', '=', '0')
+            //->join('tb_directors', 'tb_feedback.employee_referees_id', '=', 'tb_directors.employee_referees_id')
             ->where('tb_research.research_status', '1')
             ->orWhere('tb_research.research_status', '4')
             ->orWhere('tb_research.research_status', '7') //
@@ -186,14 +187,17 @@ class TbAdminController extends Controller
             //    15=>ผ่าน
             ->select('tb_research.*')
             ->get();
-
+        // dd($data_re);
         if (count($data_re) == 0) {
+            // return 'is []';
             Alert::error('ไม่พบข้อมูลโครงร่างงานวิจัยที่เสนอพิจารณาแก่กรรมการ');
             return redirect()->back()->with(['id' => $id, 'data' => $data[0]]);
         } else {
             # code...
+            // return 'is not [] ';
             $dr = DB::table('tb_feedback')
                 ->join('tb_research', 'tb_feedback.research_id', '=', 'tb_research.research_id')
+                ->join('tb_directors', 'tb_feedback.employee_referees_id', '=', 'tb_directors.employee_referees_id')
                 ->where('tb_research.research_id', $data_re[0]->research_id)
                 ->get();
             $c_df = DB::table('tb_feedback')->where('research_id', $data_re[0]->research_id)->where('status', '=', '1')->count();
@@ -292,8 +296,13 @@ class TbAdminController extends Controller
         $db_cont = DB::table('tb_contracts')
             ->join('tb_research', 'tb_contracts.research_id', '=', 'tb_research.research_id')
             ->get();
-        $db_de_list = DB::table('tb_deliver_lists')->distinct('tb_deliver_lists.deliver_id')->join('tb_research_sources', 'tb_deliver_lists.research_source_id', '=', 'tb_research_sources.research_sources_id')->where('tb_deliver_lists.status', '=', '1')->get();
+        // $db_de_list = DB::table('tb_deliver_lists')->distinct('tb_deliver_lists.deliver_id')->join('tb_research_sources', 'tb_deliver_lists.research_source_id', '=', 'tb_research_sources.research_sources_id')->where('tb_deliver_lists.status', '=', '1')->select('tb_deliver_lists.*','tb_research_sources.research_source_name')->get();
         //dd($data_re, $db_cont, $db_de_list);
+        $db_de_list = DB::table('tb_research_sources')
+            ->join('tb_deliver_lists', 'tb_research_sources.research_sources_id', '=', 'tb_deliver_lists.research_source_id')
+            ->select('tb_research_sources.*', 'tb_deliver_lists.*')
+            ->distinct()
+            ->get();
         return view('pre-research.admin.research_contract')->with(['data' => $data[0], 'id' => $id, 'data_re' => $data_re, 'db_de_list' => $db_de_list]);
     }
 }

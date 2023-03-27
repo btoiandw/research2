@@ -38,7 +38,7 @@ class TbDeliverListController extends Controller
      */
     public function store(Request $request)
     {
-        $validation = $request->validate(
+        /* $validation = $request->validate(
             [
                 'source_id' => 'required',
                 'source_id.*' => 'required',
@@ -55,13 +55,13 @@ class TbDeliverListController extends Controller
                 'contact_start.required' => 'โปรดระบุวันที่เริ่มต้นสัญญาวิจัย',
                 'contact_end.required' => 'โปรดระบุวันที่สิ้นสุดสัญญาวิจัย',
             ]
-        );
+        ); */
 
         $nowDate = Carbon::now()->format('Y-m-d H:i:m');
-        $type = $request->type;
+        //$type = $request->type;
         //$cType = count($type);
-        dd($request->all());
-        $allType = array();
+        //dd($request->all());
+        /* $allType = array();
         if (count($request->type) == 3 && $type[2] != null) {
             $allType = $type[0] . "_" . $type[1] . "_" . $type[2];
         } elseif (count($type) == 3 && $type[2] == null) {
@@ -70,7 +70,7 @@ class TbDeliverListController extends Controller
             $allType = $type[0] . "_" . $type[1];
         } else {
             $allType = $type[0];
-        }
+        } */
 
         $c_list = DB::table('tb_deliver_lists')->latest('deliver_id')->first();
         if ($c_list == null) {
@@ -79,14 +79,14 @@ class TbDeliverListController extends Controller
             $d_id = $c_list->deliver_id + 1;
         }
         // dd($c_list, $d_id);
-        dd($request->all(), Carbon::now()->format('Y-m-d H:i:m'), $request->lesson, $nowDate, $allType, $type);
+        // dd($request->all(), Carbon::now()->format('Y-m-d H:i:m'), $request->lesson, $nowDate, $allType, $type);
 
         for ($i = 0; $i < sizeof($request->lesson); $i++) {
             $deliver = new TbDeliverList();
             $deliver->deliver_id = $d_id;
             $deliver->research_source_id = $request->source_id;
             $deliver->num_lesson = ($i + 1);
-            $deliver->Type_research = $allType;
+            $deliver->Type_research = $request->type_id;
             $deliver->Date_start_contract = $request->contact_start;
             $deliver->Date_end_contract = $request->contact_end;
             $deliver->status = '1';

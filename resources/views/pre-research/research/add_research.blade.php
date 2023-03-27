@@ -109,8 +109,7 @@
                                                     </button>
                                                 @elseif ($item->research_status == 14)
                                                     <button class="btn btn-warning btn-sm" id="bs_f"
-                                                    onclick="bs_f({{ $item->research_id }}, '{{ $item->base_feed_file }}')"
-                                                    >
+                                                        onclick="bs_f({{ $item->research_id }}, '{{ $item->base_feed_file }}')">
                                                         ไม่ผ่านการตรวจสอบจากแอดมิน
                                                     </button>
                                                 @elseif ($item->research_status == 12)
@@ -118,7 +117,8 @@
                                                         ยกเลิก
                                                     </button>
                                                 @elseif ($item->research_status == 13)
-                                                    <button class="btn btn-danger disabled btn-sm">
+                                                    <button class="btn btn-danger btn-sm"
+                                                        onclick="editNot_4({{ $item->research_id }})">
                                                         ไม่ผ่าน
                                                     </button>
                                                 @elseif ($item->research_status == 15)
@@ -133,18 +133,24 @@
                                             </td>
                                             <td>
                                                 <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-                                                    @if (
-                                                        $item->research_status == 1 ||
-                                                            $item->research_status == 4 ||
-                                                            $item->research_status == 7 ||
-                                                            $item->research_status == 10)
+
+
+                                                    @if ($item->research_status != 13)
+                                                        @if (
+                                                            $item->research_status == 1 ||
+                                                                $item->research_status == 4 ||
+                                                                $item->research_status == 7 ||
+                                                                $item->research_status == 10)
+                                                        @else
+                                                            <button class="btn btn-yellow me-md-2 btn-sm" type="button"
+                                                                onclick="edit({{ $item->research_id }})">แก้ไข</button>
+                                                        @endif
+                                                        <button class="btn btn-danger btn-sm" type="button"
+                                                            onclick="cancel_resesrch({{ $item->research_id }})">ยกเลิก</button>
                                                     @else
-                                                        <button class="btn btn-yellow me-md-2 btn-sm" type="button"
-                                                            onclick="edit({{ $item->research_id }})">แก้ไข</button>
                                                     @endif
 
-                                                    <button class="btn btn-danger btn-sm" type="button"
-                                                        onclick="cancel_resesrch({{ $item->research_id }})">ยกเลิก</button>
+
                                                 </div>
                                             </td>
                                         </tr>
@@ -179,7 +185,7 @@
                                     $i = 1;
                                 @endphp
                                 @foreach ($data_research as $item)
-                                    @if ($item->research_status == 12 || $item->research_status == 13)
+                                    @if ($item->research_status == 12)
                                         <tr>
                                             <td align="center">{{ $i++ }}</td>
                                             <td>
@@ -199,6 +205,7 @@
                                                     </button>
                                                     <br><br>
                                                 @endif
+
                                                 @if ($item->research_summary_feedback_1 != null || $item->summary_feedback_file_1 != null)
                                                     <button class="btn btn-warning btn-sm"
                                                         onclick="editNot_2({{ $item->research_id }})">
@@ -206,6 +213,7 @@
                                                     </button>
                                                     <br><br>
                                                 @endif
+
                                                 @if ($item->research_summary_feedback_2 != null || $item->summary_feedback_file_2 != null)
                                                     <button class="btn btn-warning btn-sm"
                                                         onclick="editNot_3({{ $item->research_id }})">
@@ -213,11 +221,6 @@
                                                     </button>
                                                     <br><br>
                                                 @endif
-                                                {{-- @if ($item->research_summary_feedback_3 != null || $item->summary_feedback_file_3 != null)
-                                                <button class="btn btn-warning btn-sm">
-                                                    ไม่ผ่าน/ปรับแก้คั้งที่ 3
-                                                </button>
-                                            @endif --}}
                                                 @if (
                                                     $item->research_status == 0 ||
                                                         $item->research_status == 3 ||
@@ -235,8 +238,8 @@
                                                         รอตรวจสอบจากกรรมการ
                                                     </button>
                                                 @elseif ($item->research_status == 14)
-                                                    <button class="btn btn-warning disabled btn-sm">
-                                                        {{-- onclick="viewCommentAd({{ $item->research_id }})" --}}
+                                                    <button class="btn btn-warning btn-sm" id="bs_f"
+                                                        onclick="bs_f({{ $item->research_id }}, '{{ $item->base_feed_file }}')">
                                                         ไม่ผ่านการตรวจสอบจากแอดมิน
                                                     </button>
                                                 @elseif ($item->research_status == 12)
@@ -244,7 +247,8 @@
                                                         ยกเลิก
                                                     </button>
                                                 @elseif ($item->research_status == 13)
-                                                    <button class="btn btn-danger disabled btn-sm">
+                                                    <button class="btn btn-danger btn-sm"
+                                                        onclick="editNot_4({{ $item->research_id }})">
                                                         ไม่ผ่าน
                                                     </button>
                                                 @elseif ($item->research_status == 15)
@@ -293,10 +297,11 @@
                         </div>
                         <div class="row mb-3">
                             <input type="hidden" name="id_users" id="id_users" value="{{ $id }}" />
-                            <strong for="year_research" class="col-sm-3 col-form-label" align="right">ปีงบประมาณ</strong>
+                            <strong for="year_research" class="col-sm-3 col-form-label"
+                                align="right">ปีงบประมาณ</strong>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="year_research" value="{{ date('Y') + 544 }}"
-                                    name="year_research">
+                                <input type="text" class="form-control" id="year_research"
+                                    value="{{ date('Y') + 544 }}" name="year_research">
                             </div>
                         </div>
 
@@ -1537,6 +1542,18 @@
                 }
             })
 
+        }
+
+        function viewCommentCancel(id) {
+            console.log(id);
+            $.ajax({
+                method: 'GET',
+                dataType: 'JSON',
+                url: '/view/cancel-comment/' + id,
+                success: function(res) {
+                    console.log(res);
+                }
+            });
         }
     </script>
 @endpush

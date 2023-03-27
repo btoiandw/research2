@@ -50,69 +50,67 @@
                                         </td>
                                         <td>
                                             @if ($item->research_summary_feedback_0 != null || $item->summary_feedback_file_0 != null)
-                                                <button class="btn btn-warning btn-sm"
-                                                    onclick="editNot_1({{ $item->research_id }})">
-                                                    ไม่ผ่าน/ปรับแก้ครั้งที่ 1
-                                                </button>
-                                                <br><br>
-                                            @endif
-                                            @if ($item->research_summary_feedback_1 != null || $item->summary_feedback_file_1 != null)
-                                                <button class="btn btn-warning btn-sm"
-                                                    onclick="editNot_2({{ $item->research_id }})">
-                                                    ไม่ผ่าน/ปรับแก้ครั้งที่ 2
-                                                </button>
-                                                <br><br>
-                                            @endif
-                                            @if ($item->research_summary_feedback_2 != null || $item->summary_feedback_file_2 != null)
-                                                <button class="btn btn-warning btn-sm"
-                                                    onclick="editNot_3({{ $item->research_id }})">
-                                                    ไม่ผ่าน/ปรับแก้ครั้งที่ 3
-                                                </button>
-                                                <br><br>
-                                            @endif
-                                            {{-- @if ($item->research_summary_feedback_3 != null || $item->summary_feedback_file_3 != null)
-                                                <button class="btn btn-warning btn-sm">
-                                                    ไม่ผ่าน/ปรับแก้คั้งที่ 3
-                                                </button>
-                                            @endif --}}
-                                            @if (
-                                                $item->research_status == 0 ||
-                                                    $item->research_status == 3 ||
-                                                    $item->research_status == 6 ||
-                                                    $item->research_status == 9)
-                                                <button class="btn btn-yellow disabled btn-sm">
-                                                    รอตรวจสอบ
-                                                </button>
-                                            @elseif (
-                                                $item->research_status == 1 ||
-                                                    $item->research_status == 4 ||
-                                                    $item->research_status == 7 ||
-                                                    $item->research_status == 10)
-                                                <button class="btn btn-yellow disabled btn-sm">
-                                                    รอตรวจสอบจากกรรมการ
-                                                </button>
-                                            @elseif ($item->research_status == 14)
-                                                <button class="btn btn-warning disabled btn-sm">
-                                                    {{-- onclick="viewCommentAd({{ $item->research_id }})" --}}
-                                                    ไม่ผ่านการตรวจสอบจากแอดมิน
-                                                </button>
-                                            @elseif ($item->research_status == 12)
-                                                <button class="btn btn-danger disabled btn-sm">
-                                                    ยกเลิก
-                                                </button>
-                                            @elseif ($item->research_status == 13)
-                                                <button class="btn btn-danger disabled btn-sm">
-                                                    ไม่ผ่าน
-                                                </button>
-                                            @elseif ($item->research_status == 15)
-                                                <button class="btn btn-success disabled btn-sm">
-                                                    รอการอนุมัติสัญญา
-                                                </button>
-                                            @elseif ($item->research_status == 11)
-                                                <button class="btn btn-success disabled btn-sm">
-                                                    อนุมัติสัญญา
-                                                </button>
-                                            @endif
+                                            <button class="btn btn-warning btn-sm"
+                                                onclick="editNot_1({{ $item->research_id }})">
+                                                ไม่ผ่าน/ปรับแก้ครั้งที่ 1
+                                            </button>
+                                            <br><br>
+                                        @endif
+
+                                        @if ($item->research_summary_feedback_1 != null || $item->summary_feedback_file_1 != null)
+                                            <button class="btn btn-warning btn-sm"
+                                                onclick="editNot_2({{ $item->research_id }})">
+                                                ไม่ผ่าน/ปรับแก้ครั้งที่ 2
+                                            </button>
+                                            <br><br>
+                                        @endif
+
+                                        @if ($item->research_summary_feedback_2 != null || $item->summary_feedback_file_2 != null)
+                                            <button class="btn btn-warning btn-sm"
+                                                onclick="editNot_3({{ $item->research_id }})">
+                                                ไม่ผ่าน/ปรับแก้ครั้งที่ 3
+                                            </button>
+                                            <br><br>
+                                        @endif
+                                        @if (
+                                            $item->research_status == 0 ||
+                                                $item->research_status == 3 ||
+                                                $item->research_status == 6 ||
+                                                $item->research_status == 9)
+                                            <button class="btn btn-yellow disabled btn-sm">
+                                                รอตรวจสอบ
+                                            </button>
+                                        @elseif (
+                                            $item->research_status == 1 ||
+                                                $item->research_status == 4 ||
+                                                $item->research_status == 7 ||
+                                                $item->research_status == 10)
+                                            <button class="btn btn-yellow disabled btn-sm">
+                                                รอตรวจสอบจากกรรมการ
+                                            </button>
+                                        @elseif ($item->research_status == 14)
+                                            <button class="btn btn-warning btn-sm" id="bs_f"
+                                                onclick="bs_f({{ $item->research_id }}, '{{ $item->base_feed_file }}')">
+                                                ไม่ผ่านการตรวจสอบจากแอดมิน
+                                            </button>
+                                        @elseif ($item->research_status == 12)
+                                            <button class="btn btn-danger disabled btn-sm">
+                                                ยกเลิก
+                                            </button>
+                                        @elseif ($item->research_status == 13)
+                                            <button class="btn btn-danger btn-sm"
+                                                onclick="editNot_4({{ $item->research_id }})">
+                                                ไม่ผ่าน
+                                            </button>
+                                        @elseif ($item->research_status == 15)
+                                            <button class="btn btn-success disabled btn-sm">
+                                                รอการอนุมัติสัญญา
+                                            </button>
+                                        @elseif ($item->research_status == 11)
+                                            <button class="btn btn-success disabled btn-sm">
+                                                อนุมัติสัญญา
+                                            </button>
+                                        @endif
                                         </td>
                                         <td align="center">
                                             @if (
@@ -191,71 +189,69 @@
                                         </td>
                                         <td>
                                             @if ($item->research_summary_feedback_0 != null || $item->summary_feedback_file_0 != null)
-                                                <button class="btn btn-warning btn-sm"
-                                                    onclick="editNot_1({{ $item->research_id }})">
-                                                    ไม่ผ่าน/ปรับแก้ครั้งที่ 1
-                                                </button>
-                                                <br><br>
-                                            @endif
-                                            @if ($item->research_summary_feedback_1 != null || $item->summary_feedback_file_1 != null)
-                                                <button class="btn btn-warning btn-sm"
-                                                    onclick="editNot_2({{ $item->research_id }})">
-                                                    ไม่ผ่าน/ปรับแก้ครั้งที่ 2
-                                                </button>
-                                                <br><br>
-                                            @endif
-                                            @if ($item->research_summary_feedback_2 != null || $item->summary_feedback_file_2 != null)
-                                                <button class="btn btn-warning btn-sm"
-                                                    onclick="editNot_3({{ $item->research_id }})">
-                                                    ไม่ผ่าน/ปรับแก้ครั้งที่ 3
-                                                </button>
-                                                <br><br>
-                                            @endif
-                                            {{-- @if ($item->research_summary_feedback_3 != null || $item->summary_feedback_file_3 != null)
-                                            <button class="btn btn-warning btn-sm">
-                                                ไม่ผ่าน/ปรับแก้คั้งที่ 3
+                                            <button class="btn btn-warning btn-sm"
+                                                onclick="editNot_1({{ $item->research_id }})">
+                                                ไม่ผ่าน/ปรับแก้ครั้งที่ 1
                                             </button>
-                                        @endif --}}
-                                            @if (
-                                                $item->research_status == 0 ||
-                                                    $item->research_status == 3 ||
-                                                    $item->research_status == 6 ||
-                                                    $item->research_status == 9)
-                                                <button class="btn btn-yellow disabled btn-sm">
-                                                    รอตรวจสอบ
-                                                </button>
-                                            @elseif (
-                                                $item->research_status == 1 ||
-                                                    $item->research_status == 4 ||
-                                                    $item->research_status == 7 ||
-                                                    $item->research_status == 10)
-                                                <button class="btn btn-yellow disabled btn-sm">
-                                                    รอตรวจสอบจากกรรมการ
-                                                </button>
-                                            @elseif ($item->research_status == 14)
-                                                <button class="btn btn-warning disabled btn-sm">
-                                                    {{-- onclick="viewCommentAd({{ $item->research_id }})" --}}
-                                                    ไม่ผ่านการตรวจสอบจากแอดมิน
-                                                </button>
-                                            @elseif ($item->research_status == 12)
-                                                <button class="btn btn-danger disabled btn-sm">
-                                                    ยกเลิก
-                                                </button>
-                                            @elseif ($item->research_status == 13)
-                                                <button class="btn btn-danger disabled btn-sm">
-                                                    ไม่ผ่าน
-                                                </button>
-                                            @elseif ($item->research_status == 15)
-                                                <button class="btn btn-success disabled btn-sm">
-                                                    รอการอนุมัติสัญญา
-                                                </button>
-                                            @elseif ($item->research_status == 11)
-                                                <button class="btn btn-success disabled btn-sm">
-                                                    อนุมัติสัญญา
-                                                </button>
-                                            @endif
+                                            <br><br>
+                                        @endif
+
+                                        @if ($item->research_summary_feedback_1 != null || $item->summary_feedback_file_1 != null)
+                                            <button class="btn btn-warning btn-sm"
+                                                onclick="editNot_2({{ $item->research_id }})">
+                                                ไม่ผ่าน/ปรับแก้ครั้งที่ 2
+                                            </button>
+                                            <br><br>
+                                        @endif
+
+                                        @if ($item->research_summary_feedback_2 != null || $item->summary_feedback_file_2 != null)
+                                            <button class="btn btn-warning btn-sm"
+                                                onclick="editNot_3({{ $item->research_id }})">
+                                                ไม่ผ่าน/ปรับแก้ครั้งที่ 3
+                                            </button>
+                                            <br><br>
+                                        @endif
+                                        @if (
+                                            $item->research_status == 0 ||
+                                                $item->research_status == 3 ||
+                                                $item->research_status == 6 ||
+                                                $item->research_status == 9)
+                                            <button class="btn btn-yellow disabled btn-sm">
+                                                รอตรวจสอบ
+                                            </button>
+                                        @elseif (
+                                            $item->research_status == 1 ||
+                                                $item->research_status == 4 ||
+                                                $item->research_status == 7 ||
+                                                $item->research_status == 10)
+                                            <button class="btn btn-yellow disabled btn-sm">
+                                                รอตรวจสอบจากกรรมการ
+                                            </button>
+                                        @elseif ($item->research_status == 14)
+                                            <button class="btn btn-warning btn-sm" id="bs_f"
+                                                onclick="bs_f({{ $item->research_id }}, '{{ $item->base_feed_file }}')">
+                                                ไม่ผ่านการตรวจสอบจากแอดมิน
+                                            </button>
+                                        @elseif ($item->research_status == 12)
+                                            <button class="btn btn-danger disabled btn-sm">
+                                                ยกเลิก
+                                            </button>
+                                        @elseif ($item->research_status == 13)
+                                            <button class="btn btn-danger btn-sm"
+                                                onclick="editNot_4({{ $item->research_id }})">
+                                                ไม่ผ่าน
+                                            </button>
+                                        @elseif ($item->research_status == 15)
+                                            <button class="btn btn-success disabled btn-sm">
+                                                รอการอนุมัติสัญญา
+                                            </button>
+                                        @elseif ($item->research_status == 11)
+                                            <button class="btn btn-success disabled btn-sm">
+                                                อนุมัติสัญญา
+                                            </button>
+                                        @endif
                                         </td>
-                                     
+
                                     </tr>
                                 @endif
                             @endforeach

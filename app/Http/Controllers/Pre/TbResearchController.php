@@ -461,7 +461,7 @@ class TbResearchController extends Controller
             'research_th' => $request->TH,
             'research_en' => $request->EN,
             'keyword' => $request->keyword,
-            'research_status'=>$status,
+            'research_status' => $status,
             'research_area' => $area,
             'date_research_start' => $request->sdate,
             'date_research_end' => $request->edate,
@@ -669,6 +669,7 @@ class TbResearchController extends Controller
         } elseif ($data_e[0]->research_status == 8) {
             $status = '9';
         }
+        // dd($request->all(), $status,$data_e);
 
         if ($filew = $request->file('word')) {
             if ($filep = $request->file('pdf')) {
@@ -691,7 +692,7 @@ class TbResearchController extends Controller
                 if ($filew->move($path, $fileName_w)) { //move=>เซฟในโฟลเดอร์ ''=>''แรกชื่อโฟลเดอร์ $name=>ชื่อไฟล์  ->จะอยู่ในโฟลเดอร์ public
                     if ($filep->move($path, $fileName_p)) {
 
-                        if ($data_e[0]->research_status == 2) {
+                        if ($status == '3') {
                             DB::table('tb_research')
                                 ->where('research_id', '=', $request->e1_id)
                                 ->update([
@@ -701,7 +702,7 @@ class TbResearchController extends Controller
                                     'date_upload_file_1' => Carbon::now()->format('Y-m-d H:i:m'),
                                     'updated_at' => Carbon::now()->format('Y-m-d H:i:m'),
                                 ]);
-                        } elseif ($data_e[0]->research_status == 5) {
+                        } elseif ($status == '6') {
                             DB::table('tb_research')
                                 ->where('research_id', '=', $request->e1_id)
                                 ->update([
@@ -711,7 +712,7 @@ class TbResearchController extends Controller
                                     'date_upload_file_2' => Carbon::now()->format('Y-m-d H:i:m'),
                                     'updated_at' => Carbon::now()->format('Y-m-d H:i:m'),
                                 ]);
-                        } elseif ($data_e[0]->research_status == 8) {
+                        } elseif ($status == '9') {
                             DB::table('tb_research')
                                 ->where('research_id', '=', $request->e1_id)
                                 ->update([

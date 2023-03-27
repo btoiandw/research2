@@ -82,7 +82,7 @@
                         <div class="row mb-3">
                             <strong class="col-sm-3">ประเภทงานวิจัย</strong>
                             <div class="col-sm-9">
-                                <select class="form-select" id="source_id" name="source_id">
+                                <select class="form-select" id="type_id" name="type_id">
                                     <option value="">-- เลือกประเภทงานวิจัยการให้ทุน --</option>
                                     @foreach ($da as $row)
                                         <option value="{{ $row->type_research_id }}">
@@ -547,8 +547,9 @@
                 success: function(res) {
                     var data = res.data_dl;
                     Swal.fire({
-                        title: 'คุณต้องการยกเลิกแหล่งทุนวิจัย?',
-                        text: 'ชื่อแหล่งทุนวิจัย : ' + data[0].research_source_name,
+                        title: 'คุณต้องการยกเลิกรายการส่งมอบแหล่งทุนวิจัย?',
+                        text: 'ชื่อแหล่งทุนวิจัย : ' + data[0].research_source_name + '  ปีงบประมาณ: ' +
+                            data[0].Year_source,
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
@@ -575,7 +576,6 @@
                                     } else {
                                         Swal.fire({
                                             text: 'ยกเลิกไม่สำเร็จ!',
-
                                             icon: 'error'
                                         });
                                     }
