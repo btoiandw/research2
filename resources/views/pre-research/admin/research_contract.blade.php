@@ -34,7 +34,7 @@
                                 $i = 1;
                             @endphp
                             @foreach ($data_re as $item)
-                                @if ($item->research_status == 11 || $item->research_status == 15)
+                                @if ($item->research_status == 15)
                                     <tr>
                                         <td align="center">{{ $i++ }}</td>
                                         <td>

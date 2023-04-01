@@ -310,18 +310,25 @@ class TbAdminController extends Controller
             ->join('tb_faculties', 'tb_majors.organization_id', '=', 'tb_faculties.organization_id')
             ->where('employee_id', $id)->get();
         //dd($data[0],$id);
-        $data_re = DB::table('tb_research')
-            ->join('tb_contracts','tb_research.research_id','=','tb_contracts.research_id')
-            ->distinct('tb_research.resesarch_id')
+        /* $data_re = DB::table('tb_research')
+            ->join('tb_contracts', 'tb_research.research_id', '=', 'tb_contracts.research_id')
+            ->whereIn('tb_research.research_status',[11,15])
+            ->select('tb_research.*','tb_contracts.*')
+            ->get(); */
+        $data_re =DB::select('SELECT tb_research.*,tb_contracts.contract_id,tb_contracts.contract_status FROM tb_research LEFT JOIN tb_contracts ON tb_research.research_id=tb_contracts.research_id WHERE tb_research.research_status =11 OR tb_research.research_status =15 order by tb_research.updated_at desc');
+        /* DB::table('tb_research')
+            //->join('tb_contracts', 'tb_research.research_id', '=', 'tb_contracts.research_id')
+            // ->distinct('tb_research.resesarch_id')
             ->where('tb_research.research_status', '=', '11')
             ->orWhere('tb_research.research_status', '=', '15')
             //->groupBy('deliver_id')
             ->orderBy('tb_research.updated_at', 'desc')
-            ->get();
-
+            ->get(); */
+        // dd($data_re);
         //  $data_de = DB::select('SELECT DISTINCT `deliver_id`,tb_deliver_lists.research_source_id,tb_deliver_lists.Type_research,tb_deliver_lists.status,tb_research_sources.research_sources_id,tb_research_sources.research_source_name FROM `tb_deliver_lists` INNER JOIN tb_research_sources ON tb_deliver_lists.research_source_id = tb_research_sources.research_sources_id WHERE tb_deliver_lists.status = "1" ORDER BY tb_deliver_lists.updated_at DESC');
         $db_cont = DB::table('tb_contracts')
             ->join('tb_research', 'tb_contracts.research_id', '=', 'tb_research.research_id')
+            //->where('tb_contracts.research_id','=')
             ->get();
         // $db_de_list = DB::table('tb_deliver_lists')->distinct('tb_deliver_lists.deliver_id')->join('tb_research_sources', 'tb_deliver_lists.research_source_id', '=', 'tb_research_sources.research_sources_id')->where('tb_deliver_lists.status', '=', '1')->select('tb_deliver_lists.*','tb_research_sources.research_source_name')->get();
         //dd($data_re, $db_cont, $db_de_list);

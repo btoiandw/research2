@@ -26,7 +26,7 @@
                                 @foreach ($data_re as $item)
                                     <tr>
                                         <td align="center">{{ $i++ }}</td>
-                                        <td>{{ $item->research_th }}</td>
+                                        <td>{!! Str::limit("$item->research_th", 50, ' ...') !!}</td>
                                         <td align="center">
                                             @if ($dr[0]->status == '1')
                                                 <button class="btn btn-sm btn-success"

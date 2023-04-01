@@ -25,8 +25,8 @@
                                 @foreach ($re as $item)
                                     <tr>
                                         <td align="center">{{ $i++ }}</td>
-                                        <td>{{ $item->research_th }}</td>
-                                        <td>{{ $item->research_en }}</td>
+                                        <td>{!! Str::limit("$item->research_th", 50, ' ...') !!}</td>
+                                        <td>{!! Str::limit("$item->research_en", 50, ' ...') !!}</td>
                                         <td>
                                             <button class="btn btn-info btn-sm"
                                                 onclick="viewDetail({{ $item->research_id }})">
