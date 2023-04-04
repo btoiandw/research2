@@ -93,3 +93,7 @@ Route::get('/view/cancel-comment/{id}', [\App\Http\Controllers\TbFeedbackControl
 Route::get('/view-f/add-contract/{id}', [\App\Http\Controllers\Pre\TbContractController::class, 'view']);
 
 Route::post('/gen/pdf', [\App\Http\Controllers\Pre\PDFController::class, 'generatePDF']);
+Route::get('/test/mul', function () {
+    $dt = DB::table('tb_type_research')->get();
+    return view('pre-research.test')->with(['dt' => $dt]);
+});

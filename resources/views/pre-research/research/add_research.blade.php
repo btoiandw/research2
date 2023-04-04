@@ -1,4 +1,10 @@
 @extends('layouts.UD.ud')
+{{-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"> --}}
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="{{ asset('css/bootstrap-select.css') }}">
+<link rel="stylesheet" href="{{ asset('css/bootstrap-select.min.css') }}">
 <script type="text/javascript">
     var siteUrl = "{{ url('/') }}";
 </script>
@@ -405,26 +411,17 @@
                         <fieldset class="row mb-3">
                             <strong class="col-form-label col-sm-3 pt-0" align="right">ประเภทงานวิจัย</strong>
                             <div class="col-sm-9">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="type[]" id="type"
-                                        value="ชุมชนท้องถิ่น">
-                                    <label class="form-check-label" for="type">
-                                        ชุมชนท้องถิ่น
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="type[]" id="type"
-                                        value="ศิลปวัฒนธรรม">
-                                    <label class="form-check-label" for="gridRadios2">
-                                        ศิลปวัฒนธรรม
-                                    </label>
-                                </div>
+                                <select multiple class="selectpicker form-control" id="number-multiple" name="type_ck[]"
+                                    data-container="body" {{-- data-live-search="true"  --}}
+                                    data-hide-disabled="true" data-actions-box="true"
+                                    data-virtual-scroll="false"></select>
+
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" name="etc" id="etc">
                                     <label class="form-check-label mb-1">
                                         อื่นๆ
                                     </label>
-                                    <input type="text" class="form-control input_type" name="type[]" id="inty"
+                                    <input type="text" class="form-control input_type" name="type" id="inty"
                                         value="" style="display: none" />
                                 </div>
                             </div>
@@ -1008,7 +1005,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" id="gen_con" name="submit" value="ยืนยัน">ยืนยัน</button>
+                        <button type="button" class="btn btn-primary" id="gen_con" name="submit"
+                            value="ยืนยัน">ยืนยัน</button>
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">ยกเลิก</button>
                     </div>
                 </form>
@@ -1018,13 +1016,58 @@
     </div>
 @endsection
 @push('js')
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.datatables.net/rowreorder/1.3.1/js/dataTables.rowReorder.min.js"></script>
+    {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> --}}
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.bundle.min.js"></script>
+    {{-- <script src="../dist/js/bootstrap-select.js"></script> --}}
+    <script src="{{ asset('js/bootstrap-select.js') }}"></script>
+    <script>
+        function createOptions(number) {
+            var options = [],
+                _options;
+            var dt = @json($list_type);
+            console.log(dt.type_id);
+            console.log(dt.length);
+            for (var i = 0; i < dt.length; i++) {
+                var option = '<option value="' + dt[i].type_id + '">' + dt[i].type_name + '</option>';
+                options.push(option);
+            }
 
+            _options = options.join('');
+
+            // $('#number')[0].innerHTML = _options;
+            $('#number-multiple')[0].innerHTML = _options;
+
+            //$('#number2')[0].innerHTML = _options;
+            $('#number2-multiple')[0].innerHTML = _options;
+        }
+
+        var mySelect = $('#first-disabled2');
+
+        createOptions(4000);
+
+        /* $('#special').on('click', function() {
+            mySelect.find('option:selected').prop('disabled', true);
+            mySelect.selectpicker('refresh');
+        });
+
+        $('#special2').on('click', function() {
+            mySelect.find('option:disabled').prop('disabled', false);
+            mySelect.selectpicker('refresh');
+        });
+
+        $('#basic2').selectpicker({
+            liveSearch: true,
+            maxOptions: 1
+        }); */
+    </script>
     <script>
         var has_error = {{ $errors->count() > 0 ? 'true' : 'false' }};
         if (has_error) {
@@ -1120,16 +1163,16 @@
 
         });
 
-        $(document).on('click','#gen_con',function(){
+        $(document).on('click', '#gen_con', function() {
             var frm = $('#fr-con').serialize();
             console.log(frm);
 
             $.ajax({
-                method:'POST',
-                url:'/gen/pdf',
-                dataType:'JSON',
-                data:frm,
-                success:function(res){
+                method: 'POST',
+                url: '/gen/pdf',
+                dataType: 'JSON',
+                data: frm,
+                success: function(res) {
                     console.log(res);
                 }
             });

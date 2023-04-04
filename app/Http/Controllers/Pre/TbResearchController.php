@@ -36,6 +36,10 @@ class TbResearchController extends Controller
             ->where('tb_send_research.id', '=', $id)
             ->orderBy('tb_research.updated_at', 'desc')
             ->get();
+        $list_type = DB::table('tb_type_research')
+            ->get();
+
+        // dd($list_type);
         //dd($id,$roles,$data,$list_source,$list_fac,$list_user,$data_research);
         return view('pre-research.research.add_research')->with([
             'id' => $id,
@@ -45,6 +49,7 @@ class TbResearchController extends Controller
             'list_fac' => $list_fac,
             'list_user' => $list_user,
             'data_research' => $data_research,
+            'list_type' => $list_type,
             //'users_login'=>DB::table('users')->where('users.employee_id', $id)
         ]);
     }
@@ -69,7 +74,7 @@ class TbResearchController extends Controller
     {
         //
 
-        //dd($request->all(), sizeof($request->pc), sizeof($request->type));
+        // dd($request->all(), sizeof($request->pc)/* , sizeof($request->type) */);
         $validation = $request->validate(
             [
                 'year_research' => 'required|max:4',
@@ -128,17 +133,30 @@ class TbResearchController extends Controller
         );
 
         $nowDate = Carbon::now()->format('Y-m-d H:i:m');
-        $type = $request->type;
-        //$cType = count($type);
-        $allType = array();
-        if (count($request->type) == 3 && $type[2] != null) {
-            $allType = $type[0] . "_" . $type[1] . "_" . $type[2];
-        } elseif (count($type) == 3 && $type[2] == null) {
-            $allType = $type[0] . "_" . $type[1];
-        } else {
-            $allType = $type[0];
+        if ($request->type_ck) {
+            $dt = $request->type_ck;
+            $ck_type = '';
+            $dt_type = collect($dt)->last();
+
+            for ($i = 0; $i < sizeof($request->type_ck); $i++) {
+                if ($dt[$i] != $dt_type) {
+                    $dt[$i] = $dt[$i] . ", ";
+                } else {
+                    $dt[$i] = $dt[$i - 1] . "" . $dt_type;
+                }
+            }
+            $ck_type = collect($dt)->last();
         }
-        //dd($type[0], count($type), $allType, $request->all(), sizeof($request->pc), sizeof($request->type));
+
+
+        if ($request->type != null) {
+            $type = $request->type;
+            //$cType = count($type);
+            $allType = "";
+
+            $allType = $ck_type . ", " . $type;
+        }
+        dd($ck_type, $dt, $dt_type, $type[0], count($type), $allType, $request->all(), sizeof($request->pc), sizeof($request->type));
         $address = $request->address;
         $city = $request->city;
         $zipcode = $request->zipcode;
