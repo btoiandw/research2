@@ -1248,8 +1248,8 @@
                     createRows(res);
                     $('#viewdetail').modal('toggle');
                     //console.log(html);
-                    var type_re = data[0].type_research_id;
-                    var type = type_re.split('_');
+                    var type_re = data[0].type_name;
+                    /* var type = type_re.split('_');
                     //console.log(type);
                     var ty = '';
                     console.log('len:' + type.length);
@@ -1259,7 +1259,7 @@
                         ty = type[0] + ', ' + type[1];
                     } else {
                         ty = data[0].type_research_id;
-                    }
+                    } */
                     var area_re = data[0].research_area;
                     var area = area_re.split('_');
                     var start = moment(data[0].date_research_start).add(543, 'year').format('Do MMMM YYYY');
@@ -1270,7 +1270,7 @@
                     $('#nameTH').html(data[0].research_th);
                     $('#nameEN').html(data[0].research_en);
                     $('#source').html(data[0].full_name_source);
-                    $('#type_re').html(ty);
+                    $('#type_re').html(type_re);
                     $('#key').html(data[0].keyword);
                     $('#area').html(area[0] + ' ' + area[1] + ' ' + area[2]);
                     $('#start').html(start);

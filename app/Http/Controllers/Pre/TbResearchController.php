@@ -156,7 +156,7 @@ class TbResearchController extends Controller
 
             $allType = $ck_type . ", " . $type;
         }
-        dd($ck_type, $dt, $dt_type, $type[0], count($type), $allType, $request->all(), sizeof($request->pc), sizeof($request->type));
+        // dd($ck_type, $dt, $dt_type, $allType, $request->all(), sizeof($request->pc));
         $address = $request->address;
         $city = $request->city;
         $zipcode = $request->zipcode;
@@ -276,14 +276,19 @@ class TbResearchController extends Controller
     public function show($id)
     {
         //
+
         $data_re = DB::table('tb_research')
             ->join('tb_send_research', 'tb_research.research_id', '=', 'tb_send_research.research_id')
             ->join('tb_research_sources', 'tb_research.research_source_id', '=', 'tb_research_sources.research_sources_id')
+            // ->join('tb_type_research', 'tb_research.type_research_id', '=', 'tb_type_research.type_id')
             ->join('users', 'tb_send_research.id', '=', 'users.employee_id')
             ->join('tb_majors', 'users.major_id', '=', 'tb_majors.major_id')
             ->join('tb_faculties', 'tb_majors.organization_id', '=', 'tb_faculties.organization_id')
             ->where('tb_research.research_id', '=', $id)
             ->get();
+
+        $ty = explode(", ",$data_re[0]->type_research_id);
+        dd($ty);
         $data_r = DB::table('tb_research')
             ->join('tb_send_research', 'tb_research.research_id', '=', 'tb_send_research.research_id')
             ->join('users', 'tb_send_research.id', '=', 'users.employee_id')
