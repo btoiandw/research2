@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\TbResearch;
 use App\Models\TbSendResearch;
+use App\Models\TbTypeResearch;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
@@ -153,10 +154,24 @@ class TbResearchController extends Controller
             $type = $request->type;
             //$cType = count($type);
             $allType = "";
+            $dbt = DB::table('tb_type_research')
+                ->where('type_name', '=', $type)
+                ->count();
 
-            $allType = $ck_type . ", " . $type;
+            if ($dbt == 0) {
+                //insert into db type research
+
+                $db = new TbTypeResearch();
+                $db->type_name = $type;
+                $db->save();
+            }
+
+            $dbtr = DB::table('tb_type_research')
+                ->where('type_name', '=', $type)
+                ->first();
+            $allType = $ck_type . ", " . $dbtr->type_id;
         }
-        // dd($ck_type, $dt, $dt_type, $allType, $request->all(), sizeof($request->pc));
+        // dd($dbtr, $allType,$dbt, $ck_type, $dt, $dt_type,  $request->all(), sizeof($request->pc));
         $address = $request->address;
         $city = $request->city;
         $zipcode = $request->zipcode;
@@ -287,8 +302,14 @@ class TbResearchController extends Controller
             ->where('tb_research.research_id', '=', $id)
             ->get();
 
-        $ty = explode(", ",$data_re[0]->type_research_id);
-        dd($ty);
+        $ty = explode(", ", $data_re[0]->type_research_id);
+        // $ty_n = array();
+        for ($i = 0; $i < sizeof($ty); $i++) {
+            $ty_n[$i] = DB::table('tb_type_research')
+                ->where('type_id', '=', $ty[$i])
+                ->first();
+        }
+        // dd($ty_n, $ty, sizeof($ty));
         $data_r = DB::table('tb_research')
             ->join('tb_send_research', 'tb_research.research_id', '=', 'tb_send_research.research_id')
             ->join('users', 'tb_send_research.id', '=', 'users.employee_id')
@@ -301,7 +322,7 @@ class TbResearchController extends Controller
             $data_u = DB::table('users')->where('employee_id', '!=', $data_re->employee_id)->get('employee_id');
         } */
         //dd($id, $data_u);
-        return response()->json(['data_re' => $data_re, 'data_feed' => $data_feed]);
+        return response()->json(['data_re' => $data_re, 'data_feed' => $data_feed, 'ty_n' => $ty_n]);
     }
 
     /**
@@ -325,6 +346,7 @@ class TbResearchController extends Controller
     public function update(Request $request)
     {
         //
+        // dd($request->all());
         $send_old = DB::table('tb_send_research')->where('research_id', $request->id)->get();
         $research = DB::table('tb_research')
             ->where('research_id', $request->id)
@@ -332,36 +354,33 @@ class TbResearchController extends Controller
         $researcher_id = array();
         $researcher_pc = array();
 
-        $send_e = DB::table('tb_send_research')->where('research_id', $request->id)->delete();
+        // $send_e = DB::table('tb_send_research')->where('research_id', $request->id)->delete();
         $area = $request->ad . '_' . $request->ct . '_' . $request->zp;
-        //dd($request->all(), $send_old, sizeof($researcher_id), sizeof($researcher_pc), $area, sizeof($request->pc_ed));
+        // dd($request->all(), $send_old, sizeof($researcher_id), sizeof($researcher_pc), $area, sizeof($request->pc_ed));
         //$research[0]->save();
-        if ($request->file('f_pdf') || $request->file('f_word')) {
-            $path = 'uploads/research/' . $research->year_research . '/' . $request->id;
-            $status = '';
-            if ($research->research_status == 0 || $research->research_status == 2 && $research->word_file_0 != null) {
-                $status = '0';
-            } elseif ($research->research_status == 3 || $research->research_status == 5 && $research->word_file_1 != null) {
-                $status = '3';
-            } elseif ($research->research_status == 6 || $research->research_status == 8 && $research->word_file_2 != null) {
-                $status = '6';
-            } elseif ($research->research_status == 9 || $research->word_file_3 != null) {
-                $status = '9';
-            }
-            if ($research->word_file_3 != null) {
-                $file_name_word = $research->word_file_3;
-                $status = '9';
-            } elseif ($research->word_file_2 != null) {
-                $status = '6';
-                $file_name_word = $research->word_file_2;
-            } elseif ($research->word_file_1 != null) {
-                $status = '3';
-                $file_name_word = $research->word_file_1;
-            } else {
-                $status = '0';
-                $file_name_word = $research->word_file_0;
-            }
+        $status = '';
+        if ($research->research_status == 0 || $research->research_status == 2) {
+            $status = '0';
+            // $file_name_pdf = $research->pdf_file_0;
+            // $file_name_word = $research->word_file_0;
+        } elseif ($research->research_status == 3 || $research->research_status == 5) {
+            $status = '3';
+            $file_name_pdf = $research->pdf_file_1;
+            // $file_name_word = $research->word_file_1;
+        } elseif ($research->research_status == 6 || $research->research_status == 8) {
+            $status = '6';
+            // $file_name_pdf = $research->pdf_file_2;
+            // $file_name_word = $research->word_file_2;
+        } elseif ($research->research_status == 1) {
+            $status = '9';
+            // $file_name_pdf = $research->pdf_file_3;
+            // $file_name_word = $research->word_file_3;
+        }
+        $path = 'uploads/research/' . $research->year_research . '/' . $request->id;
 
+
+        // dd($request->all(), $status);
+        if ($request->file('f_pdf')) {
             if ($research->pdf_file_3 != null) {
                 $status = '9';
                 $file_name_pdf = $research->pdf_file_3;
@@ -375,10 +394,9 @@ class TbResearchController extends Controller
                 $status = '0';
                 $file_name_pdf = $research->pdf_file_0;
             }
-            $file_word = $path . '/' . $file_name_word;
+
             $file_pdf = $path . '/' . $file_name_pdf;
 
-            //dd($status, $research->research_status, $file_name_pdf, $file_name_word, $file_word, $file_pdf);
             if ($file_p = $request->file('f_pdf')) {
                 File::delete(public_path($file_pdf));
                 $namep = $file_p->getClientOriginalName();
@@ -393,19 +411,19 @@ class TbResearchController extends Controller
                         'date_upload_file_0' => Carbon::now()->format('Y-m-d H:i:m'),
                         'updated_at' => Carbon::now()->format('Y-m-d H:i:m'),
                     ]);
-                } elseif ($status == '3') {
+                } elseif ($status == 3) {
                     DB::table('tb_research')->where('research_id', $request->id)->update([
                         'pdf_file_1' => $fileName_p,
                         'date_upload_file_1' => Carbon::now()->format('Y-m-d H:i:m'),
                         'updated_at' => Carbon::now()->format('Y-m-d H:i:m'),
                     ]);
-                } elseif ($status == '6') {
+                } elseif ($status == 6) {
                     DB::table('tb_research')->where('research_id', $request->id)->update([
                         'pdf_file_2' => $fileName_p,
                         'date_upload_file_2' => Carbon::now()->format('Y-m-d H:i:m'),
                         'updated_at' => Carbon::now()->format('Y-m-d H:i:m'),
                     ]);
-                } elseif ($status == '9') {
+                } elseif ($status == 9) {
                     DB::table('tb_research')->where('research_id', $request->id)->update([
                         'pdf_file_3' => $fileName_p,
                         'date_upload_file_3' => Carbon::now()->format('Y-m-d H:i:m'),
@@ -414,6 +432,25 @@ class TbResearchController extends Controller
                 } else {
                 }
             }
+        }
+
+
+        if ($request->file('f_word')) {
+            if ($research->word_file_3 != null) {
+                $file_name_word = $research->word_file_3;
+                $status = '9';
+            } elseif ($research->word_file_2 != null) {
+                $status = '6';
+                $file_name_word = $research->word_file_2;
+            } elseif ($research->word_file_1 != null) {
+                $status = '3';
+                $file_name_word = $research->word_file_1;
+            } else {
+                $status = '0';
+                $file_name_word = $research->word_file_0;
+            }
+
+            $file_word = $path . '/' . $file_name_word;
 
             if ($file_w = $request->file('f_word')) {
                 File::delete(public_path($file_word));
@@ -424,25 +461,25 @@ class TbResearchController extends Controller
 
                 $file_w->move($path, $fileName_w);
 
-                if ($status == '0') {
+                if ($status == 0) {
                     DB::table('tb_research')->where('research_id', $request->id)->update([
                         'word_file_0' => $fileName_w,
                         'date_upload_file_0' => Carbon::now()->format('Y-m-d H:i:m'),
                         'updated_at' => Carbon::now()->format('Y-m-d H:i:m'),
                     ]);
-                } elseif ($status == '3') {
+                } elseif ($status == 3) {
                     DB::table('tb_research')->where('research_id', $request->id)->update([
                         'word_file_1' => $fileName_w,
                         'date_upload_file_1' => Carbon::now()->format('Y-m-d H:i:m'),
                         'updated_at' => Carbon::now()->format('Y-m-d H:i:m'),
                     ]);
-                } elseif ($status == '6') {
+                } elseif ($status == 6) {
                     DB::table('tb_research')->where('research_id', $request->id)->update([
                         'word_file_2' => $fileName_w,
                         'date_upload_file_2' => Carbon::now()->format('Y-m-d H:i:m'),
                         'updated_at' => Carbon::now()->format('Y-m-d H:i:m'),
                     ]);
-                } elseif ($status == '9') {
+                } elseif ($status == 9) {
                     DB::table('tb_research')->where('research_id', $request->id)->update([
                         'word_file_3' => $fileName_w,
                         'date_upload_file_3' => Carbon::now()->format('Y-m-d H:i:m'),
@@ -451,7 +488,9 @@ class TbResearchController extends Controller
                 } else {
                 }
             }
-            //return redirect()->back()->with('success_edit');
+
+
+            return redirect()->back()->with('success_edit');
         }
 
         //dd($file_p->move($path, $fileName_p), $file_w->move($path, $fileName_w));
@@ -467,15 +506,15 @@ class TbResearchController extends Controller
                 $send->save();
             }
         } catch (\Exception $e) {
-            /* for ($i = 0; $i < sizeof($send_old); $i++) {
-                // $researcher_id[$i] = $send_old[$i]->id;
-                // $researcher_pc[$i] = $send_old[$i]->pc;
-                $send_o = new TbSendResearch();
-                $send_o->research_id = $send_old[$i]->research_id;
-                $send_o->id = $send_old[$i]->id;
-                $send_o->pc = $send_old[$i]->pc;
-                $send_o->save();
-            } */
+            // for ($i = 0; $i < sizeof($send_old); $i++) {
+            //     // $researcher_id[$i] = $send_old[$i]->id;
+            //     // $researcher_pc[$i] = $send_old[$i]->pc;
+            //     $send_o = new TbSendResearch();
+            //     $send_o->research_id = $send_old[$i]->research_id;
+            //     $send_o->id = $send_old[$i]->id;
+            //     $send_o->pc = $send_old[$i]->pc;
+            //     $send_o->save();
+            // }
             Alert::error('โปรดระบุชื่อนักวิจัยไม่ซ้ำกัน');
             return redirect()->back();
         }
@@ -484,7 +523,7 @@ class TbResearchController extends Controller
             'research_th' => $request->TH,
             'research_en' => $request->EN,
             'keyword' => $request->keyword,
-            'research_status' => $status,
+            // 'research_status' => $status,
             'research_area' => $area,
             'date_research_start' => $request->sdate,
             'date_research_end' => $request->edate,
@@ -495,6 +534,8 @@ class TbResearchController extends Controller
         // $research->save();
         Alert::success('แก้ไขข้อมูลโครงร่างงานวิจัยสำเร็จ!');
         return redirect()->back()->with('success_edit');
+
+        // dd($status, $research->research_status, $file_name_pdf, $file_name_word, $file_word, $file_pdf);
     }
 
     /**

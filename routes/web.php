@@ -36,7 +36,7 @@ Route::get('/users-director/{id}/{roles}', [\App\Http\Controllers\Pre\UDControll
 Route::get('research/{id}/{roles}', [\App\Http\Controllers\Pre\TbResearchController::class, 'index'])->name('research-pages');
 Route::post('/research/store', [\App\Http\Controllers\Pre\TbResearchController::class, 'store'])->name('research.store');
 Route::get('/view/research/{id}', [\App\Http\Controllers\Pre\TbResearchController::class, 'show']);
-Route::get('autocomplete', [\App\Http\Controllers\Pre\TbResearchController::class, 'autocomplete'])->name('autocomplete');
+// Route::get('autocomplete', [\App\Http\Controllers\Pre\TbResearchController::class, 'autocomplete'])->name('autocomplete');
 
 Route::get('admin/contract-research/{id}', [\App\Http\Controllers\Pre\TbAdminController::class, 'contractPage'])->name('admin.contract-research');
 Route::get('/admin/request/{id}', [\App\Http\Controllers\Pre\TbAdminController::class, 'rePages'])->name('admin.request');

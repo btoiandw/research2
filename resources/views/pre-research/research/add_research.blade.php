@@ -412,9 +412,8 @@
                             <strong class="col-form-label col-sm-3 pt-0" align="right">ประเภทงานวิจัย</strong>
                             <div class="col-sm-9">
                                 <select multiple class="selectpicker form-control" id="number-multiple" name="type_ck[]"
-                                    data-container="body" {{-- data-live-search="true"  --}}
-                                    data-hide-disabled="true" data-actions-box="true"
-                                    data-virtual-scroll="false"></select>
+                                    data-container="body" {{-- data-live-search="true"  --}} data-hide-disabled="true"
+                                    data-actions-box="true" data-virtual-scroll="false"></select>
 
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" name="etc" id="etc">
@@ -1241,25 +1240,36 @@
                 dataType: 'JSON',
                 success: function(res) {
                     moment.locale('th');
+                    console.log(res);
                     //console.log(res.data_re);
                     var data = res.data_re;
+                    var ty_n = res.ty_n;
                     console.log(data);
-                    console.log('re_id:' + data[0].research_id);
+                    // console.log('re_id:' + data[0].research_id);
                     createRows(res);
                     $('#viewdetail').modal('toggle');
                     //console.log(html);
-                    var type_re = data[0].type_name;
-                    /* var type = type_re.split('_');
-                    //console.log(type);
-                    var ty = '';
-                    console.log('len:' + type.length);
-                    if (type.length == 3) {
-                        ty = type[0] + ', ' + type[1] + ', ' + type[2];
-                    } else if (type.length == 2) {
-                        ty = type[0] + ', ' + type[1];
-                    } else {
-                        ty = data[0].type_research_id;
-                    } */
+                    // var type_re = data[0].type_name;
+                    // var lty = last(ty_n);
+                    // console.log('ty_n' + ty_n);
+                    // console.log('lty : ' + lty);
+
+                    // console.log('last : ' + ty_n[ty_n.length - 1].type_name);
+
+                    var lastTy_name = ty_n[ty_n.length - 1].type_name;
+                    console.log('lastTy_name: '+lastTy_name);
+                    const ft = [];
+                    for (let i = 0; i < ty_n.length; i++) {
+                        ft[i] = ty_n[i].type_name;
+                        // console.log('ft' + i + ' : ' + ft[i].type_name);
+
+                        if (ft[i] != lastTy_name) {
+                            ft[i] = ft[i] + ', ';
+                        } else {
+                            ft[i] = ft[i];
+                        }
+                    }
+                    console.log('ft: '+ft);
                     var area_re = data[0].research_area;
                     var area = area_re.split('_');
                     var start = moment(data[0].date_research_start).add(543, 'year').format('Do MMMM YYYY');
@@ -1270,7 +1280,7 @@
                     $('#nameTH').html(data[0].research_th);
                     $('#nameEN').html(data[0].research_en);
                     $('#source').html(data[0].full_name_source);
-                    $('#type_re').html(type_re);
+                    $('#type_re').html(ft);
                     $('#key').html(data[0].keyword);
                     $('#area').html(area[0] + ' ' + area[1] + ' ' + area[2]);
                     $('#start').html(start);
